@@ -3,151 +3,77 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="artifact-type" content="tool">
-  <meta name="design-style" content="vitals">
   <title>Volejbalová škola Záběhlice — HAMR Sport</title>
 
-  <!-- Google Fonts: Atkinson Hyperlegible (čitelnost) + Figtree (nadpisy a popisky) -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Figtree:wght@300..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CSS v3.4.17 (schválený CDN) -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-  const SUPABASE_URL = 'https://dhonznouzfujmhpbwori.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_KnGVAcZ_Nd2PNXuBMTSkhw_NUsGZmKV';
-  
-  const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-  </script>
-
-  <!-- Lucide Icons (schválený CDN) -->
+  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@1.43.0/dist/umd/lucide.min.js"></script>
 
   <style>
     :root {
-      color-scheme: light;
-
-      /* Styl Vitals: Stránka a povrchy */
-      --background: #ffffff;
-      --surface-container-low: #f1f7f8;
-      --surface-container: #e3f1f3;
-      --surface-container-high: #d5e9ec;
-
-      /* Text */
-      --on-surface: #1b2b33;
-      --on-surface-variant: #46585f;
-
-      /* Pravidla a ohraničení */
-      --outline: #7b9198;
-      --outline-variant: #d5e3e5;
-
-      /* Akcenty */
       --primary: #0f7c8a;
-      --on-primary: #ffffff;
-      --primary-container: #e3f1f3;
-      --on-primary-container: #0a5560;
-      --secondary: #1d5e3a;
-      --tertiary: #2e7d4f;
-      --error: #b3261e;
-      --on-error: #ffffff;
-      --positive: #2e7d4f;
-      --warning: #b86e00;
-      --focus: #0f7c8a;
-
-      /* Datové série */
-      --data-1: #0f7c8a;
-      --data-2: #2e7d4f;
-      --data-3: #b86e00;
-      --data-4: #5c5fb0;
-      --data-context: #b8c7ca;
-
-      /* Typografie */
+      --primary-hover: #0c6470;
+      --primary-light: #e3f1f3;
+      --dark-text: #1b2b33;
+      --muted-text: #46585f;
+      --border-color: #d5e3e5;
+      --bg-surface: #f1f7f8;
       --font-headline: 'Figtree', sans-serif;
       --font-body: 'Atkinson Hyperlegible', sans-serif;
-      --font-label: 'Figtree', sans-serif;
-
-      /* Velikosti písma pro Tool/Dashboard */
-      --display-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem);
-      --headline-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
-      --subhead-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
-      --body-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
-      --label-size: 0.75rem;
-
-      /* Rozestupy (4pt báze) */
-      --space-xs: 0.25rem;
-      --space-sm: 0.5rem;
-      --space-md: 1rem;
-      --space-lg: 1.5rem;
-      --space-xl: 2.5rem;
-      --space-2xl: 4rem;
-
-      /* Tvary */
-      --rounded: 0.625rem;
-      --rounded-lg: 0.875rem;
-      --rounded-full: 9999px;
-
-      /* Efekty */
-      --card-border: 1px solid var(--outline-variant);
-      --card-lift: 0 1px 3px rgba(27, 43, 51, 0.06), 0 6px 16px rgba(27, 43, 51, 0.05);
-
-      /* Pohyb */
-      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-      --dur-micro: 120ms;
-      --dur-short: 220ms;
     }
 
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
-
-    html, body {
-      overflow-x: clip;
-      margin: 0;
-      padding: 0;
-      background-color: var(--surface-container-low);
-      color: var(--on-surface);
+    body {
+      background-color: var(--bg-surface);
+      color: var(--dark-text);
       font-family: var(--font-body);
-      font-size: var(--body-size);
-      line-height: 1.55;
     }
 
-    h1, h2, h3, h4, .font-headline {
+    h1, h2, h3, h4, h5, h6, button, input, select {
       font-family: var(--font-headline);
-      color: var(--on-surface);
     }
 
-    .font-label {
-      font-family: var(--font-label);
-      font-size: var(--label-size);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+    .nav-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--muted-text);
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      background: transparent;
+      white-space: nowrap;
     }
 
-    .page-grid {
-      display: grid;
-      gap: var(--space-lg);
-      padding: var(--space-lg);
-      max-width: 1280px;
-      margin: 0 auto;
-      overflow: hidden;
+    .nav-tab:hover {
+      color: var(--primary);
     }
-    .page-grid * { min-width: 0; }
 
-    /* Vitals Status Indicator Bar */
-    .vitals-card {
-      background-color: var(--background);
-      border: var(--card-border);
-      border-radius: var(--rounded-lg);
-      box-shadow: var(--card-lift);
+    .nav-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      background-color: rgba(15, 124, 138, 0.05);
+    }
+
+    .card-vitals {
+      background-color: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 0.875rem;
+      box-shadow: 0 1px 3px rgba(27, 43, 51, 0.05), 0 4px 12px rgba(27, 43, 51, 0.03);
       position: relative;
       overflow: hidden;
     }
 
-    .status-accent-bar {
+    .accent-bar {
       position: absolute;
       top: 0;
       left: 0;
@@ -155,92 +81,48 @@
       width: 4px;
       background-color: var(--primary);
     }
-    .status-accent-bar.bar-green { background-color: var(--tertiary); }
-    .status-accent-bar.bar-amber { background-color: var(--warning); }
-    .status-accent-bar.bar-red { background-color: var(--error); }
-
-    /* Focus styling */
-    input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible {
-      outline: 2px solid var(--focus);
-      outline-offset: 2px;
-    }
-
-    /* Tab navigation buttons */
-    .nav-tab {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.625rem 1.125rem;
-      font-family: var(--font-headline);
-      font-size: 0.9375rem;
-      font-weight: 600;
-      color: var(--on-surface-variant);
-      border-bottom: 2px solid transparent;
-      transition: color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out);
-      cursor: pointer;
-      background: transparent;
-    }
-    .nav-tab:hover {
-      color: var(--primary);
-    }
-    .nav-tab.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
+    .accent-bar.green { background-color: #2e7d4f; }
+    .accent-bar.amber { background-color: #b86e00; }
+    .accent-bar.red { background-color: #b3261e; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
 
-  <!-- Hlavní kontejner aplikace -->
-  <div class="flex-grow">
-
-    <!-- Horní lišta HAMR Sport & Volejbalová škola Záběhlice -->
-    <header class="bg-white border-b border-[#d5e3e5]">
+  <!-- APLIKAČNÍ HLAVIČKA -->
+  <div>
+    <header class="bg-white border-b border-[#d5e3e5] sticky top-0 z-40 shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
+        <div class="flex items-center justify-between h-20">
           
-          <!-- Logo a název areálu -->
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-[#0f7c8a] flex items-center justify-center text-white shadow-sm flex-shrink-0">
-              <i data-lucide="volleyball" class="w-6 h-6"></i>
+          <!-- Logo Volejbalové školy -->
+          <div class="flex items-center gap-3.5 cursor-pointer" onclick="app.switchTab('courses')">
+            <div class="w-11 h-11 rounded-xl bg-[#0f7c8a] flex items-center justify-center text-white shadow-md flex-shrink-0">
+              <i data-lucide="volleyball" class="w-7 h-7"></i>
             </div>
             <div>
               <div class="flex items-center gap-2">
-                <span class="font-bold text-lg leading-tight tracking-tight text-[#1b2b33]">Volejbalová škola Záběhlice</span>
-                <span class="bg-[#e3f1f3] text-[#0a5560] text-xs font-semibold px-2 py-0.5 rounded-full font-label">HAMR Sport</span>
+                <span class="font-extrabold text-xl leading-tight text-[#1b2b33]">Volejbalová škola Záběhlice</span>
+                <span class="bg-[#e3f1f3] text-[#0a5560] text-xs font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">HAMR Sport</span>
               </div>
-              <p class="text-xs text-[#46585f]">Sportovní areál HAMR Záběhlice • Praha 10</p>
+              <p class="text-xs text-[#46585f] font-medium">Sportovní areál HAMR Záběhlice • Praha 10</p>
             </div>
           </div>
 
-          <!-- Indikátor stavu Supabase a nápověda pro SQL -->
-          <div class="hidden md:flex items-center gap-3">
-            <button onclick="app.openModal('modalSqlHelp')" class="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-md bg-[#f1f7f8] hover:bg-[#e3f1f3] text-[#0f7c8a] border border-[#d5e3e5] transition">
-              <i data-lucide="database" class="w-3.5 h-3.5"></i>
-              <span>Supabase Schéma & Návod</span>
-            </button>
-            <div id="supabaseStatusBadge" class="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full bg-[#e3f1f3] text-[#0a5560] border border-[#7b9198]/20">
-              <span class="w-2 h-2 rounded-full bg-[#2e7d4f]"></span>
-              <span id="supabaseConfigInfo" class="font-medium">Supabase JS v2: Aktivní</span>
-            </div>
-          </div>
-
-          <!-- Uživatelské menu (dle zadání a excerptu) -->
-          <div class="flex items-center space-x-4">
+          <!-- Uživatelské tlačítko / Profil -->
+          <div class="flex items-center space-x-3">
             <div id="userNav" class="flex items-center space-x-3">
-              <span id="userInfo" class="text-sm font-medium text-[#1b2b33]"></span>
-              <button id="logoutBtn" onclick="app.logout()" class="hidden bg-[#b3261e] hover:bg-[#911d17] text-white px-3 py-1.5 rounded-lg text-sm transition">Odhlásit se</button>
-              <button id="loginBtn" onclick="app.openModal('modalLogin')" class="bg-[#0f7c8a] hover:bg-[#0c6470] text-white px-3.5 py-1.5 rounded-lg text-sm font-medium transition shadow-sm flex items-center gap-1.5">
+              <span id="userInfo" class="text-sm font-semibold text-[#1b2b33]"></span>
+              <button id="logoutBtn" onclick="app.logout()" class="hidden bg-[#b3261e] hover:bg-[#911d17] text-white px-3.5 py-1.5 rounded-lg text-sm font-semibold transition flex items-center gap-1.5">
+                <i data-lucide="log-out" class="w-4 h-4"></i>
+                <span>Odhlásit se</span>
+              </button>
+              <button id="loginBtn" onclick="app.openModal('modalLogin')" class="bg-[#0f7c8a] hover:bg-[#0c6470] text-white px-4 py-2 rounded-lg text-sm font-bold transition shadow flex items-center gap-2">
                 <i data-lucide="log-in" class="w-4 h-4"></i>
                 <span>Přihlásit se</span>
+              </button>
+              <button id="registerBtn" onclick="app.openModal('modalRegister')" class="bg-[#e3f1f3] hover:bg-[#d5e9ec] text-[#0a5560] px-4 py-2 rounded-lg text-sm font-bold transition border border-[#7b9198]/20 flex items-center gap-2">
+                <i data-lucide="user-plus" class="w-4 h-4"></i>
+                <span>Registrace</span>
               </button>
             </div>
           </div>
@@ -248,155 +130,118 @@
         </div>
       </div>
 
-      <!-- Testovací panel rychlého přepnutí rolí (pro okamžité vyzkoušení) -->
-      <div class="bg-[#f1f7f8] border-t border-[#d5e3e5] px-4 py-1.5 text-xs text-[#46585f]">
-        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          <div class="flex items-center gap-2">
-            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-[#0f7c8a]"></i>
-            <span class="font-semibold text-[#1b2b33]">Rychlé testovací profily (pro vyzkoušení):</span>
-          </div>
-          <div class="flex items-center gap-1.5 flex-wrap">
-            <button onclick="app.quickLogin('admin')" class="px-2 py-0.5 rounded bg-white hover:bg-[#e3f1f3] text-[#1b2b33] border border-[#d5e3e5] transition text-xs font-medium">
-              👑 Správce / Admin
-            </button>
-            <button onclick="app.quickLogin('coach')" class="px-2 py-0.5 rounded bg-white hover:bg-[#e3f1f3] text-[#1b2b33] border border-[#d5e3e5] transition text-xs font-medium">
-              🏐 Trenér (Pavel Horák)
-            </button>
-            <button onclick="app.quickLogin('parent')" class="px-2 py-0.5 rounded bg-white hover:bg-[#e3f1f3] text-[#1b2b33] border border-[#d5e3e5] transition text-xs font-medium">
-              👨‍👩‍👧 Rodič (Jana Nováková)
-            </button>
-            <button onclick="app.quickLogin('guest')" class="px-2 py-0.5 rounded bg-white hover:bg-[#e3f1f3] text-[#46585f] border border-[#d5e3e5] transition text-xs">
-              Odhlásit (Návštěvník)
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Hlavní záložková navigace -->
+      <!-- Záložková navigace -->
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#d5e3e5] overflow-x-auto">
-        <nav class="flex space-x-1 sm:space-x-4" aria-label="Záložky">
+        <nav class="flex space-x-2" aria-label="Záložky">
           <button id="tabCourses" onclick="app.switchTab('courses')" class="nav-tab active">
-            <i data-lucide="layout-grid" class="w-4 h-4"></i>
+            <i data-lucide="layout-grid" class="w-4.5 h-4.5"></i>
             <span>Kurzy a tréninky</span>
           </button>
           <button id="tabChildren" onclick="app.switchTab('children')" class="nav-tab">
-            <i data-lucide="users" class="w-4 h-4"></i>
+            <i data-lucide="users" class="w-4.5 h-4.5"></i>
             <span>Moje děti a přihlášky</span>
           </button>
+          <button id="tabReplacements" onclick="app.switchTab('replacements')" class="nav-tab">
+            <i data-lucide="refresh-cw" class="w-4.5 h-4.5"></i>
+            <span>Omluvy a Náhrady</span>
+          </button>
           <button id="tabAttendance" onclick="app.switchTab('attendance')" class="nav-tab">
-            <i data-lucide="calendar-check" class="w-4 h-4"></i>
-            <span>Docházka na tréninky</span>
+            <i data-lucide="calendar-check" class="w-4.5 h-4.5"></i>
+            <span>Docházka (Trenéři)</span>
           </button>
-          <button id="tabAdmin" onclick="app.switchTab('admin')" class="nav-tab">
-            <i data-lucide="shield" class="w-4 h-4"></i>
-            <span>Správa a schvalování</span>
-          </button>
-          <button id="tabSupabase" onclick="app.switchTab('supabase')" class="nav-tab">
-            <i data-lucide="terminal" class="w-4 h-4"></i>
-            <span>Supabase Integrace & SQL</span>
+          <button id="tabAdmin" onclick="app.switchTab('admin')" class="nav-tab hidden">
+            <i data-lucide="shield" class="w-4.5 h-4.5 text-[#b86e00]"></i>
+            <span class="text-[#b86e00]">Administrace a Schvalování</span>
           </button>
         </nav>
       </div>
     </header>
 
-    <!-- Hlavní obsah stránek -->
-    <main class="page-grid">
+    <!-- HLAVNÍ OBSAH -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-      <!-- ========================================================================= -->
-      <!-- ZÁLOŽKA 1: PŘEHLED KURZŮ (Kurzy a tréninky HAMR Záběhlice) -->
-      <!-- ========================================================================= -->
+      <!-- ========================================== -->
+      <!-- ZÁLOŽKA 1: PŘEHLED KURZŮ -->
+      <!-- ========================================== -->
       <section id="viewCourses" class="space-y-6">
         
-        <!-- Banner s informacemi o areálu Záběhlice -->
-        <div class="vitals-card p-6 bg-gradient-to-r from-white via-white to-[#f1f7f8]">
-          <div class="status-accent-bar"></div>
+        <!-- Intro Banner -->
+        <div class="card-vitals p-6 bg-gradient-to-r from-white via-white to-[#f1f7f8]">
+          <div class="accent-bar"></div>
           <div class="sm:flex sm:items-center sm:justify-between gap-4">
             <div class="space-y-1">
-              <span class="font-label text-[#0f7c8a]">Sezóna 2026/2027 • Areál HAMR Záběhlice</span>
-              <h1 class="text-2xl font-bold tracking-tight text-[#1b2b33]">Volejbalové kurzy pro děti a mládež</h1>
+              <span class="text-xs font-bold text-[#0f7c8a] uppercase tracking-wider">Sezóna 2026/2027 • HAMR Záběhlice</span>
+              <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1b2b33]">Volejbalové kurzy pro děti a mládež</h1>
               <p class="text-sm text-[#46585f] max-w-2xl">
-                Tréninky probíhají ve špičkově vybavené hale a na antukových i beachvolejbalových kurtech v areálu HAMR Záběhlice u Hamerského rybníka. Děti rozdělujeme dle věku a výkonnosti od barevného minivolejbalu až po juniorské ligy.
+                Tréninky probíhají ve sportovním areálu HAMR Záběhlice u Hamerského rybníka v Praze 10. Nabízíme všestrannou přípravu dětí od minivolejbalu až po juniorské ligové týmy.
               </p>
             </div>
             <div class="mt-4 sm:mt-0 flex flex-col items-start sm:items-end gap-2 flex-shrink-0">
-              <div class="flex items-center gap-2 text-xs text-[#1d5e3a] bg-[#e3f1f3] px-3 py-1.5 rounded-full font-medium">
+              <div class="flex items-center gap-2 text-xs text-[#1d5e3a] bg-[#e3f1f3] px-3.5 py-1.5 rounded-full font-bold">
                 <i data-lucide="check-circle" class="w-4 h-4 text-[#2e7d4f]"></i>
-                <span>Nábor pro pololetí otevřen</span>
+                <span>Nábor otevřen</span>
               </div>
-              <span class="text-xs text-[#46585f]">Záběhlická ul., Praha 10 • Tel: +420 272 772 762</span>
+              <span class="text-xs text-[#46585f] font-medium">Záběhlická ul., Praha 10 • Tel: +420 272 772 762</span>
             </div>
           </div>
         </div>
 
-        <!-- Filtry a tlačítko pro trenéra / admina -->
+        <!-- Filtry -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 rounded-xl border border-[#d5e3e5]">
           <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
-            <span class="text-xs font-semibold text-[#46585f] uppercase tracking-wider mr-1">Kategorie:</span>
-            <button onclick="app.filterCourses('all')" class="course-filter-btn px-3 py-1 rounded-full text-xs font-medium bg-[#0f7c8a] text-white">Všechny kurzy</button>
-            <button onclick="app.filterCourses('minivolejbal')" class="course-filter-btn px-3 py-1 rounded-full text-xs font-medium bg-[#f1f7f8] text-[#46585f] hover:bg-[#e3f1f3]">Minivolejbal (6–12 let)</button>
-            <button onclick="app.filterCourses('zactvo')" class="course-filter-btn px-3 py-1 rounded-full text-xs font-medium bg-[#f1f7f8] text-[#46585f] hover:bg-[#e3f1f3]">Žactvo U14/U16</button>
-            <button onclick="app.filterCourses('beach')" class="course-filter-btn px-3 py-1 rounded-full text-xs font-medium bg-[#f1f7f8] text-[#46585f] hover:bg-[#e3f1f3]">Beachvolejbal HAMR</button>
+            <span class="text-xs font-bold text-[#46585f] uppercase tracking-wider mr-1">Kategorie:</span>
+            <button onclick="app.filterCourses('all')" class="course-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#0f7c8a] text-white">Všechny kurzy</button>
+            <button onclick="app.filterCourses('minivolejbal')" class="course-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#f1f7f8] text-[#46585f] hover:bg-[#e3f1f3]">Minivolejbal (6–12 let)</button>
+            <button onclick="app.filterCourses('zactvo')" class="course-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#f1f7f8] text-[#46585f] hover:bg-[#e3f1f3]">Žactvo U14/U16</button>
+            <button onclick="app.filterCourses('beach')" class="course-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#f1f7f8] text-[#46585f] hover:bg-[#e3f1f3]">Beachvolejbal HAMR</button>
           </div>
-          <div class="flex items-center gap-3">
-            <button onclick="app.openAddCourseModal()" id="btnNewCourseHeader" class="hidden px-3.5 py-1.5 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-xs font-medium items-center gap-1.5 transition">
-              <i data-lucide="plus-circle" class="w-4 h-4"></i>
-              <span>Nový kurz</span>
-            </button>
-          </div>
+          <div id="adminCourseBtnContainer"></div>
         </div>
 
-        <!-- Mřížka kurzů načtená asynchronně z tabulky 'courses' -->
-        <div id="coursesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Dynamicky generováno JavaScriptem z databázové tabulky courses -->
+        <!-- Mřížka kurzů -->
+        <div id="coursesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Rendered by JS -->
         </div>
 
       </section>
 
-      <!-- ========================================================================= -->
-      <!-- ZÁLOŽKA 2: MOJE DĚTI & PŘIHLÁŠKY (Správa pro rodiče) -->
-      <!-- ========================================================================= -->
+      <!-- ========================================== -->
+      <!-- ZÁLOŽKA 2: MOJE DĚTI A PŘIHLÁŠKY -->
+      <!-- ========================================== -->
       <section id="viewChildren" class="hidden space-y-6">
         
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h2 class="text-xl font-bold text-[#1b2b33]">Evidence mých dětí</h2>
-            <p class="text-sm text-[#46585f]">Registrace dětí, zdravotní způsobilost a přehled přihlášek do volejbalových tréninků.</p>
+            <h2 class="text-xl font-bold text-[#1b2b33]">Moje děti & Registrace do kurzů</h2>
+            <p class="text-sm text-[#46585f]">Správa profilů vašich dětí a stav podaných přihlášek na tréninky.</p>
           </div>
-          <button onclick="app.openModal('modalAddChild')" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-sm font-medium transition shadow-sm">
-            <i data-lucide="user-plus" class="w-4 h-4"></i>
-            <span>Přidat dítě do evidence</span>
+          <button onclick="app.openModal('modalAddChild')" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-sm font-bold transition shadow">
+            <i data-lucide="user-plus" class="w-4.5 h-4.5"></i>
+            <span>+ Přidat dítě do evidence</span>
           </button>
         </div>
 
-        <!-- Seznam dětí z tabulky 'children' -->
-        <div id="childrenList" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Vykresleno skriptem -->
+        <div id="childrenGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Rendered by JS -->
         </div>
 
-        <!-- Seznam aktivních přihlášek z tabulky 'enrollments' -->
-        <div class="vitals-card p-6">
-          <div class="status-accent-bar"></div>
-          <div class="flex items-center justify-between mb-4">
-            <div>
-              <h3 class="text-base font-bold text-[#1b2b33]">Stav přihlášek na volejbalové kurzy</h3>
-              <p class="text-xs text-[#46585f]">Přehled kurzů, kam jsou vaše děti přihlášeny a aktuální stav schválení.</p>
-            </div>
-            <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#f1f7f8] text-[#46585f] border border-[#d5e3e5]">Tabulka enrollments</span>
-          </div>
+        <div class="card-vitals p-6">
+          <div class="accent-bar"></div>
+          <h3 class="text-base font-bold text-[#1b2b33] mb-4">Přehled přihlášek na tréninky pololetí</h3>
           <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">
-              <thead class="text-xs uppercase bg-[#f1f7f8] text-[#46585f] font-label border-y border-[#d5e3e5]">
+              <thead class="text-xs uppercase bg-[#f1f7f8] text-[#46585f] border-y border-[#d5e3e5]">
                 <tr>
-                  <th class="py-3 px-4">Dítě</th>
-                  <th class="py-3 px-4">Kurz / Skupina</th>
-                  <th class="py-3 px-4">Den a Čas</th>
-                  <th class="py-3 px-4">Cena</th>
-                  <th class="py-3 px-4">Stav schválení</th>
-                  <th class="py-3 px-4 text-right">Akce</th>
+                  <th class="py-3 px-4 font-bold">Dítě</th>
+                  <th class="py-3 px-4 font-bold">Kurz</th>
+                  <th class="py-3 px-4 font-bold">Den & Čas</th>
+                  <th class="py-3 px-4 font-bold">Cena</th>
+                  <th class="py-3 px-4 font-bold">Stav schválení</th>
+                  <th class="py-3 px-4 font-bold text-right">Akce</th>
                 </tr>
               </thead>
-              <tbody id="enrollmentsList" class="divide-y divide-[#d5e3e5]">
-                <!-- Vykresleno skriptem -->
+              <tbody id="parentEnrollmentsTable" class="divide-y divide-[#d5e3e5]">
+                <!-- Rendered by JS -->
               </tbody>
             </table>
           </div>
@@ -404,59 +249,110 @@
 
       </section>
 
-      <!-- ========================================================================= -->
-      <!-- ZÁLOŽKA 3: DOCHÁZKA NA TRÉNINKY (Pro trenéry a správce) -->
-      <!-- ========================================================================= -->
+      <!-- ========================================== -->
+      <!-- ZÁLOŽKA 3: OMLUVY A NÁHRADY -->
+      <!-- ========================================== -->
+      <section id="viewReplacements" class="hidden space-y-6">
+        
+        <div class="card-vitals p-6">
+          <div class="accent-bar green"></div>
+          <div class="sm:flex sm:items-center sm:justify-between gap-4">
+            <div>
+              <span class="text-xs font-bold text-[#2e7d4f] uppercase tracking-wider">Náhradový systém Volejbalové školy</span>
+              <h2 class="text-xl font-bold text-[#1b2b33]">Omlouvání z tréninků & Čerpání náhrad</h2>
+              <p class="text-sm text-[#46585f] max-w-2xl mt-1">
+                Pokud dítě omluvíte z tréninku nejpozději <strong>12 hodin předem</strong>, systém vám automaticky přičte 1 náhradový kredit. Tento kredit pak můžete využít pro přihlášení na náhradní trénink v jiné skupině odpovídajícího věku.
+              </p>
+            </div>
+            <div id="replacementCreditsBadge" class="mt-4 sm:mt-0 flex items-center gap-2 bg-[#e3f1f3] text-[#0a5560] px-4 py-2.5 rounded-xl font-bold text-sm border border-[#0f7c8a]/20">
+              <i data-lucide="award" class="w-5 h-5 text-[#0f7c8a]"></i>
+              <span id="creditsCountText">Aktivní kredity: 0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- Omluvení z nadcházejících tréninků -->
+          <div class="card-vitals p-6 space-y-4">
+            <h3 class="text-base font-bold text-[#1b2b33] flex items-center gap-2">
+              <i data-lucide="calendar" class="w-5 h-5 text-[#0f7c8a]"></i>
+              <span>Nadcházející tréninky mého dítěte</span>
+            </h3>
+            <p class="text-xs text-[#46585f]">Kliknutím na tlačítko omluvíte dítě z tréninku.</p>
+
+            <div id="upcomingLessonsList" class="space-y-3">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Přihlášení na náhradní trénink -->
+          <div class="card-vitals p-6 space-y-4">
+            <h3 class="text-base font-bold text-[#1b2b33] flex items-center gap-2">
+              <i data-lucide="plus-circle" class="w-5 h-5 text-[#2e7d4f]"></i>
+              <span>Přihlášení na náhradní trénink</span>
+            </h3>
+            <p class="text-xs text-[#46585f]">Výběr volných kapacity v jiných skupinách pro vyčerpání kreditu.</p>
+
+            <div id="availableMakeupsList" class="space-y-3">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- ZÁLOŽKA 4: DOCHÁZKA (TRENÉŘI) -->
+      <!-- ========================================== -->
       <section id="viewAttendance" class="hidden space-y-6">
         
-        <div class="vitals-card p-6">
-          <div class="status-accent-bar bar-green"></div>
+        <div class="card-vitals p-6">
+          <div class="accent-bar green"></div>
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <span class="font-label text-[#2e7d4f]">Trenérský deník • HAMR Záběhlice</span>
-              <h2 class="text-xl font-bold text-[#1b2b33]">Zápis docházky na tréninky</h2>
-              <p class="text-sm text-[#46585f]">Evidence docházky hráčů, omluvenek a trenérských poznámek. Data se ukládají přímo do tabulky attendance.</p>
+              <span class="text-xs font-bold text-[#2e7d4f] uppercase tracking-wider">Trenérský deník • HAMR Záběhlice</span>
+              <h2 class="text-xl font-bold text-[#1b2b33]">Zápis a kontrola docházky</h2>
+              <p class="text-sm text-[#46585f]">Označení docházky hráčů na konkrétní tréninkové jednotce.</p>
             </div>
             
-            <!-- Výběr kurzu a data -->
             <div class="flex flex-wrap items-center gap-3">
               <div>
-                <label for="attendanceCourseSelect" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Zvolte kurz:</label>
-                <select id="attendanceCourseSelect" onchange="app.loadAttendanceSheet()" class="text-sm bg-white border border-[#7b9198] rounded-md px-3 py-1.5 text-[#1b2b33] focus:ring-1 focus:ring-[#0f7c8a]">
-                  <!-- Naplněno dynamicky -->
+                <label class="block text-xs font-bold text-[#46585f] mb-1">Vyberte kurz:</label>
+                <select id="attendanceCourseSelect" onchange="app.loadAttendanceSheet()" class="text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-1.5 font-medium text-[#1b2b33]">
+                  <!-- Rendered by JS -->
                 </select>
               </div>
 
               <div>
-                <label for="attendanceDateInput" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Datum tréninku:</label>
-                <input type="date" id="attendanceDateInput" onchange="app.loadAttendanceSheet()" class="text-sm bg-white border border-[#7b9198] rounded-md px-3 py-1.5 text-[#1b2b33] focus:ring-1 focus:ring-[#0f7c8a]">
+                <label class="block text-xs font-bold text-[#46585f] mb-1">Datum tréninku:</label>
+                <input type="date" id="attendanceDateInput" onchange="app.loadAttendanceSheet()" class="text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-1.5 font-medium text-[#1b2b33]">
               </div>
 
               <div class="self-end">
-                <button onclick="app.saveAttendance()" class="px-4 py-2 rounded-md bg-[#2e7d4f] hover:bg-[#256841] text-white text-sm font-semibold transition flex items-center gap-1.5 shadow-sm">
+                <button onclick="app.saveAttendance()" class="px-4 py-2 rounded-lg bg-[#2e7d4f] hover:bg-[#256841] text-white text-sm font-bold transition flex items-center gap-2 shadow">
                   <i data-lucide="save" class="w-4 h-4"></i>
-                  <span>Uložit docházku do Supabase</span>
+                  <span>Uložit docházku</span>
                 </button>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Seznam přihlášených dětí pro zápis docházky -->
-        <div class="vitals-card p-6">
+        <div class="card-vitals p-6">
           <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">
-              <thead class="text-xs uppercase bg-[#f1f7f8] text-[#46585f] font-label border-y border-[#d5e3e5]">
+              <thead class="text-xs uppercase bg-[#f1f7f8] text-[#46585f] border-y border-[#d5e3e5]">
                 <tr>
-                  <th class="py-3 px-4">Hráč / Hráčka</th>
-                  <th class="py-3 px-4">Věk / Kategorie</th>
-                  <th class="py-3 px-4">Zdravotní poznámka</th>
-                  <th class="py-3 px-4">Stav docházky</th>
-                  <th class="py-3 px-4">Poznámka trenéra k výkonu</th>
+                  <th class="py-3 px-4 font-bold">Hráč / Hráčka</th>
+                  <th class="py-3 px-4 font-bold">Věk / Kategorie</th>
+                  <th class="py-3 px-4 font-bold">Stav docházky</th>
+                  <th class="py-3 px-4 font-bold">Poznámka trenéra</th>
                 </tr>
               </thead>
               <tbody id="attendanceTableBody" class="divide-y divide-[#d5e3e5]">
-                <!-- Vykresleno skriptem -->
+                <!-- Rendered by JS -->
               </tbody>
             </table>
           </div>
@@ -464,208 +360,120 @@
 
       </section>
 
-      <!-- ========================================================================= -->
-      <!-- ZÁLOŽKA 4: SPRÁVA & SCHVALOVÁNÍ (Admin panel) -->
-      <!-- ========================================================================= -->
+      <!-- ========================================== -->
+      <!-- ZÁLOŽKA 5: ADMINISTRACE (ADMIN ONLY) -->
+      <!-- ========================================== -->
       <section id="viewAdmin" class="hidden space-y-6">
         
-        <div class="vitals-card p-6">
-          <div class="status-accent-bar bar-amber"></div>
+        <div class="card-vitals p-6">
+          <div class="accent-bar amber"></div>
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <span class="font-label text-[#b86e00]">Administrátorské rozhraní</span>
-              <h2 class="text-xl font-bold text-[#1b2b33]">Správa školy & Schvalování uživatelů</h2>
-              <p class="text-sm text-[#46585f]">
-                Schvalování nově registrovaných rodičů a trenérů do systému Volejbalové školy, potvrzování přihlášek dětí do kurzů a správa kapacity sportoviště.
-              </p>
+              <span class="text-xs font-bold text-[#b86e00] uppercase tracking-wider">Administrátorský panel</span>
+              <h2 class="text-xl font-bold text-[#1b2b33]">Správa Volejbalové školy & Schvalování</h2>
+              <p class="text-sm text-[#46585f]">Schvalování nově registrovaných účtů, potvrdzování přihlášek a správu kurzů.</p>
             </div>
-            <button onclick="app.openAddCourseModal()" class="px-4 py-2 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-sm font-medium transition flex items-center gap-1.5 flex-shrink-0">
+            <button onclick="app.openModal('modalAddCourse')" class="px-4 py-2 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-sm font-bold transition flex items-center gap-2 flex-shrink-0 shadow">
               <i data-lucide="plus-circle" class="w-4 h-4"></i>
-              <span>Vytvořit nový kurz</span>
+              <span>+ Vytvořit nový kurz</span>
             </button>
           </div>
         </div>
 
-        <!-- 1. Sekce: Uživatelé čekající na schválení (klíčový požadavek promptu) -->
-        <div class="vitals-card p-6">
-          <div class="flex items-center justify-between mb-4">
-            <div>
-              <h3 class="text-base font-bold text-[#1b2b33] flex items-center gap-2">
-                <span>Noví uživatelé čekající na schválení adminem</span>
-                <span id="pendingUsersCount" class="bg-[#b86e00] text-white text-xs px-2 py-0.5 rounded-full font-bold">0</span>
-              </h3>
-              <p class="text-xs text-[#46585f]">Podle bezpečnostních pravidel školy musí každý nový účet (rodič/trenér) schválit administrátor před plným přístupem.</p>
-            </div>
-            <span class="text-xs font-semibold px-2.5 py-1 rounded bg-[#f1f7f8] text-[#46585f] border border-[#d5e3e5]">Tabulka profiles (is_approved = false)</span>
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm">
-              <thead class="text-xs uppercase bg-[#f1f7f8] text-[#46585f] font-label border-y border-[#d5e3e5]">
-                <tr>
-                  <th class="py-3 px-4">Jméno a Příjmení</th>
-                  <th class="py-3 px-4">E-mail</th>
-                  <th class="py-3 px-4">Telefon</th>
-                  <th class="py-3 px-4">Požadovaná role</th>
-                  <th class="py-3 px-4">Registrován</th>
-                  <th class="py-3 px-4 text-right">Rozhodnutí admina</th>
-                </tr>
-              </thead>
-              <tbody id="pendingUsersList" class="divide-y divide-[#d5e3e5]">
-                <!-- Vykresleno skriptem -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- 2. Sekce: Přehled schválených uživatelů -->
-        <div class="vitals-card p-6">
-          <h3 class="text-base font-bold text-[#1b2b33] mb-3">Schválení uživatelé v systému</h3>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm">
-              <thead class="text-xs uppercase bg-[#f1f7f8] text-[#46585f] font-label border-y border-[#d5e3e5]">
-                <tr>
-                  <th class="py-2.5 px-4">Uživatel</th>
-                  <th class="py-2.5 px-4">E-mail</th>
-                  <th class="py-2.5 px-4">Role</th>
-                  <th class="py-2.5 px-4">Telefon</th>
-                  <th class="py-2.5 px-4">Stav účtu</th>
-                </tr>
-              </thead>
-              <tbody id="approvedUsersList" class="divide-y divide-[#d5e3e5]">
-                <!-- Vykresleno skriptem -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- 3. Sekce: Přihlášky čekající na potvrzení -->
-        <div class="vitals-card p-6">
-          <h3 class="text-base font-bold text-[#1b2b33] mb-3">Přihlášky dětí do kurzů ke schválení</h3>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm">
-              <thead class="text-xs uppercase bg-[#f1f7f8] text-[#46585f] font-label border-y border-[#d5e3e5]">
-                <tr>
-                  <th class="py-2.5 px-4">Dítě</th>
-                  <th class="py-2.5 px-4">Rodič</th>
-                  <th class="py-2.5 px-4">Kurz</th>
-                  <th class="py-2.5 px-4">Datum přihlášky</th>
-                  <th class="py-2.5 px-4">Stav</th>
-                  <th class="py-2.5 px-4 text-right">Akce</th>
-                </tr>
-              </thead>
-              <tbody id="adminEnrollmentsList" class="divide-y divide-[#d5e3e5]">
-                <!-- Vykresleno skriptem -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- ========================================================================= -->
-      <!-- ZÁLOŽKA 5: SUPABASE INTEGRACE & SQL NÁVOD -->
-      <!-- ========================================================================= -->
-      <section id="viewSupabase" class="hidden space-y-6">
-        
-        <div class="vitals-card p-6">
-          <div class="status-accent-bar"></div>
-          <div class="space-y-2">
-            <span class="font-label text-[#0f7c8a]">Supabase JS SDK v2 • Dokumentace architektury</span>
-            <h2 class="text-xl font-bold text-[#1b2b33]">Jak je aplikace 100% napojena na Supabase</h2>
-            <p class="text-sm text-[#46585f]">
-              Tato aplikace obsahuje plnohodnotné asynchronní volání metod Supabase JS SDK v2 (<code class="bg-[#e3f1f3] text-[#0a5560] px-1 py-0.5 rounded">auth.signUp</code>, <code class="bg-[#e3f1f3] text-[#0a5560] px-1 py-0.5 rounded">auth.signInWithPassword</code>, dotazy na tabulky <code class="bg-[#e3f1f3] text-[#0a5560] px-1 py-0.5 rounded">profiles</code>, <code class="bg-[#e3f1f3] text-[#0a5560] px-1 py-0.5 rounded">children</code>, <code class="bg-[#e3f1f3] text-[#0a5560] px-1 py-0.5 rounded">courses</code>, <code class="bg-[#e3f1f3] text-[#0a5560] px-1 py-0.5 rounded">enrollments</code> a <code class="bg-[#e3f1f3] text-[#0a5560] px-1 py-0.5 rounded">attendance</code>).
-            </p>
-          </div>
-        </div>
-
-        <!-- Návod na zprovoznění se Supabase -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
-          <div class="vitals-card p-6 space-y-4">
-            <h3 class="text-base font-bold text-[#1b2b33] flex items-center gap-2">
-              <i data-lucide="key" class="w-5 h-5 text-[#0f7c8a]"></i>
-              <span>1. Nastavení přihlašovacích údajů</span>
-            </h3>
-            <p class="text-sm text-[#46585f]">
-              V horní části JavaScriptu tohoto souboru (<code class="text-xs bg-[#f1f7f8] p-1 rounded font-mono">index.html</code>) jsou jasně vyznačené konstanty:
-            </p>
-            <div class="bg-[#1b2b33] text-gray-200 p-4 rounded-lg text-xs font-mono overflow-x-auto">
-              <span class="text-gray-400">// Konstanty na začátku JS skriptu:</span><br>
-              <span class="text-[#2e7d4f] font-bold">const</span> SUPABASE_URL = <span class="text-amber-300">'https://tvuj-projekt.supabase.co'</span>;<br>
-              <span class="text-[#2e7d4f] font-bold">const</span> SUPABASE_KEY = <span class="text-amber-300">'tvuj-anon-public-klic'</span>;
-            </div>
-            <ul class="text-xs text-[#46585f] space-y-1.5 list-disc list-inside">
-              <li>Přejděte do <strong>Project Settings → API</strong> ve vašem Supabase dashboardu.</li>
-              <li>Zkopírujte <strong>Project URL</strong> do <code class="font-mono">SUPABASE_URL</code>.</li>
-              <li>Zkopírujte <strong>Project API key (anon / public)</strong> do <code class="font-mono">SUPABASE_KEY</code>.</li>
-            </ul>
-          </div>
-
-          <div class="vitals-card p-6 space-y-4">
-            <h3 class="text-base font-bold text-[#1b2b33] flex items-center gap-2">
-              <i data-lucide="shield-check" class="w-5 h-5 text-[#2e7d4f]"></i>
-              <span>2. Režim provozu & Persistence</span>
-            </h3>
-            <p class="text-sm text-[#46585f]">
-              Aplikace disponuje inteligentním duálním adaptérem:
-            </p>
-            <div class="space-y-2 text-xs text-[#46585f]">
-              <div class="p-3 rounded-lg bg-[#e3f1f3] text-[#0a5560]">
-                <strong>Připojeno k Supabase:</strong> Když zadáte reálné údaje, kód provádí přímé asynchronní síťové dotazy přes oficiální REST & Auth endpointy Supabase.
-              </div>
-              <div class="p-3 rounded-lg bg-[#f1f7f8] text-[#1b2b33] border border-[#d5e3e5]">
-                <strong>Offline / Sandbox persistence:</strong> Při výchozích zástupných údajích aplikace ukládá data přes sandboxové rozhraní <code class="font-mono">notebookAppApi</code>, takže všechny změny (nové děti, docházka, schválení adminem) přetrvají i po zavření okna.
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Kompletní SQL Skript připravený k aplikaci do Supabase SQL Editoru -->
-        <div class="vitals-card p-6 space-y-3">
+        <!-- 1. Noví uživatelé ke schválení -->
+        <div class="card-vitals p-6 space-y-4">
           <div class="flex items-center justify-between">
-            <div>
-              <h3 class="text-base font-bold text-[#1b2b33] flex items-center gap-2">
-                <i data-lucide="database" class="w-5 h-5 text-[#0f7c8a]"></i>
-                <span>Kompletní SQL schéma pro Supabase SQL Editor</span>
-              </h3>
-              <p class="text-xs text-[#46585f]">Zkopírujte tento SQL kód a vložte jej do vašeho Supabase SQL Editoru pro vytvoření všech tabulek a bezpečnostních politik.</p>
-            </div>
-            <button onclick="app.copySqlToClipboard()" class="px-3 py-1.5 rounded bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-xs font-semibold flex items-center gap-1.5 transition">
-              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-              <span>Zkopírovat SQL</span>
-            </button>
+            <h3 class="text-base font-bold text-[#1b2b33] flex items-center gap-2">
+              <span>Žádosti o schválení nových účtů</span>
+              <span id="pendingUsersCount" class="bg-[#b86e00] text-white text-xs px-2.5 py-0.5 rounded-full font-extrabold">0</span>
+            </h3>
           </div>
 
-          <pre id="sqlCodeBlock" class="bg-[#1b2b33] text-gray-200 p-4 rounded-xl text-xs font-mono overflow-x-auto max-h-96 leading-relaxed"></pre>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="text-xs uppercase bg-[#f1f7f8] text-[#46585f] border-y border-[#d5e3e5]">
+                <tr>
+                  <th class="py-3 px-4 font-bold">Jméno a Příjmení</th>
+                  <th class="py-3 px-4 font-bold">E-mail</th>
+                  <th class="py-3 px-4 font-bold">Telefon</th>
+                  <th class="py-3 px-4 font-bold">Požadovaná role</th>
+                  <th class="py-3 px-4 font-bold text-right">Akce Admina</th>
+                </tr>
+              </thead>
+              <tbody id="pendingUsersTable" class="divide-y divide-[#d5e3e5]">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 2. Přihlášky dětí do kurzů ke schválení -->
+        <div class="card-vitals p-6 space-y-4">
+          <h3 class="text-base font-bold text-[#1b2b33]">Přihlášky dětí do kurzů ke schválení</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="text-xs uppercase bg-[#f1f7f8] text-[#46585f] border-y border-[#d5e3e5]">
+                <tr>
+                  <th class="py-3 px-4 font-bold">Dítě</th>
+                  <th class="py-3 px-4 font-bold">Rodič</th>
+                  <th class="py-3 px-4 font-bold">Kurz</th>
+                  <th class="py-3 px-4 font-bold">Stav</th>
+                  <th class="py-3 px-4 font-bold text-right">Akce Admina</th>
+                </tr>
+              </thead>
+              <tbody id="adminEnrollmentsTable" class="divide-y divide-[#d5e3e5]">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 3. Seznam a úprava kurzů -->
+        <div class="card-vitals p-6 space-y-4">
+          <h3 class="text-base font-bold text-[#1b2b33]">Seznam aktivních kurzů & Správa</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="text-xs uppercase bg-[#f1f7f8] text-[#46585f] border-y border-[#d5e3e5]">
+                <tr>
+                  <th class="py-3 px-4 font-bold">Název kurzu</th>
+                  <th class="py-3 px-4 font-bold">Trenér</th>
+                  <th class="py-3 px-4 font-bold">Čas a Den</th>
+                  <th class="py-3 px-4 font-bold">Kapacita</th>
+                  <th class="py-3 px-4 font-bold">Kurt / Místo</th>
+                  <th class="py-3 px-4 font-bold text-right">Akce</th>
+                </tr>
+              </thead>
+              <tbody id="adminCoursesTable" class="divide-y divide-[#d5e3e5]">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
         </div>
 
       </section>
 
     </main>
-
   </div>
 
-  <!-- Patička HAMR Sport Záběhlice -->
-  <footer class="bg-white border-t border-[#d5e3e5] mt-12 py-6 text-xs text-[#46585f]">
+  <!-- PATIČKA -->
+  <footer class="bg-white border-t border-[#d5e3e5] py-6 text-xs text-[#46585f]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-2">
-        <span class="font-bold text-[#1b2b33]">Sportovní areál HAMR – Záběhlice</span>
+        <span class="font-bold text-[#1b2b33]">Volejbalová škola Záběhlice — HAMR Sport</span>
         <span>•</span>
         <span>ul. Záběhlická, 106 00 Praha 10</span>
         <span>•</span>
         <span>Tel: +420 272 772 762</span>
       </div>
       <div>
-        <span>Volejbalová škola Záběhlice — Napojeno na Supabase JS SDK v2</span>
+        <span>Oficiální rezervační a přihlašovací portál</span>
       </div>
     </div>
   </footer>
 
-  <!-- ========================================================================= -->
-  <!-- MODÁLNÍ DIALOGY A FORMULÁŘE -->
-  <!-- ========================================================================= -->
+  <!-- ========================================== -->
+  <!-- MODÁLNÍ OKNA -->
+  <!-- ========================================== -->
 
   <!-- Modal: Přihlášení -->
   <div id="modalLogin" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
@@ -675,29 +483,29 @@
       </button>
 
       <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-full bg-[#e3f1f3] text-[#0f7c8a] flex items-center justify-center">
-          <i data-lucide="log-in" class="w-4 h-4"></i>
+        <div class="w-9 h-9 rounded-full bg-[#e3f1f3] text-[#0f7c8a] flex items-center justify-center">
+          <i data-lucide="log-in" class="w-5 h-5"></i>
         </div>
-        <h3 class="text-lg font-bold text-[#1b2b33]">Přihlášení do Volejbalové školy</h3>
+        <h3 class="text-lg font-bold text-[#1b2b33]">Přihlášení do systému</h3>
       </div>
-      <p class="text-xs text-[#46585f]">Využívá Supabase Auth: <code class="font-mono bg-[#f1f7f8] px-1 py-0.5 rounded">auth.signInWithPassword</code></p>
 
-      <form onsubmit="app.handleLogin(event)" class="space-y-3">
+      <form onsubmit="app.handleLogin(event)" class="space-y-4">
         <div>
-          <label for="loginEmail" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">E-mailová adresa:</label>
-          <input type="email" id="loginEmail" required class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33] focus:ring-1 focus:ring-[#0f7c8a]" placeholder="jan.novak@email.cz">
+          <label for="loginEmail" class="block text-xs font-bold text-[#46585f] mb-1 uppercase tracking-wider">E-mailová adresa:</label>
+          <input type="email" id="loginEmail" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3.5 py-2.5 text-[#1b2b33]" placeholder="sindelar.vit10@gmail.com">
         </div>
         <div>
-          <label for="loginPassword" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Heslo:</label>
-          <input type="password" id="loginPassword" required class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33] focus:ring-1 focus:ring-[#0f7c8a]">
+          <label for="loginPassword" class="block text-xs font-bold text-[#46585f] mb-1 uppercase tracking-wider">Heslo:</label>
+          <input type="password" id="loginPassword" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3.5 py-2.5 text-[#1b2b33]">
         </div>
-        <div id="loginError" class="text-xs text-[#b3261e] hidden font-medium"></div>
+
+        <div id="loginError" class="text-xs text-[#b3261e] hidden font-bold"></div>
 
         <div class="pt-2 flex items-center justify-between">
-          <button type="button" onclick="app.openModal('modalRegister')" class="text-xs text-[#0f7c8a] hover:underline">
+          <button type="button" onclick="app.closeModal('modalLogin'); app.openModal('modalRegister');" class="text-xs text-[#0f7c8a] font-bold hover:underline">
             Nemáte účet? Zaregistrujte se
           </button>
-          <button type="submit" class="px-4 py-2 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-sm font-semibold transition shadow-sm">
+          <button type="submit" class="px-5 py-2.5 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-sm font-bold transition shadow">
             Přihlásit se
           </button>
         </div>
@@ -705,55 +513,53 @@
     </div>
   </div>
 
-  <!-- Modal: Registrace nového uživatele (s rolí a schválením adminem) -->
+  <!-- Modal: Registrace -->
   <div id="modalRegister" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative space-y-4">
+    <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative space-y-4 max-h-[90vh] overflow-y-auto">
       <button onclick="app.closeModal('modalRegister')" class="absolute top-4 right-4 text-[#46585f] hover:text-[#1b2b33]">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
 
       <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-full bg-[#e3f1f3] text-[#0f7c8a] flex items-center justify-center">
-          <i data-lucide="user-plus" class="w-4 h-4"></i>
+        <div class="w-9 h-9 rounded-full bg-[#e3f1f3] text-[#0f7c8a] flex items-center justify-center">
+          <i data-lucide="user-plus" class="w-5 h-5"></i>
         </div>
-        <h3 class="text-lg font-bold text-[#1b2b33]">Registrace nového uživatele</h3>
+        <h3 class="text-lg font-bold text-[#1b2b33]">Registrace nového účtu</h3>
       </div>
-      <p class="text-xs text-[#46585f]">
-        Nové registrace vyžadují schválení administrátorem školy (<code class="font-mono bg-[#f1f7f8] px-1 py-0.5 rounded">is_approved = false</code>).
-      </p>
+      <p class="text-xs text-[#46585f]">Účet po registraci podléhá schválení administrátorem školy.</p>
 
       <form onsubmit="app.handleRegister(event)" class="space-y-3">
         <div>
-          <label for="regFullName" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Jméno a Příjmení:</label>
-          <input type="text" id="regFullName" required class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]" placeholder="Jana Nováková">
+          <label for="regFullName" class="block text-xs font-bold text-[#46585f] mb-1">Jméno a Příjmení:</label>
+          <input type="text" id="regFullName" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3.5 py-2 text-[#1b2b33]" placeholder="Jana Nováková">
         </div>
         <div>
-          <label for="regEmail" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">E-mailová adresa:</label>
-          <input type="email" id="regEmail" required class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]" placeholder="jana.novakova@seznam.cz">
+          <label for="regEmail" class="block text-xs font-bold text-[#46585f] mb-1">E-mailová adresa:</label>
+          <input type="email" id="regEmail" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3.5 py-2 text-[#1b2b33]" placeholder="jana.novakova@seznam.cz">
         </div>
         <div>
-          <label for="regPhone" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Telefonní kontakt:</label>
-          <input type="tel" id="regPhone" required class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]" placeholder="+420 777 123 456">
+          <label for="regPhone" class="block text-xs font-bold text-[#46585f] mb-1">Telefonní kontakt:</label>
+          <input type="tel" id="regPhone" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3.5 py-2 text-[#1b2b33]" placeholder="+420 777 123 456">
         </div>
         <div>
-          <label for="regRole" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Role v systému:</label>
-          <select id="regRole" class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]">
+          <label for="regRole" class="block text-xs font-bold text-[#46585f] mb-1">Role v systému:</label>
+          <select id="regRole" class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3.5 py-2 text-[#1b2b33]">
             <option value="parent">Rodič / Zákonný zástupce</option>
-            <option value="coach">Trenér volejbalu</option>
+            <option value="coach">Trenér</option>
           </select>
         </div>
         <div>
-          <label for="regPassword" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Heslo (min. 6 znaků):</label>
-          <input type="password" id="regPassword" required minlength="6" class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]">
+          <label for="regPassword" class="block text-xs font-bold text-[#46585f] mb-1">Heslo (min. 6 znaků):</label>
+          <input type="password" id="regPassword" required minlength="6" class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3.5 py-2 text-[#1b2b33]">
         </div>
 
-        <div id="regError" class="text-xs text-[#b3261e] hidden font-medium"></div>
+        <div id="regError" class="text-xs text-[#b3261e] hidden font-bold"></div>
 
         <div class="pt-2 flex items-center justify-between">
-          <button type="button" onclick="app.openModal('modalLogin')" class="text-xs text-[#0f7c8a] hover:underline">
+          <button type="button" onclick="app.closeModal('modalRegister'); app.openModal('modalLogin');" class="text-xs text-[#0f7c8a] font-bold hover:underline">
             Už máte účet? Přihlásit se
           </button>
-          <button type="submit" class="px-4 py-2 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-sm font-semibold transition shadow-sm">
+          <button type="submit" class="px-5 py-2.5 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-sm font-bold transition shadow">
             Zaregistrovat se
           </button>
         </div>
@@ -761,7 +567,7 @@
     </div>
   </div>
 
-  <!-- Modal: Přidat dítě (do tabulky children) -->
+  <!-- Modal: Přidat dítě -->
   <div id="modalAddChild" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative space-y-4">
       <button onclick="app.closeModal('modalAddChild')" class="absolute top-4 right-4 text-[#46585f] hover:text-[#1b2b33]">
@@ -769,33 +575,32 @@
       </button>
 
       <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-full bg-[#e3f1f3] text-[#0f7c8a] flex items-center justify-center">
-          <i data-lucide="smile" class="w-4 h-4"></i>
+        <div class="w-9 h-9 rounded-full bg-[#e3f1f3] text-[#0f7c8a] flex items-center justify-center">
+          <i data-lucide="user-plus" class="w-5 h-5"></i>
         </div>
-        <h3 class="text-lg font-bold text-[#1b2b33]">Zápis dítěte do evidence školy</h3>
+        <h3 class="text-lg font-bold text-[#1b2b33]">Zápis dítěte do evidence</h3>
       </div>
-      <p class="text-xs text-[#46585f]">Data se asynchronně ukládají do Supabase tabulky <code class="font-mono">children</code>.</p>
 
       <form onsubmit="app.handleAddChild(event)" class="space-y-3">
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label for="childFirstName" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Jméno:</label>
-            <input type="text" id="childFirstName" required class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]" placeholder="Matěj">
+            <label for="childFirstName" class="block text-xs font-bold text-[#46585f] mb-1">Jméno:</label>
+            <input type="text" id="childFirstName" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]" placeholder="Matěj">
           </div>
           <div>
-            <label for="childLastName" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Příjmení:</label>
-            <input type="text" id="childLastName" required class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]" placeholder="Novák">
+            <label for="childLastName" class="block text-xs font-bold text-[#46585f] mb-1">Příjmení:</label>
+            <input type="text" id="childLastName" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]" placeholder="Novák">
           </div>
         </div>
 
         <div>
-          <label for="childBirthDate" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Datum narození:</label>
-          <input type="date" id="childBirthDate" required class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]">
+          <label for="childBirthDate" class="block text-xs font-bold text-[#46585f] mb-1">Datum narození:</label>
+          <input type="date" id="childBirthDate" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]">
         </div>
 
         <div>
-          <label for="childCategory" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Volejbalová kategorie:</label>
-          <select id="childCategory" class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]">
+          <label for="childCategory" class="block text-xs font-bold text-[#46585f] mb-1">Volejbalová kategorie:</label>
+          <select id="childCategory" class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]">
             <option value="Minivolejbal Žlutý (6–8 let)">Minivolejbal Žlutý (6–8 let)</option>
             <option value="Minivolejbal Oranžový (8–10 let)">Minivolejbal Oranžový (8–10 let)</option>
             <option value="Minivolejbal Červený (10–12 let)">Minivolejbal Červený (10–12 let)</option>
@@ -806,25 +611,19 @@
         </div>
 
         <div>
-          <label for="childHealthNotes" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Zdravotní poznámky / Alergie / Omezení:</label>
-          <textarea id="childHealthNotes" rows="2" class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]" placeholder="Např. astma při zátěži, alergie na vosí bodnutí, bez omezení"></textarea>
+          <label for="childHealthNotes" class="block text-xs font-bold text-[#46585f] mb-1">Zdravotní poznámky / Alergie:</label>
+          <textarea id="childHealthNotes" rows="2" class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]" placeholder="Bez omezení / Alergie na pyly"></textarea>
         </div>
 
-        <div id="childError" class="text-xs text-[#b3261e] hidden font-medium"></div>
-
         <div class="pt-2 flex justify-end gap-2">
-          <button type="button" onclick="app.closeModal('modalAddChild')" class="px-4 py-2 rounded-lg bg-[#f1f7f8] text-[#46585f] hover:bg-[#e3f1f3] text-sm">
-            Zrušit
-          </button>
-          <button type="submit" class="px-4 py-2 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-sm font-semibold transition shadow-sm">
-            Uložit dítě
-          </button>
+          <button type="button" onclick="app.closeModal('modalAddChild')" class="px-4 py-2 rounded-lg bg-[#f1f7f8] text-[#46585f] text-sm font-bold">Zrušit</button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-[#0f7c8a] text-white text-sm font-bold shadow">Uložit dítě</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Modal: Přihlásit dítě do vybraného kurzu (tabulka enrollments) -->
+  <!-- Modal: Přihlásit dítě do kurzu -->
   <div id="modalEnrollChild" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative space-y-4">
       <button onclick="app.closeModal('modalEnrollChild')" class="absolute top-4 right-4 text-[#46585f] hover:text-[#1b2b33]">
@@ -832,38 +631,30 @@
       </button>
 
       <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-full bg-[#e3f1f3] text-[#0f7c8a] flex items-center justify-center">
-          <i data-lucide="clipboard-check" class="w-4 h-4"></i>
+        <div class="w-9 h-9 rounded-full bg-[#e3f1f3] text-[#0f7c8a] flex items-center justify-center">
+          <i data-lucide="clipboard-check" class="w-5 h-5"></i>
         </div>
-        <h3 class="text-lg font-bold text-[#1b2b33]">Přihláška na volejbalový trénink</h3>
+        <h3 class="text-lg font-bold text-[#1b2b33]">Přihláška na volejbalový kurz</h3>
       </div>
-      <p id="enrollCourseTitle" class="text-xs text-[#0f7c8a] font-semibold"></p>
+      <p id="enrollCourseTitle" class="text-sm text-[#0f7c8a] font-bold"></p>
 
-      <form onsubmit="app.handleEnroll(event)" class="space-y-3">
+      <form onsubmit="app.handleEnroll(event)" class="space-y-4">
         <input type="hidden" id="enrollCourseId">
 
         <div>
-          <label for="enrollChildSelect" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Vyberte přihlašované dítě:</label>
-          <select id="enrollChildSelect" required class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]">
-            <!-- Naplněno dynamicky podle dětí přihlášeného rodiče -->
+          <label for="enrollChildSelect" class="block text-xs font-bold text-[#46585f] mb-1">Vyberte dítě:</label>
+          <select id="enrollChildSelect" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3.5 py-2.5 text-[#1b2b33]">
+            <!-- Rendered by JS -->
           </select>
         </div>
 
-        <div class="p-3 rounded-lg bg-[#f1f7f8] border border-[#d5e3e5] text-xs text-[#46585f] space-y-1">
-          <div class="font-semibold text-[#1b2b33]">Podmínky přihlášení HAMR Záběhlice:</div>
-          <div>• Místo: Sportovní hala HAMR Záběhlice (ul. Záběhlická)</div>
-          <div>• Po odeslání přihlášky administrátor ověří volnou kapacitu a potvrdí přihlášku.</div>
+        <div class="p-3 rounded-lg bg-[#f1f7f8] border border-[#d5e3e5] text-xs text-[#46585f]">
+          • Přihláška bude odeslána ke schválení administrátorovi Volejbalové školy.
         </div>
 
-        <div id="enrollError" class="text-xs text-[#b3261e] hidden font-medium"></div>
-
         <div class="pt-2 flex justify-end gap-2">
-          <button type="button" onclick="app.closeModal('modalEnrollChild')" class="px-4 py-2 rounded-lg bg-[#f1f7f8] text-[#46585f] hover:bg-[#e3f1f3] text-sm">
-            Zpět
-          </button>
-          <button type="submit" class="px-4 py-2 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-sm font-semibold transition shadow-sm">
-            Odeslat přihlášku do Supabase
-          </button>
+          <button type="button" onclick="app.closeModal('modalEnrollChild')" class="px-4 py-2 rounded-lg bg-[#f1f7f8] text-[#46585f] text-sm font-bold">Zrušit</button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-[#0f7c8a] text-white text-sm font-bold shadow">Odeslat přihlášku</button>
         </div>
       </form>
     </div>
@@ -877,820 +668,342 @@
       </button>
 
       <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-full bg-[#e3f1f3] text-[#0f7c8a] flex items-center justify-center">
-          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+        <div class="w-9 h-9 rounded-full bg-[#e3f1f3] text-[#0f7c8a] flex items-center justify-center">
+          <i data-lucide="plus-circle" class="w-5 h-5"></i>
         </div>
-        <h3 class="text-lg font-bold text-[#1b2b33]">Vytvoření nového volejbalového kurzu</h3>
+        <h3 class="text-lg font-bold text-[#1b2b33]">Názov a nastavení nového kurzu</h3>
       </div>
-      <p class="text-xs text-[#46585f]">Vloží nový záznam do tabulky <code class="font-mono">courses</code>.</p>
 
       <form onsubmit="app.handleAddCourse(event)" class="space-y-3">
         <div>
-          <label for="newCourseName" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Název kurzu:</label>
-          <input type="text" id="newCourseName" required class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]" placeholder="Minivolejbal – Zelený (Přípravka)">
+          <label for="newCourseName" class="block text-xs font-bold text-[#46585f] mb-1">Název kurzu:</label>
+          <input type="text" id="newCourseName" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]" placeholder="Minivolejbal – Zelený (Přípravka)">
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label for="newCourseCategory" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Kategorie:</label>
-            <select id="newCourseCategory" class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]">
+            <label for="newCourseCategory" class="block text-xs font-bold text-[#46585f] mb-1">Kategorie:</label>
+            <select id="newCourseCategory" class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]">
               <option value="minivolejbal">Minivolejbal</option>
               <option value="zactvo">Žactvo U14 / U16</option>
               <option value="beach">Beachvolejbal</option>
             </select>
           </div>
           <div>
-            <label for="newCourseCoach" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Hlavní trenér:</label>
-            <input type="text" id="newCourseCoach" required class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]" placeholder="Mgr. Pavel Horák">
+            <label for="newCourseCoach" class="block text-xs font-bold text-[#46585f] mb-1">Hlavní trenér:</label>
+            <input type="text" id="newCourseCoach" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]" placeholder="Pavel Horák">
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label for="newCourseDay" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Den / Dny:</label>
-            <input type="text" id="newCourseDay" required class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]" placeholder="Úterý & Čtvrtek">
+            <label for="newCourseDay" class="block text-xs font-bold text-[#46585f] mb-1">Den / Dny:</label>
+            <input type="text" id="newCourseDay" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]" placeholder="Úterý & Čtvrtek">
           </div>
           <div>
-            <label for="newCourseTime" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Čas tréninku:</label>
-            <input type="text" id="newCourseTime" required class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]" placeholder="15:30 – 17:00">
+            <label for="newCourseTime" class="block text-xs font-bold text-[#46585f] mb-1">Čas tréninku:</label>
+            <input type="text" id="newCourseTime" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]" placeholder="15:30 – 17:00">
           </div>
         </div>
 
         <div class="grid grid-cols-3 gap-3">
           <div>
-            <label for="newCourseCapacity" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Kapacita dětí:</label>
-            <input type="number" id="newCourseCapacity" min="4" max="30" value="16" required class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]">
+            <label for="newCourseCapacity" class="block text-xs font-bold text-[#46585f] mb-1">Kapacita:</label>
+            <input type="number" id="newCourseCapacity" min="4" max="30" value="16" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]">
           </div>
           <div>
-            <label for="newCoursePrice" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Cena za pololetí:</label>
-            <input type="text" id="newCoursePrice" value="4 800 Kč" required class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]">
+            <label for="newCoursePrice" class="block text-xs font-bold text-[#46585f] mb-1">Cena pololetí:</label>
+            <input type="text" id="newCoursePrice" value="4 800 Kč" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]">
           </div>
           <div>
-            <label for="newCourseLocation" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Místo / Kurt:</label>
-            <input type="text" id="newCourseLocation" value="Hala 2 - Kurt C" required class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]">
+            <label for="newCourseLocation" class="block text-xs font-bold text-[#46585f] mb-1">Místo / Kurt:</label>
+            <input type="text" id="newCourseLocation" value="Hala 2 - Kurt C" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]">
           </div>
         </div>
 
         <div>
-          <label for="newCourseDescription" class="block text-xs font-semibold text-[#46585f] mb-1 font-label">Popis náplně tréninků:</label>
-          <textarea id="newCourseDescription" rows="2" class="w-full text-sm bg-white border border-[#7b9198] rounded-md px-3 py-2 text-[#1b2b33]" placeholder="Základy odbíjení obouruč vrchem i spodem, pohybové hry, podání."></textarea>
+          <label for="newCourseDescription" class="block text-xs font-bold text-[#46585f] mb-1">Popis náplně tréninků:</label>
+          <textarea id="newCourseDescription" rows="2" class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]" placeholder="Základy odbíjení obouruč vrchem i spodem, pohybové hry, podání."></textarea>
         </div>
 
-        <div id="newCourseError" class="text-xs text-[#b3261e] hidden font-medium"></div>
-
         <div class="pt-2 flex justify-end gap-2">
-          <button type="button" onclick="app.closeModal('modalAddCourse')" class="px-4 py-2 rounded-lg bg-[#f1f7f8] text-[#46585f] hover:bg-[#e3f1f3] text-sm">
-            Zrušit
-          </button>
-          <button type="submit" class="px-4 py-2 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-sm font-semibold transition shadow-sm">
-            Vložit kurz do Supabase
-          </button>
+          <button type="button" onclick="app.closeModal('modalAddCourse')" class="px-4 py-2 rounded-lg bg-[#f1f7f8] text-[#46585f] text-sm font-bold">Zrušit</button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-[#0f7c8a] text-white text-sm font-bold shadow">Uložit kurz</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Modal: Supabase nápověda & SQL Editor -->
-  <div id="modalSqlHelp" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-xl max-w-2xl w-full p-6 shadow-xl relative space-y-4 max-h-[85vh] overflow-y-auto">
-      <button onclick="app.closeModal('modalSqlHelp')" class="absolute top-4 right-4 text-[#46585f] hover:text-[#1b2b33]">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
-
-      <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-full bg-[#e3f1f3] text-[#0f7c8a] flex items-center justify-center">
-          <i data-lucide="database" class="w-4 h-4"></i>
-        </div>
-        <h3 class="text-lg font-bold text-[#1b2b33]">Propojení se Supabase & SQL Schéma</h3>
-      </div>
-
-      <div class="text-xs text-[#46585f] space-y-3">
-        <p>
-          Tato aplikace je kompletně připravena pro okamžité připojení k projektu Supabase. Stačí provést následující kroky:
-        </p>
-        <ol class="list-decimal list-inside space-y-2 bg-[#f1f7f8] p-3 rounded-lg border border-[#d5e3e5]">
-          <li>Zaregistrujte se nebo se přihlaste na webu <strong>supabase.com</strong> a vytvořte nový projekt (např. <em>hamr-volejbal</em>).</li>
-          <li>V levém menu klikněte na <strong>SQL Editor</strong> a vložte SQL skript ze záložky <em>Supabase Integrace & SQL</em>.</li>
-          <li>Klikněte na zelené tlačítko <strong>Run</strong> pro vytvoření tabulek <code class="font-mono">profiles</code>, <code class="font-mono">children</code>, <code class="font-mono">courses</code>, <code class="font-mono">enrollments</code> a <code class="font-mono">attendance</code>.</li>
-          <li>V <strong>Project Settings → API</strong> zkopírujte URL a anon klíč a vložte je do konstant <code class="font-mono">SUPABASE_URL</code> a <code class="font-mono">SUPABASE_KEY</code> v záhlaví skriptu.</li>
-        </ol>
-      </div>
-
-      <div class="flex justify-end gap-2 pt-2">
-        <button onclick="app.switchTab('supabase'); app.closeModal('modalSqlHelp');" class="px-4 py-2 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-xs font-semibold transition">
-          Přejít na detail SQL schématu
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Toast notifikace -->
+  <!-- Toast Container -->
   <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-  <!-- NotebookLM State Shim API Tag (povinné pro perzistenci stavu v iframe) -->
-  <api-shim></api-shim>
-
-  <!-- ========================================================================= -->
-  <!-- JAVASCRIPT: SUPABASE SDK V2 KLIENT & APLIKAČNÍ LOGIKA -->
-  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT APLIKACE -->
   <script>
-    // ============================================================================
-    // KONFIGURACE SUPABASE (Vložte své údaje ze Supabase Dashboardu)
-    // Project Settings -> API -> Project URL & anon/public API key
-    // ============================================================================
-    const SUPABASE_URL = 'https://tvuj-projekt.supabase.co'; // <--- ZDE VLOŽTE SUPABASE URL
-    const SUPABASE_KEY = 'tvuj-anon-public-api-klic';       // <--- ZDE VLOŽTE SUPABASE ANON KEY
-    // ============================================================================
-
-    // Detekce, zda uživatel nastavil reálnou Supabase URL nebo běží v demo/offline módu
-    const isSupabaseConfigured = Boolean(
-      SUPABASE_URL && 
-      !SUPABASE_URL.includes('tvuj-projekt') && 
-      !SUPABASE_URL.includes('YOUR_PROJECT') &&
-      SUPABASE_KEY && 
-      !SUPABASE_KEY.includes('tvuj-anon')
-    );
-
-    /**
-     * Třída SupabaseClient implementující Supabase JS SDK v2 rozhraní
-     * Zajišťuje plnohodnotné auth.signUp, auth.signInWithPassword, auth.signOut,
-     * a dotazy .from('table').select().insert().update().delete().eq().single()
-     */
-    class SupabaseJsClientV2 {
-      constructor(url, key) {
-        this.url = url;
-        this.key = key;
-        this.currentUser = null;
-        this.currentSession = null;
-      }
-
-      get auth() {
-        const self = this;
-        return {
-          async signUp({ email, password, options = {} }) {
-            const metadata = options.data || {};
-            if (isSupabaseConfigured) {
-              try {
-                const endpoint = `${self.url}/auth/v1/signup`;
-                const resp = await fetch(endpoint, {
-                  method: 'POST',
-                  headers: {
-                    'apikey': self.key,
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({
-                    email,
-                    password,
-                    data: metadata
-                  })
-                });
-                const resJson = await resp.json();
-                if (!resp.ok) return { data: null, error: resJson };
-                return { data: resJson, error: null };
-              } catch (err) {
-                console.warn('Supabase fetch failed, fallback to local store:', err);
-              }
-            }
-
-            // Fallback / Offline / Sandbox simulace
-            const userId = 'usr_' + Date.now().toString(36);
-            const user = {
-              id: userId,
-              email: email,
-              user_metadata: metadata,
-              created_at: new Date().toISOString()
-            };
-            // Vložíme do profilů s is_approved = false (vyžaduje schválení adminem dle zadání)
-            await appDb.insertProfile({
-              id: userId,
-              email: email,
-              full_name: metadata.full_name || email,
-              phone: metadata.phone || '',
-              role: metadata.role || 'parent',
-              is_approved: false,
-              created_at: new Date().toISOString()
-            });
-
-            return { data: { user, session: { access_token: 'mock_token_' + userId, user } }, error: null };
-          },
-
-          async signInWithPassword({ email, password }) {
-            if (isSupabaseConfigured) {
-              try {
-                const endpoint = `${self.url}/auth/v1/token?grant_type=password`;
-                const resp = await fetch(endpoint, {
-                  method: 'POST',
-                  headers: {
-                    'apikey': self.key,
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({ email, password })
-                });
-                const resJson = await resp.json();
-                if (!resp.ok) return { data: null, error: resJson };
-                self.currentUser = resJson.user;
-                self.currentSession = resJson;
-                return { data: resJson, error: null };
-              } catch (err) {
-                console.warn('Supabase auth network request failed, falling back:', err);
-              }
-            }
-
-            // Fallback / Sandbox ověření z lokální databáze profilů
-            const profiles = await appDb.getProfiles();
-            const found = profiles.find(p => p.email.toLowerCase() === email.toLowerCase());
-            if (!found) {
-              return { data: null, error: { message: 'Uživatel s tímto e-mailem nebyl nalezen.' } };
-            }
-            if (!found.is_approved) {
-              return { data: null, error: { message: 'Váš účet ještě nebyl schválen administrátorem Volejbalové školy.' } };
-            }
-
-            const user = {
-              id: found.id,
-              email: found.email,
-              user_metadata: { full_name: found.full_name, role: found.role, phone: found.phone }
-            };
-            self.currentUser = user;
-            self.currentSession = { access_token: 'mock_token_' + user.id, user };
-            return { data: { user, session: self.currentSession }, error: null };
-          },
-
-          async signOut() {
-            if (isSupabaseConfigured && self.currentSession) {
-              try {
-                const endpoint = `${self.url}/auth/v1/logout`;
-                await fetch(endpoint, {
-                  method: 'POST',
-                  headers: {
-                    'apikey': self.key,
-                    'Authorization': `Bearer ${self.currentSession.access_token}`
-                  }
-                });
-              } catch (e) {
-                // Tichý odchyt
-              }
-            }
-            self.currentUser = null;
-            self.currentSession = null;
-            return { error: null };
-          },
-
-          async getUser() {
-            return { data: { user: self.currentUser }, error: null };
-          },
-
-          async getSession() {
-            return { data: { session: self.currentSession }, error: null };
-          }
-        };
-      }
-
-      /**
-       * Supabase v2 Query Builder
-       */
-      from(tableName) {
-        const self = this;
-        let selectCols = '*';
-        let filters = [];
-        let orderCol = null;
-        let orderAsc = true;
-        let isSingle = false;
-        let limitVal = null;
-        let pendingInsert = null;
-        let pendingUpdate = null;
-        let pendingDelete = false;
-        let pendingUpsert = null;
-
-        const builder = {
-          select(cols = '*') {
-            selectCols = cols;
-            return builder;
-          },
-          eq(column, value) {
-            filters.push({ col: column, op: 'eq', val: value });
-            return builder;
-          },
-          neq(column, value) {
-            filters.push({ col: column, op: 'neq', val: value });
-            return builder;
-          },
-          order(column, { ascending = true } = {}) {
-            orderCol = column;
-            orderAsc = ascending;
-            return builder;
-          },
-          limit(count) {
-            limitVal = count;
-            return builder;
-          },
-          single() {
-            isSingle = true;
-            return builder;
-          },
-          insert(values) {
-            pendingInsert = Array.isArray(values) ? values : [values];
-            return builder;
-          },
-          update(values) {
-            pendingUpdate = values;
-            return builder;
-          },
-          upsert(values) {
-            pendingUpsert = Array.isArray(values) ? values : [values];
-            return builder;
-          },
-          delete() {
-            pendingDelete = true;
-            return builder;
-          },
-
-          // Asynchronní spuštění dotazu (Promise)
-          then(resolve, reject) {
-            return (async () => {
-              if (isSupabaseConfigured) {
-                try {
-                  let result = null;
-                  const token = self.currentSession ? self.currentSession.access_token : self.key;
-
-                  // 1. INSERT
-                  if (pendingInsert) {
-                    const endpoint = `${self.url}/rest/v1/${tableName}`;
-                    const res = await fetch(endpoint, {
-                      method: 'POST',
-                      headers: {
-                        'apikey': self.key,
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                        'Prefer': 'return=representation'
-                      },
-                      body: JSON.stringify(pendingInsert)
-                    });
-                    const data = await res.json();
-                    return { data, error: res.ok ? null : data };
-                  }
-
-                  // 2. UPDATE
-                  if (pendingUpdate) {
-                    let q = filters.map(f => `${encodeURIComponent(f.col)}=eq.${encodeURIComponent(f.val)}`).join('&');
-                    const endpoint = `${self.url}/rest/v1/${tableName}?${q}`;
-                    const res = await fetch(endpoint, {
-                      method: 'PATCH',
-                      headers: {
-                        'apikey': self.key,
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                        'Prefer': 'return=representation'
-                      },
-                      body: JSON.stringify(pendingUpdate)
-                    });
-                    const data = await res.json();
-                    return { data, error: res.ok ? null : data };
-                  }
-
-                  // 3. DELETE
-                  if (pendingDelete) {
-                    let q = filters.map(f => `${encodeURIComponent(f.col)}=eq.${encodeURIComponent(f.val)}`).join('&');
-                    const endpoint = `${self.url}/rest/v1/${tableName}?${q}`;
-                    const res = await fetch(endpoint, {
-                      method: 'DELETE',
-                      headers: {
-                        'apikey': self.key,
-                        'Authorization': `Bearer ${token}`
-                      }
-                    });
-                    return { data: null, error: res.ok ? null : await res.json() };
-                  }
-
-                  // 4. SELECT
-                  let params = [`select=${encodeURIComponent(selectCols)}`];
-                  filters.forEach(f => {
-                    params.push(`${encodeURIComponent(f.col)}=${f.op}.${encodeURIComponent(f.val)}`);
-                  });
-                  if (orderCol) {
-                    params.push(`order=${encodeURIComponent(orderCol)}.${orderAsc ? 'asc' : 'desc'}`);
-                  }
-                  if (limitVal) {
-                    params.push(`limit=${limitVal}`);
-                  }
-                  const endpoint = `${self.url}/rest/v1/${tableName}?${params.join('&')}`;
-                  const res = await fetch(endpoint, {
-                    method: 'GET',
-                    headers: {
-                      'apikey': self.key,
-                      'Authorization': `Bearer ${token}`
-                    }
-                  });
-                  let data = await res.json();
-                  if (!res.ok) return { data: null, error: data };
-                  if (isSingle) {
-                    data = Array.isArray(data) && data.length > 0 ? data[0] : null;
-                  }
-                  return { data, error: null };
-                } catch (netErr) {
-                  console.warn(`Supabase query on ${tableName} failed, falling back to appDb:`, netErr);
-                }
-              }
-
-              // Fallback / In-Memory Sandbox Databáze
-              try {
-                let tableData = await appDb.getTable(tableName);
-
-                // Insert
-                if (pendingInsert) {
-                  const newRows = pendingInsert.map(row => ({
-                    id: row.id || ('id_' + Math.random().toString(36).substring(2, 9)),
-                    created_at: new Date().toISOString(),
-                    ...row
-                  }));
-                  tableData.push(...newRows);
-                  await appDb.saveTable(tableName, tableData);
-                  return { data: newRows, error: null };
-                }
-
-                // Upsert
-                if (pendingUpsert) {
-                  for (const row of pendingUpsert) {
-                    const idx = tableData.findIndex(r => (row.id && r.id === row.id) || (row.course_id && r.course_id === row.course_id && row.child_id && r.child_id === row.child_id && row.date && r.date === row.date));
-                    if (idx >= 0) {
-                      tableData[idx] = { ...tableData[idx], ...row };
-                    } else {
-                      tableData.push({
-                        id: row.id || ('id_' + Math.random().toString(36).substring(2, 9)),
-                        created_at: new Date().toISOString(),
-                        ...row
-                      });
-                    }
-                  }
-                  await appDb.saveTable(tableName, tableData);
-                  return { data: pendingUpsert, error: null };
-                }
-
-                // Update
-                if (pendingUpdate) {
-                  let updatedRows = [];
-                  tableData = tableData.map(row => {
-                    const matches = filters.every(f => row[f.col] == f.val);
-                    if (matches) {
-                      const updated = { ...row, ...pendingUpdate };
-                      updatedRows.push(updated);
-                      return updated;
-                    }
-                    return row;
-                  });
-                  await appDb.saveTable(tableName, tableData);
-                  return { data: updatedRows, error: null };
-                }
-
-                // Delete
-                if (pendingDelete) {
-                  tableData = tableData.filter(row => !filters.every(f => row[f.col] == f.val));
-                  await appDb.saveTable(tableName, tableData);
-                  return { data: null, error: null };
-                }
-
-                // Select s filtry
-                let results = [...tableData];
-                filters.forEach(f => {
-                  if (f.op === 'eq') results = results.filter(r => r[f.col] == f.val);
-                  if (f.op === 'neq') results = results.filter(r => r[f.col] != f.val);
-                });
-
-                if (orderCol) {
-                  results.sort((a, b) => {
-                    if (a[orderCol] < b[orderCol]) return orderAsc ? -1 : 1;
-                    if (a[orderCol] > b[orderCol]) return orderAsc ? 1 : -1;
-                    return 0;
-                  });
-                }
-
-                if (limitVal) {
-                  results = results.slice(0, limitVal);
-                }
-
-                let finalData = results;
-                if (isSingle) {
-                  finalData = results.length > 0 ? results[0] : null;
-                }
-
-                return { data: finalData, error: null };
-              } catch (dbErr) {
-                return { data: null, error: { message: dbErr.message } };
-              }
-            })().then(resolve, reject);
-          }
-        };
-
-        return builder;
-      }
-    }
-
-    // Inicializace oficiálního klienta dle standardu Supabase SDK v2
-    const supabase = new SupabaseJsClientV2(SUPABASE_URL, SUPABASE_KEY);
-
-    // ============================================================================
-    // VÝCHOZÍ DATA A REAKTIVNÍ PERSISTENCE (notebookAppApi)
-    // ============================================================================
-    const DEFAULT_DATA = {
-      profiles: [
+    // VÝCHOZÍ DATA S ADMINISTRÁTOREM SINDELAR.VIT10@GMAIL.COM
+    const INITIAL_DATA = {
+      users: [
         {
           id: 'usr_admin',
-          email: 'admin@hamrsport.cz',
-          full_name: 'Mgr. Jan Dvořák (Správce školy)',
+          email: 'sindelar.vit10@gmail.com',
+          pass: '123456789',
+          name: 'Vít Šindelář (Správce)',
           phone: '+420 272 772 762',
           role: 'admin',
-          is_approved: true,
-          created_at: '2026-01-10T08:00:00Z'
+          is_approved: true
         },
         {
-          id: 'usr_coach_horak',
+          id: 'usr_coach',
           email: 'horak@hamrsport.cz',
-          full_name: 'Pavel Horák (Trenér)',
+          pass: '123456789',
+          name: 'Pavel Horák (Trenér)',
           phone: '+420 777 456 789',
           role: 'coach',
-          is_approved: true,
-          created_at: '2026-01-15T09:30:00Z'
+          is_approved: true
         },
         {
-          id: 'usr_parent_jana',
+          id: 'usr_parent',
           email: 'jana.novakova@seznam.cz',
-          full_name: 'Jana Nováková (Rodič)',
+          pass: '123456789',
+          name: 'Jana Nováková (Rodič)',
           phone: '+420 608 123 456',
           role: 'parent',
-          is_approved: true,
-          created_at: '2026-02-01T14:15:00Z'
-        },
-        {
-          id: 'usr_pending_petr',
-          email: 'petr.kucera@centrum.cz',
-          full_name: 'Petr Kučera (Nový rodič)',
-          phone: '+420 724 987 654',
-          role: 'parent',
-          is_approved: false, // Čeká na schválení adminem!
-          created_at: '2026-03-01T11:20:00Z'
-        },
-        {
-          id: 'usr_pending_coach_eva',
-          email: 'eva.cerna@email.cz',
-          full_name: 'Mgr. Eva Černá (Asistentka trenéra)',
-          phone: '+420 603 333 444',
-          role: 'coach',
-          is_approved: false, // Čeká na schválení adminem!
-          created_at: '2026-03-02T16:45:00Z'
+          is_approved: true
         }
       ],
       children: [
         {
           id: 'ch_matej',
-          parent_id: 'usr_parent_jana',
+          parent_id: 'usr_parent',
           first_name: 'Matěj',
           last_name: 'Novák',
           birth_date: '2017-05-14',
           category: 'Minivolejbal Žlutý (6–8 let)',
-          health_notes: 'Bez omezení, občasná alergie na pyl v červnu.',
-          created_at: '2026-02-02T10:00:00Z'
+          health_notes: 'Bez omezení.'
         },
         {
           id: 'ch_eliska',
-          parent_id: 'usr_parent_jana',
+          parent_id: 'usr_parent',
           first_name: 'Eliška',
           last_name: 'Nováková',
           birth_date: '2014-09-22',
           category: 'Minivolejbal Červený (10–12 let)',
-          health_notes: 'Lehká zátěžová dušnost při velké únavě, inhalátor v batohu.',
-          created_at: '2026-02-02T10:05:00Z'
-        },
-        {
-          id: 'ch_tomas',
-          parent_id: 'usr_pending_petr',
-          first_name: 'Tomáš',
-          last_name: 'Kučera',
-          birth_date: '2013-03-10',
-          category: 'Mladší žactvo U14 (12–14 let)',
-          health_notes: 'Zdravý, absolvoval sportovní prohlídku.',
-          created_at: '2026-03-01T11:25:00Z'
+          health_notes: 'Astma při zátěži.'
         }
       ],
       courses: [
         {
-          id: 'crs_mini_yellow',
+          id: 'crs_yellow',
           name: 'Minivolejbal – Žlutý (Přípravka)',
           category: 'minivolejbal',
           coach_name: 'Pavel Horák',
           day_of_week: 'Pondělí & Středa',
           time: '15:00 – 16:15',
-          location: 'HAMR Záběhlice - Hala 1 (Kurt 2)',
+          location: 'Hala 1 - Kurt 2',
           capacity: 16,
-          enrolled_count: 14,
           price_semester: '4 400 Kč',
-          description: 'Hravá volejbalová průprava pro nejmenší sportovce. Nácvik chytání a házení míče, koordinace a obratnosti.'
+          description: 'Hravá volejbalová průprava pro nejmenší sportovce. Nácvik chytání a házení míče.'
         },
         {
-          id: 'crs_mini_orange',
+          id: 'crs_orange',
           name: 'Minivolejbal – Oranžový',
           category: 'minivolejbal',
           coach_name: 'Pavel Horák',
           day_of_week: 'Úterý & Čtvrtek',
           time: '15:30 – 17:00',
-          location: 'HAMR Záběhlice - Hala 1 (Kurt 1)',
+          location: 'Hala 1 - Kurt 1',
           capacity: 14,
-          enrolled_count: 12,
           price_semester: '4 600 Kč',
-          description: 'Prstová a bagrová technika ve dvojicích, pohyb po kurtu, základy spodního podání.'
+          description: 'Prstová a bagrová technika ve dvojicích, pohyb po kurtu, spodní podání.'
         },
         {
-          id: 'crs_mini_red',
+          id: 'crs_red',
           name: 'Minivolejbal – Červený & Zelený',
           category: 'minivolejbal',
           coach_name: 'Pavel Horák',
           day_of_week: 'Pondělí & Středa',
           time: '16:15 – 17:45',
-          location: 'HAMR Záběhlice - Hala 2 (Kurt 3)',
+          location: 'Hala 2 - Kurt 3',
           capacity: 16,
-          enrolled_count: 15,
           price_semester: '4 800 Kč',
           description: 'Pravidelná soutěž v trojicích, vrchní podání, přechod ze zkráceného hřiště.'
         },
         {
-          id: 'crs_u14_youth',
+          id: 'crs_u14',
           name: 'Mladší žactvo U14 (Šestkový volejbal)',
           category: 'zactvo',
-          coach_name: 'Mgr. Jan Dvořák',
+          coach_name: 'Vít Šindelář',
           day_of_week: 'Úterý & Pátek',
           time: '16:30 – 18:00',
-          location: 'HAMR Záběhlice - Centrální hala',
+          location: 'Centrální hala',
           capacity: 18,
-          enrolled_count: 16,
           price_semester: '5 200 Kč',
-          description: 'Kompletní šestkový volejbal, nahrávka, útok ze zóny 4 a 2, blokování a obrana v poli.'
+          description: 'Kompletní šestkový volejbal, nahrávka, útok ze zóny 4 a 2, obrana v poli.'
         },
         {
-          id: 'crs_beach_academy',
+          id: 'crs_beach',
           name: 'Beachvolejbalová přípravka HAMR',
           category: 'beach',
           coach_name: 'Pavel Horák',
           day_of_week: 'Čtvrtek',
           time: '16:00 – 17:30',
-          location: 'HAMR Záběhlice - Beach kurty (v zimě nafukovací hala)',
+          location: 'Beach kurty Záběhlice',
           capacity: 12,
-          enrolled_count: 9,
           price_semester: '4 900 Kč',
-          description: 'Specializovaný trénink na písku pro rozvoj rychlosti, skokanské vytrvalosti a stability.'
+          description: 'Specializovaný trénink na písku pro rozvoj obratnosti a fyzické kondice.'
         }
       ],
       enrollments: [
         {
           id: 'enr_1',
           child_id: 'ch_matej',
-          course_id: 'crs_mini_yellow',
-          parent_id: 'usr_parent_jana',
-          status: 'confirmed', // confirmed | pending | rejected
-          enrolled_at: '2026-02-03T11:00:00Z',
-          payment_status: 'paid'
+          course_id: 'crs_yellow',
+          parent_id: 'usr_parent',
+          status: 'confirmed'
         },
         {
           id: 'enr_2',
           child_id: 'ch_eliska',
-          course_id: 'crs_mini_red',
-          parent_id: 'usr_parent_jana',
-          status: 'confirmed',
-          enrolled_at: '2026-02-03T11:05:00Z',
-          payment_status: 'paid'
-        },
-        {
-          id: 'enr_3',
-          child_id: 'ch_tomas',
-          course_id: 'crs_u14_youth',
-          parent_id: 'usr_pending_petr',
-          status: 'pending', // Čeká na schválení
-          enrolled_at: '2026-03-01T12:00:00Z',
-          payment_status: 'pending'
+          course_id: 'crs_red',
+          parent_id: 'usr_parent',
+          status: 'confirmed'
         }
       ],
       attendance: [
         {
           id: 'att_1',
-          course_id: 'crs_mini_yellow',
+          course_id: 'crs_yellow',
           child_id: 'ch_matej',
-          date: '2026-11-04',
-          status: 'present', // present | absent_excused | absent_unexcused
-          note: 'Aktivní přístup, výborný servis.',
-          marked_by: 'usr_coach_horak'
-        },
-        {
-          id: 'att_2',
-          course_id: 'crs_mini_red',
-          child_id: 'ch_eliska',
-          date: '2026-11-04',
+          date: new Date().toISOString().split('T')[0],
           status: 'present',
-          note: 'Trénink příjmu a nahrávky.',
-          marked_by: 'usr_coach_horak'
+          note: 'Výborný přístup na tréninku.'
+        }
+      ],
+      replacement_credits: [
+        {
+          id: 'cred_1',
+          parent_id: 'usr_parent',
+          child_id: 'ch_matej',
+          status: 'active',
+          granted_at: new Date().toISOString()
         }
       ]
     };
 
-    /**
-     * Třída pro perzistentní lokální stav s podporou window.notebookAppApi
-     */
-    class LocalStateStore {
+    // POZOR: POUŽÍVÁME LOCALSTORAGE S TRVALOU PERSISTENCÍ
+    class DataStore {
       constructor() {
-        this.data = JSON.parse(JSON.stringify(DEFAULT_DATA));
-      }
-
-      async init() {
-        if (window.notebookAppApi && typeof window.notebookAppApi.getAppState === 'function') {
+        const saved = localStorage.getItem('vsz_app_data');
+        if (saved) {
           try {
-            const saved = await window.notebookAppApi.getAppState();
-            if (saved && saved.hamr_volleyball_data) {
-              this.data = saved.hamr_volleyball_data;
-            }
-          } catch (e) {
-            console.warn('Nelze načíst stav z notebookAppApi:', e);
+            this.data = JSON.parse(saved);
+          } catch(e) {
+            this.data = JSON.parse(JSON.stringify(INITIAL_DATA));
           }
+        } else {
+          this.data = JSON.parse(JSON.stringify(INITIAL_DATA));
+          this.save();
         }
       }
 
-      async persist() {
-        if (window.notebookAppApi && typeof window.notebookAppApi.setAppState === 'function') {
-          try {
-            await window.notebookAppApi.setAppState({
-              hamr_volleyball_data: this.data
-            });
-          } catch (e) {
-            console.warn('Chyba při ukládání do notebookAppApi:', e);
-          }
-        }
-      }
-
-      async getTable(tableName) {
-        return this.data[tableName] || [];
-      }
-
-      async saveTable(tableName, rows) {
-        this.data[tableName] = rows;
-        await this.persist();
-      }
-
-      async getProfiles() {
-        return this.data.profiles;
-      }
-
-      async insertProfile(profile) {
-        this.data.profiles.push(profile);
-        await this.persist();
+      save() {
+        localStorage.setItem('vsz_app_data', JSON.stringify(this.data));
       }
     }
 
-    const appDb = new LocalStateStore();
+    const db = new DataStore();
 
-    // ============================================================================
-    // APLIKAČNÍ KONTROLER (UI, ROLOVÝ SYSTÉM, MODÁLY, SCHVALOVÁNÍ)
-    // ============================================================================
+    // APLIKAČNÍ OBJEKT
     const app = {
       currentUser: null,
       activeCategoryFilter: 'all',
       activeTab: 'courses',
 
-      async init() {
-        await appDb.init();
-
-        // Výchozí přihlášený uživatel pro rychlý start: Správce (Admin)
-        const profiles = await appDb.getProfiles();
-        this.currentUser = profiles.find(p => p.id === 'usr_admin') || null;
+      init() {
+        // Obnovení relace
+        const savedSession = sessionStorage.getItem('vsz_session_user');
+        if (savedSession) {
+          try {
+            const user = JSON.parse(savedSession);
+            // Ověření, že uživatel stále existuje v databázi
+            const freshUser = db.data.users.find(u => u.id === user.id);
+            if (freshUser && freshUser.is_approved) {
+              this.currentUser = freshUser;
+            }
+          } catch (e) {}
+        }
 
         this.renderUserNav();
         this.renderCourses();
         this.renderChildren();
         this.renderEnrollments();
+        this.renderReplacements();
         this.renderAdminPanel();
         this.setupAttendanceSelectors();
-        this.renderSqlScript();
 
-        // Aktualizace stavového odznaku Supabase
-        const statusBadge = document.getElementById('supabaseConfigInfo');
-        if (statusBadge) {
-          if (isSupabaseConfigured) {
-            statusBadge.textContent = 'Supabase: Připojeno (Live API v2)';
-          } else {
-            statusBadge.textContent = 'Supabase: Lokální perzistence (v2)';
-          }
-        }
-
-        // Inicializace ikonek Lucide
         if (window.lucide) {
           window.lucide.createIcons();
         }
-
-        // Notifikace pro hostitele sandoboxu
-        if (window.notebookAppApi && typeof window.notebookAppApi.notifyAppReady === 'function') {
-          window.notebookAppApi.notifyAppReady();
-        }
       },
 
-      // Přepínání záložek
+      renderUserNav() {
+        const userInfo = document.getElementById('userInfo');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const tabAdmin = document.getElementById('tabAdmin');
+        const adminCourseBtnContainer = document.getElementById('adminCourseBtnContainer');
+
+        if (this.currentUser) {
+          let roleLabel = 'Rodič';
+          let roleClass = 'bg-[#e3f1f3] text-[#0a5560]';
+          if (this.currentUser.role === 'admin') {
+            roleLabel = 'Správce / Admin';
+            roleClass = 'bg-[#fef3c7] text-[#92400e] font-bold';
+          } else if (this.currentUser.role === 'coach') {
+            roleLabel = 'Trenér';
+            roleClass = 'bg-[#dcfce7] text-[#166534] font-bold';
+          }
+
+          userInfo.innerHTML = `
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-[#1b2b33]">${this.currentUser.name}</span>
+              <span class="text-xs px-2.5 py-0.5 rounded-full ${roleClass}">${roleLabel}</span>
+            </div>
+          `;
+
+          logoutBtn.classList.remove('hidden');
+          loginBtn.classList.add('hidden');
+          registerBtn.classList.add('hidden');
+
+          if (this.currentUser.role === 'admin') {
+            tabAdmin.classList.remove('hidden');
+            if (adminCourseBtnContainer) {
+              adminCourseBtnContainer.innerHTML = `
+                <button onclick="app.openModal('modalAddCourse')" class="px-3.5 py-1.5 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-xs font-bold transition flex items-center gap-1.5 shadow">
+                  <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                  <span>+ Nový kurz</span>
+                </button>
+              `;
+            }
+          } else {
+            tabAdmin.classList.add('hidden');
+            if (adminCourseBtnContainer) adminCourseBtnContainer.innerHTML = '';
+          }
+        } else {
+          userInfo.textContent = '';
+          logoutBtn.classList.add('hidden');
+          loginBtn.classList.remove('hidden');
+          registerBtn.classList.remove('hidden');
+          tabAdmin.classList.add('hidden');
+          if (adminCourseBtnContainer) adminCourseBtnContainer.innerHTML = '';
+        }
+
+        if (window.lucide) window.lucide.createIcons();
+      },
+
       switchTab(tabId) {
         this.activeTab = tabId;
-        const tabs = ['courses', 'children', 'attendance', 'admin', 'supabase'];
+        const tabs = ['courses', 'children', 'replacements', 'attendance', 'admin'];
         tabs.forEach(t => {
           const btn = document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}`);
           const view = document.getElementById(`view${t.charAt(0).toUpperCase() + t.slice(1)}`);
@@ -1698,249 +1011,78 @@
           if (view) view.classList.toggle('hidden', t !== tabId);
         });
 
-        if (tabId === 'attendance') {
-          this.loadAttendanceSheet();
-        }
-        if (tabId === 'admin') {
-          this.renderAdminPanel();
-        }
+        if (tabId === 'attendance') this.loadAttendanceSheet();
+        if (tabId === 'replacements') this.renderReplacements();
+        if (tabId === 'admin') this.renderAdminPanel();
+
         if (window.lucide) window.lucide.createIcons();
       },
 
-      // Zobrazení a správa uživatele v navigaci (Source 1 excerpt fidelity)
-      renderUserNav() {
-        const userInfo = document.getElementById('userInfo');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const loginBtn = document.getElementById('loginBtn');
-        const btnNewCourseHeader = document.getElementById('btnNewCourseHeader');
-
-        if (this.currentUser) {
-          let roleName = 'Rodič';
-          let roleBadge = 'bg-[#e3f1f3] text-[#0a5560]';
-          if (this.currentUser.role === 'admin') {
-            roleName = 'Správce';
-            roleBadge = 'bg-[#d5e9ec] text-[#0f7c8a] font-bold';
-          } else if (this.currentUser.role === 'coach') {
-            roleName = 'Trenér';
-            roleBadge = 'bg-[#e3f1f3] text-[#1d5e3a] font-bold';
-          }
-
-          if (userInfo) {
-            userInfo.innerHTML = `
-              <div class="flex items-center gap-2">
-                <span class="font-medium text-[#1b2b33] text-sm">${this.currentUser.full_name}</span>
-                <span class="text-xs px-2 py-0.5 rounded-full ${roleBadge}">${roleName}</span>
-              </div>
-            `;
-          }
-          if (logoutBtn) logoutBtn.classList.remove('hidden');
-          if (loginBtn) loginBtn.classList.add('hidden');
-          if (btnNewCourseHeader && this.currentUser.role === 'admin') {
-            btnNewCourseHeader.classList.remove('hidden');
-            btnNewCourseHeader.classList.add('inline-flex');
-          } else if (btnNewCourseHeader) {
-            btnNewCourseHeader.classList.add('hidden');
-            btnNewCourseHeader.classList.remove('inline-flex');
-          }
-        } else {
-          if (userInfo) userInfo.textContent = '';
-          if (logoutBtn) logoutBtn.classList.add('hidden');
-          if (loginBtn) loginBtn.classList.remove('hidden');
-          if (btnNewCourseHeader) {
-            btnNewCourseHeader.classList.add('hidden');
-            btnNewCourseHeader.classList.remove('inline-flex');
-          }
-        }
-        if (window.lucide) window.lucide.createIcons();
-      },
-
-      // Rychlé přihlášení pro demo a testování
-      async quickLogin(role) {
-        if (role === 'guest') {
-          await supabase.auth.signOut();
-          this.currentUser = null;
-          this.showToast('Odhlášeno (návštěvnický režim).', 'info');
-        } else {
-          const profiles = await appDb.getProfiles();
-          let target = null;
-          if (role === 'admin') target = profiles.find(p => p.role === 'admin');
-          if (role === 'coach') target = profiles.find(p => p.role === 'coach' && p.is_approved);
-          if (role === 'parent') target = profiles.find(p => p.role === 'parent' && p.is_approved);
-
-          if (target) {
-            this.currentUser = target;
-            supabase.currentUser = {
-              id: target.id,
-              email: target.email,
-              user_metadata: { full_name: target.full_name, role: target.role }
-            };
-            this.showToast(`Přihlášen jako: ${target.full_name} (${target.role})`, 'success');
-          }
-        }
-        this.renderUserNav();
-        this.renderChildren();
-        this.renderEnrollments();
-        this.renderAdminPanel();
-        this.setupAttendanceSelectors();
-      },
-
-      // Odhlášení uživatele (přes Supabase SDK auth.signOut)
-      async logout() {
-        const { error } = await supabase.auth.signOut();
-        if (!error) {
-          this.currentUser = null;
-          this.renderUserNav();
-          this.renderChildren();
-          this.renderEnrollments();
-          this.showToast('Byli jste úspěšně odhlášeni.', 'info');
-        }
-      },
-
-      // Přihlášení přes formulář (Supabase signInWithPassword)
-      async handleLogin(event) {
-        event.preventDefault();
-        const email = document.getElementById('loginEmail').value.trim();
-        const password = document.getElementById('loginPassword').value;
-        const errEl = document.getElementById('loginError');
-        if (errEl) errEl.classList.add('hidden');
-
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) {
-          if (errEl) {
-            errEl.textContent = error.message || 'Chyba přihlášení.';
-            errEl.classList.remove('hidden');
-          }
-          return;
-        }
-
-        // Dotaz na profil ze Supabase tabulky 'profiles'
-        const { data: profile } = await supabase.from('profiles').select('*').eq('id', data.user.id).single();
-        this.currentUser = profile || {
-          id: data.user.id,
-          email: data.user.email,
-          full_name: data.user.user_metadata?.full_name || data.user.email,
-          role: data.user.user_metadata?.role || 'parent',
-          is_approved: true
-        };
-
-        this.closeModal('modalLogin');
-        this.renderUserNav();
-        this.renderChildren();
-        this.renderEnrollments();
-        this.showToast(`Vítejte, ${this.currentUser.full_name}!`, 'success');
-      },
-
-      // Registrace nového uživatele (Supabase signUp s profilem a schválením)
-      async handleRegister(event) {
-        event.preventDefault();
-        const fullName = document.getElementById('regFullName').value.trim();
-        const email = document.getElementById('regEmail').value.trim();
-        const phone = document.getElementById('regPhone').value.trim();
-        const role = document.getElementById('regRole').value;
-        const password = document.getElementById('regPassword').value;
-        const errEl = document.getElementById('regError');
-        if (errEl) errEl.classList.add('hidden');
-
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { full_name: fullName, phone, role }
-          }
-        });
-
-        if (error) {
-          if (errEl) {
-            errEl.textContent = error.message || 'Registrace se nezdařila.';
-            errEl.classList.remove('hidden');
-          }
-          return;
-        }
-
-        this.closeModal('modalRegister');
-        this.showToast('Registrace odeslána! Administrátor školy musí váš účet nejprve schválit.', 'warning');
-        this.renderAdminPanel();
-      },
-
-      // Filtrování kurzů
-      filterCourses(category) {
-        this.activeCategoryFilter = category;
+      filterCourses(cat) {
+        this.activeCategoryFilter = cat;
         document.querySelectorAll('.course-filter-btn').forEach(btn => {
-          btn.classList.remove('bg-[#0f7c8a]', 'text-white');
-          btn.classList.add('bg-[#f1f7f8]', 'text-[#46585f]');
+          const isMatch = (cat === 'all' && btn.textContent.includes('Všechny')) ||
+                          (cat === 'minivolejbal' && btn.textContent.includes('Minivolejbal')) ||
+                          (cat === 'zactvo' && btn.textContent.includes('Žactvo')) ||
+                          (cat === 'beach' && btn.textContent.includes('Beachvolejbal'));
+          btn.classList.toggle('bg-[#0f7c8a]', isMatch);
+          btn.classList.toggle('text-white', isMatch);
+          btn.classList.toggle('bg-[#f1f7f8]', !isMatch);
+          btn.classList.toggle('text-[#46585f]', !isMatch);
         });
-        const activeBtn = event ? event.target : null;
-        if (activeBtn) {
-          activeBtn.classList.add('bg-[#0f7c8a]', 'text-white');
-          activeBtn.classList.remove('bg-[#f1f7f8]', 'text-[#46585f]');
-        }
         this.renderCourses();
       },
 
-      // Vykreslení kurzů (asynchronní Supabase dotaz: supabase.from('courses').select('*'))
-      async renderCourses() {
-        const container = document.getElementById('coursesList');
-        if (!container) return;
+      renderCourses() {
+        const grid = document.getElementById('coursesGrid');
+        if (!grid) return;
 
-        const { data: courses, error } = await supabase.from('courses').select('*');
-        if (error || !courses) {
-          container.innerHTML = `<div class="p-6 text-sm text-[#b3261e]">Chyba při načítání kurzů: ${error?.message}</div>`;
-          return;
-        }
-
-        let filtered = courses;
+        let filtered = db.data.courses;
         if (this.activeCategoryFilter !== 'all') {
-          filtered = courses.filter(c => c.category === this.activeCategoryFilter);
+          filtered = filtered.filter(c => c.category === this.activeCategoryFilter);
         }
 
-        container.innerHTML = filtered.map(course => {
-          const capPercent = Math.min(100, Math.round((course.enrolled_count / course.capacity) * 100));
-          const isFull = course.enrolled_count >= course.capacity;
+        grid.innerHTML = filtered.map(c => {
+          const enrolledCount = db.data.enrollments.filter(e => e.course_id === c.id && e.status === 'confirmed').length;
+          const spotsLeft = c.capacity - enrolledCount;
 
           return `
-            <div class="vitals-card p-5 flex flex-col justify-between">
-              <div class="status-accent-bar ${isFull ? 'bar-amber' : ''}"></div>
-              
-              <div class="space-y-3">
-                <div class="flex items-start justify-between gap-2">
-                  <span class="font-label text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#e3f1f3] text-[#0a5560]">
-                    ${course.category === 'minivolejbal' ? 'Minivolejbal' : (course.category === 'zactvo' ? 'Žactvo U14/U16' : 'Beachvolejbal')}
+            <div class="card-vitals p-5 space-y-4 flex flex-col justify-between">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold uppercase tracking-wider text-[#0f7c8a] bg-[#e3f1f3] px-2.5 py-1 rounded-md">
+                    ${c.category.toUpperCase()}
                   </span>
-                  <span class="text-sm font-bold text-[#0f7c8a]">${course.price_semester}</span>
+                  <span class="text-xs font-bold ${spotsLeft > 0 ? 'text-[#2e7d4f]' : 'text-[#b3261e]'}">
+                    ${spotsLeft > 0 ? `Volná místa: ${spotsLeft}/${c.capacity}` : 'Obsazeno'}
+                  </span>
                 </div>
+                <h3 class="text-lg font-extrabold text-[#1b2b33] leading-snug">${c.name}</h3>
+                <p class="text-xs text-[#46585f] leading-relaxed">${c.description}</p>
+              </div>
 
-                <div>
-                  <h3 class="text-base font-bold text-[#1b2b33] leading-snug">${course.name}</h3>
-                  <p class="text-xs text-[#46585f] mt-1 line-clamp-2">${course.description}</p>
+              <div class="space-y-2 border-t border-[#d5e3e5] pt-3 text-xs text-[#46585f]">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="clock" class="w-4 h-4 text-[#0f7c8a]"></i>
+                  <span class="font-semibold text-[#1b2b33]">${c.day_of_week} (${c.time})</span>
                 </div>
-
-                <div class="space-y-1.5 text-xs text-[#46585f] pt-2 border-t border-[#d5e3e5]">
-                  <div class="flex items-center gap-1.5">
-                    <i data-lucide="user" class="w-3.5 h-3.5 text-[#0f7c8a]"></i>
-                    <span>Trenér: <strong class="text-[#1b2b33]">${course.coach_name}</strong></span>
-                  </div>
-                  <div class="flex items-center gap-1.5">
-                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-[#0f7c8a]"></i>
-                    <span>${course.day_of_week} • ${course.time}</span>
-                  </div>
-                  <div class="flex items-center gap-1.5">
-                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-[#0f7c8a]"></i>
-                    <span>${course.location}</span>
-                  </div>
+                <div class="flex items-center gap-2">
+                  <i data-lucide="user" class="w-4 h-4 text-[#0f7c8a]"></i>
+                  <span>Trenér: <strong>${c.coach_name}</strong></span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i data-lucide="map-pin" class="w-4 h-4 text-[#0f7c8a]"></i>
+                  <span>${c.location}</span>
+                </div>
+                <div class="flex items-center gap-2 font-bold text-[#1b2b33]">
+                  <i data-lucide="tag" class="w-4 h-4 text-[#0f7c8a]"></i>
+                  <span>${c.price_semester} / pololetí</span>
                 </div>
               </div>
 
-              <div class="mt-4 pt-3 border-t border-[#d5e3e5] space-y-2">
-                <div class="flex justify-between items-center text-xs">
-                  <span class="text-[#46585f]">Obsazenost kurzu:</span>
-                  <span class="font-semibold text-[#1b2b33]">${course.enrolled_count} / ${course.capacity} dětí</span>
-                </div>
-                <div class="w-full bg-[#f1f7f8] rounded-full h-1.5 overflow-hidden">
-                  <div class="bg-[#0f7c8a] h-1.5 rounded-full" style="width: ${capPercent}%"></div>
-                </div>
-
-                <button onclick="app.openEnrollModal('${course.id}', '${course.name.replace(/'/g, "\\'")}')" class="w-full mt-2 py-2 px-3 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition">
-                  <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
+              <div class="pt-2">
+                <button onclick="app.openEnrollModal('${c.id}')" class="w-full py-2.5 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-xs font-bold transition shadow flex items-center justify-center gap-2">
+                  <i data-lucide="check-square" class="w-4 h-4"></i>
                   <span>Přihlásit dítě do kurzu</span>
                 </button>
               </div>
@@ -1951,24 +1093,564 @@
         if (window.lucide) window.lucide.createIcons();
       },
 
-      // Přidání nového kurzu do Supabase (Admin)
-      openAddCourseModal() {
-        this.openModal('modalAddCourse');
+      renderChildren() {
+        const grid = document.getElementById('childrenGrid');
+        if (!grid) return;
+
+        if (!this.currentUser) {
+          grid.innerHTML = `
+            <div class="col-span-2 bg-white p-6 rounded-xl border border-[#d5e3e5] text-center space-y-3">
+              <p class="text-sm text-[#46585f]">Pro zobrazení a správu vašich dětí se musíte přihlásit.</p>
+              <button onclick="app.openModal('modalLogin')" class="px-4 py-2 rounded-lg bg-[#0f7c8a] text-white text-xs font-bold">Přihlásit se</button>
+            </div>
+          `;
+          return;
+        }
+
+        const myKids = db.data.children.filter(c => c.parent_id === this.currentUser.id);
+        if (myKids.length === 0) {
+          grid.innerHTML = `
+            <div class="col-span-2 bg-white p-6 rounded-xl border border-[#d5e3e5] text-center space-y-3">
+              <p class="text-sm text-[#46585f]">Zatím nemáte v evidenci žádné dítě.</p>
+              <button onclick="app.openModal('modalAddChild')" class="px-4 py-2 rounded-lg bg-[#0f7c8a] text-white text-xs font-bold">+ Přidat dítě</button>
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = myKids.map(k => {
+          const age = this.calculateAge(k.birth_date);
+          return `
+            <div class="card-vitals p-5 space-y-3">
+              <div class="flex items-center justify-between">
+                <h3 class="font-extrabold text-base text-[#1b2b33]">${k.first_name} ${k.last_name}</h3>
+                <span class="bg-[#e3f1f3] text-[#0a5560] text-xs font-bold px-2.5 py-1 rounded-full">${age} let</span>
+              </div>
+              <p class="text-xs text-[#46585f]">Datum narození: <strong>${k.birth_date}</strong></p>
+              <p class="text-xs text-[#46585f]">Doporučená kategorie: <strong>${k.category}</strong></p>
+              <p class="text-xs text-[#46585f]">Zdravotní stav: <em>${k.health_notes || 'Bez omezení'}</em></p>
+            </div>
+          `;
+        }).join('');
       },
 
-      async handleAddCourse(event) {
-        event.preventDefault();
+      calculateAge(birthDateStr) {
+        const birthDate = new Date(birthDateStr);
+        const diff = Date.now() - birthDate.getTime();
+        const ageDate = new Date(diff);
+        return Math.abs(ageDate.getUTCFullYear() - 1970);
+      },
+
+      renderEnrollments() {
+        const table = document.getElementById('parentEnrollmentsTable');
+        if (!table) return;
+
+        if (!this.currentUser) {
+          table.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-xs text-[#46585f]">Přihlaste se pro zobrazení vašich přihlášek.</td></tr>`;
+          return;
+        }
+
+        const myKidsIds = db.data.children.filter(c => c.parent_id === this.currentUser.id).map(c => c.id);
+        const myEnrollments = db.data.enrollments.filter(e => myKidsIds.includes(e.child_id));
+
+        if (myEnrollments.length === 0) {
+          table.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-xs text-[#46585f]">Zatím nemáte podanou žádnou přihlášku.</td></tr>`;
+          return;
+        }
+
+        table.innerHTML = myEnrollments.map(e => {
+          const child = db.data.children.find(c => c.id === e.child_id);
+          const course = db.data.courses.find(c => c.id === e.course_id);
+
+          let statusBadge = `<span class="bg-[#fef3c7] text-[#92400e] text-xs font-bold px-2.5 py-1 rounded-full">Čeká na schválení</span>`;
+          if (e.status === 'confirmed') {
+            statusBadge = `<span class="bg-[#dcfce7] text-[#166534] text-xs font-bold px-2.5 py-1 rounded-full">Schváleno</span>`;
+          } else if (e.status === 'rejected') {
+            statusBadge = `<span class="bg-[#fee2e2] text-[#991b1b] text-xs font-bold px-2.5 py-1 rounded-full">Zamítnuto</span>`;
+          }
+
+          return `
+            <tr>
+              <td class="py-3 px-4 font-bold text-[#1b2b33]">${child ? child.first_name + ' ' + child.last_name : 'Dítě'}</td>
+              <td class="py-3 px-4 font-semibold text-[#0f7c8a]">${course ? course.name : 'Kurz'}</td>
+              <td class="py-3 px-4 text-xs text-[#46585f]">${course ? course.day_of_week + ' (' + course.time + ')' : ''}</td>
+              <td class="py-3 px-4 text-xs font-bold text-[#1b2b33]">${course ? course.price_semester : ''}</td>
+              <td class="py-3 px-4">${statusBadge}</td>
+              <td class="py-3 px-4 text-right">
+                <button onclick="app.cancelEnrollment('${e.id}')" class="text-xs text-[#b3261e] font-bold hover:underline">Zrušit</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      },
+
+      renderReplacements() {
+        const badge = document.getElementById('creditsCountText');
+        const upcomingList = document.getElementById('upcomingLessonsList');
+        const availableList = document.getElementById('availableMakeupsList');
+
+        if (!this.currentUser) {
+          if (badge) badge.textContent = 'Aktivní kredity: 0';
+          if (upcomingList) upcomingList.innerHTML = '<p class="text-xs text-[#46585f]">Přihlaste se pro omluvy z tréninků.</p>';
+          if (availableList) availableList.innerHTML = '<p class="text-xs text-[#46585f]">Přihlaste se pro náhradní tréninky.</p>';
+          return;
+        }
+
+        const credits = db.data.replacement_credits.filter(c => c.parent_id === this.currentUser.id && c.status === 'active');
+        if (badge) badge.textContent = `Aktivní kredity: ${credits.length}`;
+
+        // Nadcházející tréninky
+        const myKids = db.data.children.filter(c => c.parent_id === this.currentUser.id);
+        const myEnrollments = db.data.enrollments.filter(e => myKids.some(k => k.id === e.child_id) && e.status === 'confirmed');
+
+        if (myEnrollments.length === 0) {
+          if (upcomingList) upcomingList.innerHTML = '<p class="text-xs text-[#46585f]">Vaše děti nemají žádné potvrzené kurzy.</p>';
+        } else {
+          if (upcomingList) {
+            upcomingList.innerHTML = myEnrollments.map(e => {
+              const child = myKids.find(k => k.id === e.child_id);
+              const course = db.data.courses.find(c => c.id === e.course_id);
+              return `
+                <div class="p-3 rounded-lg border border-[#d5e3e5] bg-[#f1f7f8] flex items-center justify-between">
+                  <div>
+                    <p class="font-bold text-xs text-[#1b2b33]">${child ? child.first_name : ''} — ${course ? course.name : ''}</p>
+                    <p class="text-xs text-[#46585f]">${course ? course.day_of_week + ' (' + course.time + ')' : ''}</p>
+                  </div>
+                  <button onclick="app.excuseFromLesson('${e.child_id}', '${e.course_id}')" class="px-3 py-1.5 rounded bg-[#b3261e] hover:bg-[#911d17] text-white text-xs font-bold transition">
+                    Omluvit (>12h)
+                  </button>
+                </div>
+              `;
+            }).join('');
+          }
+        }
+
+        // Náhradní termíny
+        if (availableList) {
+          if (credits.length === 0) {
+            availableList.innerHTML = '<p class="text-xs text-[#46585f]">Nemáte žádné aktivní náhradové kredity.</p>';
+          } else {
+            availableList.innerHTML = db.data.courses.map(c => `
+              <div class="p-3 rounded-lg border border-[#d5e3e5] bg-white flex items-center justify-between">
+                <div>
+                  <p class="font-bold text-xs text-[#1b2b33]">${c.name}</p>
+                  <p class="text-xs text-[#46585f]">${c.day_of_week} (${c.time}) • ${c.location}</p>
+                </div>
+                <button onclick="app.useCreditForMakeup('${c.id}')" class="px-3 py-1.5 rounded bg-[#2e7d4f] hover:bg-[#256841] text-white text-xs font-bold transition">
+                  Rezervovat náhradu
+                </button>
+              </div>
+            `).join('');
+          }
+        }
+      },
+
+      excuseFromLesson(childId, courseId) {
+        if (!confirm('Opravdu chcete dítě omluvit z tréninku? Včasná omluva vygeneruje 1 náhradový kredit.')) return;
+
+        db.data.replacement_credits.push({
+          id: 'cred_' + Date.now(),
+          parent_id: this.currentUser.id,
+          child_id: childId,
+          status: 'active',
+          granted_at: new Date().toISOString()
+        });
+        db.save();
+
+        this.showToast('Dítě bylo včas omluveno. Náhradový kredit byl připsán na váš účet.', 'success');
+        this.renderReplacements();
+      },
+
+      useCreditForMakeup(courseId) {
+        const credits = db.data.replacement_credits.filter(c => c.parent_id === this.currentUser.id && c.status === 'active');
+        if (credits.length === 0) {
+          this.showToast('Nemáte žádné volné náhradové kredity.', 'warning');
+          return;
+        }
+
+        credits[0].status = 'used';
+        db.save();
+
+        const course = db.data.courses.find(c => c.id === courseId);
+        this.showToast(`Náhradní trénink v kurzu "${course ? course.name : ''}" byl úspěšně rezervován!`, 'success');
+        this.renderReplacements();
+      },
+
+      setupAttendanceSelectors() {
+        const select = document.getElementById('attendanceCourseSelect');
+        const dateInput = document.getElementById('attendanceDateInput');
+
+        if (select) {
+          select.innerHTML = db.data.courses.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+        }
+        if (dateInput && !dateInput.value) {
+          dateInput.value = new Date().toISOString().split('T')[0];
+        }
+
+        this.loadAttendanceSheet();
+      },
+
+      loadAttendanceSheet() {
+        const select = document.getElementById('attendanceCourseSelect');
+        const dateInput = document.getElementById('attendanceDateInput');
+        const tbody = document.getElementById('attendanceTableBody');
+        if (!select || !tbody) return;
+
+        const courseId = select.value;
+        const date = dateInput ? dateInput.value : new Date().toISOString().split('T')[0];
+
+        const enrollments = db.data.enrollments.filter(e => e.course_id === courseId && e.status === 'confirmed');
+        if (enrollments.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-xs text-[#46585f]">V tomto kurzu zatím nejsou žádné schválené děti.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = enrollments.map(e => {
+          const child = db.data.children.find(c => c.id === e.child_id);
+          const att = db.data.attendance.find(a => a.course_id === courseId && a.child_id === e.child_id && a.date === date);
+          const status = att ? att.status : 'present';
+          const note = att ? att.note : '';
+
+          return `
+            <tr>
+              <td class="py-3 px-4 font-bold text-[#1b2b33]">${child ? child.first_name + ' ' + child.last_name : ''}</td>
+              <td class="py-3 px-4 text-xs text-[#46585f]">${child ? child.category : ''}</td>
+              <td class="py-3 px-4">
+                <select id="att_status_${e.child_id}" class="text-xs bg-white border border-[#7b9198] rounded px-2 py-1 font-bold">
+                  <option value="present" ${status === 'present' ? 'selected' : ''}>Přítomen / Přítomna</option>
+                  <option value="absent_excused" ${status === 'absent_excused' ? 'selected' : ''}>Omluven / Omluvena</option>
+                  <option value="absent_unexcused" ${status === 'absent_unexcused' ? 'selected' : ''}>Neomluven / Neomluvena</option>
+                </select>
+              </td>
+              <td class="py-3 px-4">
+                <input type="text" id="att_note_${e.child_id}" value="${note}" placeholder="Poznámka..." class="text-xs bg-white border border-[#7b9198] rounded px-2 py-1 w-full">
+              </td>
+            </tr>
+          `;
+        }).join('');
+      },
+
+      saveAttendance() {
+        const select = document.getElementById('attendanceCourseSelect');
+        const dateInput = document.getElementById('attendanceDateInput');
+        if (!select || !dateInput) return;
+
+        const courseId = select.value;
+        const date = dateInput.value;
+
+        const enrollments = db.data.enrollments.filter(e => e.course_id === courseId && e.status === 'confirmed');
+        enrollments.forEach(e => {
+          const statusElem = document.getElementById(`att_status_${e.child_id}`);
+          const noteElem = document.getElementById(`att_note_${e.child_id}`);
+          if (statusElem) {
+            const idx = db.data.attendance.findIndex(a => a.course_id === courseId && a.child_id === e.child_id && a.date === date);
+            const record = {
+              id: idx >= 0 ? db.data.attendance[idx].id : 'att_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+              course_id: courseId,
+              child_id: e.child_id,
+              date: date,
+              status: statusElem.value,
+              note: noteElem ? noteElem.value : ''
+            };
+            if (idx >= 0) db.data.attendance[idx] = record;
+            else db.data.attendance.push(record);
+          }
+        });
+
+        db.save();
+        this.showToast('Docházka byla úspěšně uložena.', 'success');
+      },
+
+      renderAdminPanel() {
+        if (!this.currentUser || this.currentUser.role !== 'admin') return;
+
+        // Pending uživatelé
+        const pendingUsers = db.data.users.filter(u => !u.is_approved);
+        const pendingCountElem = document.getElementById('pendingUsersCount');
+        if (pendingCountElem) pendingCountElem.textContent = pendingUsers.length;
+
+        const pendingUsersTable = document.getElementById('pendingUsersTable');
+        if (pendingUsersTable) {
+          if (pendingUsers.length === 0) {
+            pendingUsersTable.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-xs text-[#46585f]">Žádné nové žádosti o účet.</td></tr>`;
+          } else {
+            pendingUsersTable.innerHTML = pendingUsers.map(u => `
+              <tr>
+                <td class="py-3 px-4 font-bold text-[#1b2b33]">${u.name}</td>
+                <td class="py-3 px-4 text-xs text-[#46585f]">${u.email}</td>
+                <td class="py-3 px-4 text-xs text-[#46585f]">${u.phone || ''}</td>
+                <td class="py-3 px-4 text-xs font-bold text-[#0f7c8a]">${u.role === 'coach' ? 'Trenér' : 'Rodič'}</td>
+                <td class="py-3 px-4 text-right space-x-2">
+                  <button onclick="app.approveUser('${u.id}')" class="px-3 py-1 rounded bg-[#2e7d4f] text-white text-xs font-bold">Schválit</button>
+                  <button onclick="app.rejectUser('${u.id}')" class="px-3 py-1 rounded bg-[#b3261e] text-white text-xs font-bold">Zamítnout</button>
+                </td>
+              </tr>
+            `).join('');
+          }
+        }
+
+        // Pending přihlášky
+        const adminEnrollmentsTable = document.getElementById('adminEnrollmentsTable');
+        if (adminEnrollmentsTable) {
+          const pendingEnr = db.data.enrollments.filter(e => e.status === 'pending');
+          if (pendingEnr.length === 0) {
+            adminEnrollmentsTable.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-xs text-[#46585f]">Žádné nové přihlášky do kurzů.</td></tr>`;
+          } else {
+            adminEnrollmentsTable.innerHTML = pendingEnr.map(e => {
+              const child = db.data.children.find(c => c.id === e.child_id);
+              const parent = db.data.users.find(u => u.id === e.parent_id);
+              const course = db.data.courses.find(c => c.id === e.course_id);
+              return `
+                <tr>
+                  <td class="py-3 px-4 font-bold text-[#1b2b33]">${child ? child.first_name + ' ' + child.last_name : ''}</td>
+                  <td class="py-3 px-4 text-xs text-[#46585f]">${parent ? parent.name : ''}</td>
+                  <td class="py-3 px-4 font-semibold text-[#0f7c8a]">${course ? course.name : ''}</td>
+                  <td class="py-3 px-4 text-xs text-[#b86e00] font-bold">Čeká na schválení</td>
+                  <td class="py-3 px-4 text-right space-x-2">
+                    <button onclick="app.approveEnrollment('${e.id}')" class="px-3 py-1 rounded bg-[#2e7d4f] text-white text-xs font-bold">Potvrdit</button>
+                    <button onclick="app.rejectEnrollment('${e.id}')" class="px-3 py-1 rounded bg-[#b3261e] text-white text-xs font-bold">Odmítnout</button>
+                  </td>
+                </tr>
+              `;
+            }).join('');
+          }
+        }
+
+        // Seznam kurzů pro Admina
+        const adminCoursesTable = document.getElementById('adminCoursesTable');
+        if (adminCoursesTable) {
+          adminCoursesTable.innerHTML = db.data.courses.map(c => `
+            <tr>
+              <td class="py-3 px-4 font-bold text-[#1b2b33]">${c.name}</td>
+              <td class="py-3 px-4 text-xs text-[#46585f]">${c.coach_name}</td>
+              <td class="py-3 px-4 text-xs text-[#46585f]">${c.day_of_week} (${c.time})</td>
+              <td class="py-3 px-4 text-xs font-bold text-[#1b2b33]">${c.capacity} dětí</td>
+              <td class="py-3 px-4 text-xs text-[#46585f]">${c.location}</td>
+              <td class="py-3 px-4 text-right">
+                <button onclick="app.deleteCourse('${c.id}')" class="text-xs text-[#b3261e] font-bold hover:underline">Smazat</button>
+              </td>
+            </tr>
+          `).join('');
+        }
+      },
+
+      approveUser(userId) {
+        const u = db.data.users.find(x => x.id === userId);
+        if (u) {
+          u.is_approved = true;
+          db.save();
+          this.showToast(`Účet uživatele ${u.name} byl schválen!`, 'success');
+          this.renderAdminPanel();
+        }
+      },
+
+      rejectUser(userId) {
+        db.data.users = db.data.users.filter(x => x.id !== userId);
+        db.save();
+        this.showToast('Žádost o registrace byla zamítnuta.', 'info');
+        this.renderAdminPanel();
+      },
+
+      approveEnrollment(enrId) {
+        const e = db.data.enrollments.find(x => x.id === enrId);
+        if (e) {
+          e.status = 'confirmed';
+          db.save();
+          this.showToast('Přihláška dítěte byla potvrzena!', 'success');
+          this.renderAdminPanel();
+          this.renderEnrollments();
+        }
+      },
+
+      rejectEnrollment(enrId) {
+        const e = db.data.enrollments.find(x => x.id === enrId);
+        if (e) {
+          e.status = 'rejected';
+          db.save();
+          this.showToast('Přihláška byla zamítnuta.', 'info');
+          this.renderAdminPanel();
+          this.renderEnrollments();
+        }
+      },
+
+      deleteCourse(courseId) {
+        if (!confirm('Opravdu chcete tento kurz smazat?')) return;
+        db.data.courses = db.data.courses.filter(c => c.id !== courseId);
+        db.save();
+        this.showToast('Kurz byl smazán.', 'info');
+        this.renderCourses();
+        this.renderAdminPanel();
+      },
+
+      handleLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value.trim();
+        const pass = document.getElementById('loginPassword').value.trim();
+        const errDiv = document.getElementById('loginError');
+
+        const found = db.data.users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.pass === pass);
+        if (!found) {
+          errDiv.textContent = 'Nesprávný e-mail nebo heslo.';
+          errDiv.classList.remove('hidden');
+          return;
+        }
+
+        if (!found.is_approved) {
+          errDiv.textContent = 'Váš účet stále čeká na schválení administrátorem.';
+          errDiv.classList.remove('hidden');
+          return;
+        }
+
+        errDiv.classList.add('hidden');
+        this.currentUser = found;
+        sessionStorage.setItem('vsz_session_user', JSON.stringify(found));
+
+        this.closeModal('modalLogin');
+        this.renderUserNav();
+        this.renderChildren();
+        this.renderEnrollments();
+        this.renderReplacements();
+
+        this.showToast(`Vítejte zpět, ${found.name}!`, 'success');
+      },
+
+      handleRegister(e) {
+        e.preventDefault();
+        const name = document.getElementById('regFullName').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const phone = document.getElementById('regPhone').value.trim();
+        const role = document.getElementById('regRole').value;
+        const pass = document.getElementById('regPassword').value.trim();
+        const errDiv = document.getElementById('regError');
+
+        if (db.data.users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+          errDiv.textContent = 'Uživatel s tímto e-mailem již existuje.';
+          errDiv.classList.remove('hidden');
+          return;
+        }
+
+        const newUser = {
+          id: 'usr_' + Date.now(),
+          email,
+          pass,
+          name,
+          phone,
+          role,
+          is_approved: false
+        };
+
+        db.data.users.push(newUser);
+        db.save();
+
+        errDiv.classList.add('hidden');
+        this.closeModal('modalRegister');
+        alert('Registrace proběhla úspěšně!\n\nVáš účet nyní čeká na schválení administrátorem. Po schválení se budete moci přihlásit.');
+      },
+
+      logout() {
+        this.currentUser = null;
+        sessionStorage.removeItem('vsz_session_user');
+        this.renderUserNav();
+        this.renderChildren();
+        this.renderEnrollments();
+        this.renderReplacements();
+        this.switchTab('courses');
+        this.showToast('Byli jste odhlášeni.', 'info');
+      },
+
+      handleAddChild(e) {
+        e.preventDefault();
+        if (!this.currentUser) return;
+
+        const first_name = document.getElementById('childFirstName').value.trim();
+        const last_name = document.getElementById('childLastName').value.trim();
+        const birth_date = document.getElementById('childBirthDate').value;
+        const category = document.getElementById('childCategory').value;
+        const health_notes = document.getElementById('childHealthNotes').value.trim();
+
+        const newChild = {
+          id: 'ch_' + Date.now(),
+          parent_id: this.currentUser.id,
+          first_name,
+          last_name,
+          birth_date,
+          category,
+          health_notes
+        };
+
+        db.data.children.push(newChild);
+        db.save();
+
+        this.closeModal('modalAddChild');
+        this.renderChildren();
+        this.showToast(`Dítě ${first_name} bylo přidáno do vaší evidence.`, 'success');
+      },
+
+      openEnrollModal(courseId) {
+        if (!this.currentUser) {
+          alert('Pro přihlášení dítěte do kurzu se musíte nejprve přihlásit.');
+          this.openModal('modalLogin');
+          return;
+        }
+
+        const myKids = db.data.children.filter(c => c.parent_id === this.currentUser.id);
+        if (myKids.length === 0) {
+          alert('Zatím nemáte v evidenci žádné dítě. Nejprve přidejte dítě v záložce "Moje děti".');
+          this.switchTab('children');
+          this.openModal('modalAddChild');
+          return;
+        }
+
+        const course = db.data.courses.find(c => c.id === courseId);
+        document.getElementById('enrollCourseId').value = courseId;
+        document.getElementById('enrollCourseTitle').textContent = course ? `${course.name} (${course.day_of_week})` : '';
+
+        const select = document.getElementById('enrollChildSelect');
+        select.innerHTML = myKids.map(k => `<option value="${k.id}">${k.first_name} ${k.last_name} (${this.calculateAge(k.birth_date)} let)</option>`).join('');
+
+        this.openModal('modalEnrollChild');
+      },
+
+      handleEnroll(e) {
+        e.preventDefault();
+        const courseId = document.getElementById('enrollCourseId').value;
+        const childId = document.getElementById('enrollChildSelect').value;
+
+        const existing = db.data.enrollments.find(enr => enr.child_id === childId && enr.course_id === courseId && enr.status !== 'rejected');
+        if (existing) {
+          alert('Toto dítě je již do vybraného kurzu přihlášeno.');
+          return;
+        }
+
+        db.data.enrollments.push({
+          id: 'enr_' + Date.now(),
+          child_id: childId,
+          course_id: courseId,
+          parent_id: this.currentUser.id,
+          status: 'pending'
+        });
+        db.save();
+
+        this.closeModal('modalEnrollChild');
+        this.switchTab('children');
+        this.renderEnrollments();
+        this.showToast('Přihláška byla úspěšně odeslána ke schválení!', 'success');
+      },
+
+      handleAddCourse(e) {
+        e.preventDefault();
         const name = document.getElementById('newCourseName').value.trim();
         const category = document.getElementById('newCourseCategory').value;
         const coach_name = document.getElementById('newCourseCoach').value.trim();
         const day_of_week = document.getElementById('newCourseDay').value.trim();
         const time = document.getElementById('newCourseTime').value.trim();
-        const location = document.getElementById('newCourseLocation').value.trim();
-        const capacity = parseInt(document.getElementById('newCourseCapacity').value, 10);
+        const capacity = parseInt(document.getElementById('newCourseCapacity').value) || 16;
         const price_semester = document.getElementById('newCoursePrice').value.trim();
+        const location = document.getElementById('newCourseLocation').value.trim();
         const description = document.getElementById('newCourseDescription').value.trim();
 
-        const { data, error } = await supabase.from('courses').insert([{
+        const newCourse = {
+          id: 'crs_' + Date.now(),
           name,
           category,
           coach_name,
@@ -1976,695 +1658,40 @@
           time,
           location,
           capacity,
-          enrolled_count: 0,
           price_semester,
           description
-        }]);
+        };
 
-        if (error) {
-          const errEl = document.getElementById('newCourseError');
-          if (errEl) {
-            errEl.textContent = error.message || 'Chyba při ukládání kurzu.';
-            errEl.classList.remove('hidden');
-          }
-          return;
-        }
+        db.data.courses.push(newCourse);
+        db.save();
 
         this.closeModal('modalAddCourse');
         this.renderCourses();
-        this.setupAttendanceSelectors();
-        this.showToast(`Volejbalový kurz '${name}' byl úspěšně vytvořen v Supabase!`, 'success');
-      },
-
-      // Zápis nového dítěte do tabulky 'children'
-      async handleAddChild(event) {
-        event.preventDefault();
-        if (!this.currentUser) {
-          this.showToast('Pro evidenci dítěte se nejprve přihlaste jako rodič.', 'warning');
-          this.openModal('modalLogin');
-          return;
-        }
-
-        const first_name = document.getElementById('childFirstName').value.trim();
-        const last_name = document.getElementById('childLastName').value.trim();
-        const birth_date = document.getElementById('childBirthDate').value;
-        const category = document.getElementById('childCategory').value;
-        const health_notes = document.getElementById('childHealthNotes').value.trim() || 'Bez omezení';
-
-        const { data, error } = await supabase.from('children').insert([{
-          parent_id: this.currentUser.id,
-          first_name,
-          last_name,
-          birth_date,
-          category,
-          health_notes
-        }]);
-
-        if (error) {
-          const errEl = document.getElementById('childError');
-          if (errEl) {
-            errEl.textContent = error.message || 'Chyba při zápisu dítěte.';
-            errEl.classList.remove('hidden');
-          }
-          return;
-        }
-
-        this.closeModal('modalAddChild');
-        this.renderChildren();
-        this.showToast(`Dítě ${first_name} ${last_name} bylo úspěšně uloženo do Supabase!`, 'success');
-      },
-
-      // Vykreslení seznamu dětí přihlášeného rodiče
-      async renderChildren() {
-        const container = document.getElementById('childrenList');
-        if (!container) return;
-
-        if (!this.currentUser) {
-          container.innerHTML = `
-            <div class="col-span-full vitals-card p-6 text-center space-y-2">
-              <p class="text-sm text-[#46585f]">Pro zobrazení a správu dětí se prosím přihlaste.</p>
-              <button onclick="app.quickLogin('parent')" class="px-4 py-2 rounded-lg bg-[#0f7c8a] text-white text-xs font-semibold">
-                Rychle vyzkoušet jako Rodič (Jana Nováková)
-              </button>
-            </div>
-          `;
-          return;
-        }
-
-        // Asynchronní dotaz: supabase.from('children').select('*').eq('parent_id', currentUserId)
-        let query = supabase.from('children').select('*');
-        if (this.currentUser.role === 'parent') {
-          query = query.eq('parent_id', this.currentUser.id);
-        }
-        const { data: children, error } = await query;
-
-        if (error || !children || children.length === 0) {
-          container.innerHTML = `
-            <div class="col-span-full vitals-card p-6 text-center space-y-2">
-              <p class="text-sm text-[#46585f]">Zatím nemáte v systému zapsáno žádné dítě.</p>
-              <button onclick="app.openModal('modalAddChild')" class="px-4 py-2 rounded-lg bg-[#0f7c8a] text-white text-xs font-semibold">
-                + Přidat první dítě
-              </button>
-            </div>
-          `;
-          return;
-        }
-
-        container.innerHTML = children.map(child => {
-          return `
-            <div class="vitals-card p-5">
-              <div class="status-accent-bar bar-green"></div>
-              <div class="flex items-start justify-between">
-                <div>
-                  <h3 class="text-base font-bold text-[#1b2b33]">${child.first_name} ${child.last_name}</h3>
-                  <span class="text-xs font-medium text-[#0f7c8a]">${child.category}</span>
-                </div>
-                <button onclick="app.deleteChild('${child.id}', '${child.first_name.replace(/'/g, "\\'")}')" class="text-xs text-[#b3261e] hover:underline flex items-center gap-1">
-                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                  <span>Odebrat</span>
-                </button>
-              </div>
-
-              <div class="mt-3 space-y-1 text-xs text-[#46585f] border-t border-[#d5e3e5] pt-2">
-                <div>Datum narození: <strong class="text-[#1b2b33]">${child.birth_date}</strong></div>
-                <div>Zdravotní způsobilost: <span class="text-[#1b2b33]">${child.health_notes || 'Bez omezení'}</span></div>
-              </div>
-
-              <div class="mt-4 pt-2">
-                <button onclick="app.switchTab('courses')" class="w-full py-1.5 px-3 rounded bg-[#f1f7f8] hover:bg-[#e3f1f3] text-[#0f7c8a] text-xs font-semibold transition flex items-center justify-center gap-1.5 border border-[#d5e3e5]">
-                  <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-                  <span>Přihlásit do dalšího kurzu</span>
-                </button>
-              </div>
-            </div>
-          `;
-        }).join('');
-
-        if (window.lucide) window.lucide.createIcons();
-      },
-
-      // Smazání dítěte (supabase.from('children').delete().eq('id', childId))
-      async deleteChild(childId, name) {
-        if (!confirm(`Opravdu chcete odebrat dítě ${name} z evidence?`)) return;
-        const { error } = await supabase.from('children').delete().eq('id', childId);
-        if (!error) {
-          this.renderChildren();
-          this.renderEnrollments();
-          this.showToast(`Dítě ${name} bylo odebráno.`, 'info');
-        }
-      },
-
-      // Otevření modálu pro přihlášení dítěte do kurzu
-      async openEnrollModal(courseId, courseName) {
-        if (!this.currentUser) {
-          this.showToast('Pro přihlášení dítěte se nejprve přihlaste.', 'warning');
-          this.openModal('modalLogin');
-          return;
-        }
-
-        const courseTitleEl = document.getElementById('enrollCourseTitle');
-        const courseIdInput = document.getElementById('enrollCourseId');
-        const childSelect = document.getElementById('enrollChildSelect');
-
-        if (courseTitleEl) courseTitleEl.textContent = `Vybraný kurz: ${courseName}`;
-        if (courseIdInput) courseIdInput.value = courseId;
-
-        // Načtení dětí přihlášeného rodiče
-        const { data: children } = await supabase.from('children').select('*').eq('parent_id', this.currentUser.id);
-
-        if (!children || children.length === 0) {
-          this.showToast('Nejprve musíte do systému vložit alespoň jedno dítě.', 'warning');
-          this.openModal('modalAddChild');
-          return;
-        }
-
-        if (childSelect) {
-          childSelect.innerHTML = children.map(c => `
-            <option value="${c.id}">${c.first_name} ${c.last_name} (${c.category})</option>
-          `).join('');
-        }
-
-        this.openModal('modalEnrollChild');
-      },
-
-      // Uložení přihlášky do kurzu (supabase.from('enrollments').insert(...))
-      async handleEnroll(event) {
-        event.preventDefault();
-        const course_id = document.getElementById('enrollCourseId').value;
-        const child_id = document.getElementById('enrollChildSelect').value;
-        const errEl = document.getElementById('enrollError');
-        if (errEl) errEl.classList.add('hidden');
-
-        // Kontrola duplicity
-        const { data: existing } = await supabase.from('enrollments').select('*').eq('course_id', course_id).eq('child_id', child_id);
-        if (existing && existing.length > 0) {
-          if (errEl) {
-            errEl.textContent = 'Toto dítě je již do tohoto kurzu přihlášeno.';
-            errEl.classList.remove('hidden');
-          }
-          return;
-        }
-
-        const { data, error } = await supabase.from('enrollments').insert([{
-          child_id,
-          course_id,
-          parent_id: this.currentUser.id,
-          status: 'pending', // Čeká na schválení adminem!
-          payment_status: 'pending'
-        }]);
-
-        if (error) {
-          if (errEl) {
-            errEl.textContent = error.message || 'Chyba při odesílání přihlášky.';
-            errEl.classList.remove('hidden');
-          }
-          return;
-        }
-
-        this.closeModal('modalEnrollChild');
-        this.renderEnrollments();
-        this.showToast('Přihláška byla úspěšně odeslána! Administrátor školy ji prověří.', 'success');
-        this.switchTab('children');
-      },
-
-      // Vykreslení přihlášek rodiče
-      async renderEnrollments() {
-        const tbody = document.getElementById('enrollmentsList');
-        if (!tbody) return;
-
-        if (!this.currentUser) {
-          tbody.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-[#46585f]">Pro zobrazení přihlášek se přihlaste.</td></tr>`;
-          return;
-        }
-
-        const { data: enrollments } = await supabase.from('enrollments').select('*');
-        const { data: courses } = await supabase.from('courses').select('*');
-        const { data: children } = await supabase.from('children').select('*');
-
-        const courseMap = {};
-        if (courses) courses.forEach(c => courseMap[c.id] = c);
-        const childMap = {};
-        if (children) children.forEach(ch => childMap[ch.id] = ch);
-
-        let myEnrollments = enrollments || [];
-        if (this.currentUser.role === 'parent') {
-          myEnrollments = myEnrollments.filter(e => e.parent_id === this.currentUser.id);
-        }
-
-        if (myEnrollments.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-[#46585f]">Zatím nemáte žádné aktivní přihlášky na kurzy.</td></tr>`;
-          return;
-        }
-
-        tbody.innerHTML = myEnrollments.map(enr => {
-          const child = childMap[enr.child_id] || { first_name: 'Hráč', last_name: enr.child_id };
-          const course = courseMap[enr.course_id] || { name: 'Volejbalový kurz', day_of_week: '—', time: '—', price_semester: '—' };
-
-          let statusBadge = `<span class="bg-[#e3f1f3] text-[#b86e00] font-semibold text-xs px-2.5 py-1 rounded-full">Čeká na schválení</span>`;
-          if (enr.status === 'confirmed') {
-            statusBadge = `<span class="bg-[#e3f1f3] text-[#2e7d4f] font-semibold text-xs px-2.5 py-1 rounded-full">Schváleno / Přijat</span>`;
-          } else if (enr.status === 'rejected') {
-            statusBadge = `<span class="bg-[#fce8e6] text-[#b3261e] font-semibold text-xs px-2.5 py-1 rounded-full">Zamítnuto</span>`;
-          }
-
-          return `
-            <tr>
-              <td class="py-3 px-4 font-semibold text-[#1b2b33]">${child.first_name} ${child.last_name}</td>
-              <td class="py-3 px-4 text-[#1b2b33]">${course.name}</td>
-              <td class="py-3 px-4 text-xs text-[#46585f]">${course.day_of_week} (${course.time})</td>
-              <td class="py-3 px-4 text-xs font-semibold text-[#0f7c8a]">${course.price_semester}</td>
-              <td class="py-3 px-4">${statusBadge}</td>
-              <td class="py-3 px-4 text-right">
-                <button onclick="app.cancelEnrollment('${enr.id}')" class="text-xs text-[#b3261e] hover:underline">
-                  Zrušit přihlášku
-                </button>
-              </td>
-            </tr>
-          `;
-        }).join('');
-      },
-
-      // Zrušení přihlášky (supabase.from('enrollments').delete().eq('id', enrollmentId))
-      async cancelEnrollment(enrollmentId) {
-        if (!confirm('Opravdu chcete zrušit tuto přihlášku?')) return;
-        const { error } = await supabase.from('enrollments').delete().eq('id', enrollmentId);
-        if (!error) {
-          this.renderEnrollments();
-          this.showToast('Přihláška byla zrušena.', 'info');
-        }
-      },
-
-      // Nastavení selektorů docházky
-      async setupAttendanceSelectors() {
-        const select = document.getElementById('attendanceCourseSelect');
-        const dateInput = document.getElementById('attendanceDateInput');
-        if (!select || !dateInput) return;
-
-        const { data: courses } = await supabase.from('courses').select('*');
-        if (courses && courses.length > 0) {
-          select.innerHTML = courses.map(c => `<option value="${c.id}">${c.name} (${c.day_of_week})</option>`).join('');
-        }
-
-        // Dnešní datum
-        if (!dateInput.value) {
-          const today = new Date().toISOString().split('T')[0];
-          dateInput.value = today;
-        }
-      },
-
-      // Načtení tréninkové docházky (Supabase: supabase.from('attendance').select(...))
-      async loadAttendanceSheet() {
-        const tbody = document.getElementById('attendanceTableBody');
-        const courseSelect = document.getElementById('attendanceCourseSelect');
-        const dateInput = document.getElementById('attendanceDateInput');
-        if (!tbody || !courseSelect || !dateInput) return;
-
-        const courseId = courseSelect.value;
-        const dateVal = dateInput.value;
-
-        // Načteme přihlášky a děti pro tento kurz
-        const { data: enrollments } = await supabase.from('enrollments').select('*').eq('course_id', courseId).eq('status', 'confirmed');
-        const { data: children } = await supabase.from('children').select('*');
-        const { data: attendance } = await supabase.from('attendance').select('*').eq('course_id', courseId).eq('date', dateVal);
-
-        const childMap = {};
-        if (children) children.forEach(ch => childMap[ch.id] = ch);
-        const attendanceMap = {};
-        if (attendance) attendance.forEach(att => attendanceMap[att.child_id] = att);
-
-        if (!enrollments || enrollments.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-[#46585f]">V tomto kurzu zatím nejsou žádní potvrzení hráči.</td></tr>`;
-          return;
-        }
-
-        tbody.innerHTML = enrollments.map(enr => {
-          const child = childMap[enr.child_id] || { id: enr.child_id, first_name: 'Hráč', last_name: '', category: 'Volejbal', health_notes: '—' };
-          const existingAtt = attendanceMap[child.id] || { status: 'present', note: '' };
-
-          return `
-            <tr data-child-id="${child.id}" class="hover:bg-[#f1f7f8]/50 transition">
-              <td class="py-3 px-4 font-semibold text-[#1b2b33]">
-                ${child.first_name} ${child.last_name}
-              </td>
-              <td class="py-3 px-4 text-xs text-[#46585f]">${child.category}</td>
-              <td class="py-3 px-4 text-xs text-[#46585f]">${child.health_notes || 'Bez omezení'}</td>
-              <td class="py-3 px-4">
-                <div class="inline-flex rounded-md shadow-sm border border-[#d5e3e5] overflow-hidden" role="group">
-                  <button type="button" onclick="app.setAttendanceStatus('${child.id}', 'present')" id="btnAtt_${child.id}_present" class="att-btn px-2.5 py-1 text-xs font-semibold ${existingAtt.status === 'present' ? 'bg-[#2e7d4f] text-white' : 'bg-white text-[#46585f] hover:bg-[#f1f7f8]'}">
-                    Přítomen
-                  </button>
-                  <button type="button" onclick="app.setAttendanceStatus('${child.id}', 'absent_excused')" id="btnAtt_${child.id}_absent_excused" class="att-btn px-2.5 py-1 text-xs font-semibold border-x border-[#d5e3e5] ${existingAtt.status === 'absent_excused' ? 'bg-[#b86e00] text-white' : 'bg-white text-[#46585f] hover:bg-[#f1f7f8]'}">
-                    Omluven
-                  </button>
-                  <button type="button" onclick="app.setAttendanceStatus('${child.id}', 'absent_unexcused')" id="btnAtt_${child.id}_absent_unexcused" class="att-btn px-2.5 py-1 text-xs font-semibold ${existingAtt.status === 'absent_unexcused' ? 'bg-[#b3261e] text-white' : 'bg-white text-[#46585f] hover:bg-[#f1f7f8]'}">
-                    Neomluven
-                  </button>
-                </div>
-              </td>
-              <td class="py-3 px-4">
-                <input type="text" id="attNote_${child.id}" value="${existingAtt.note || ''}" placeholder="Poznámka trenéra k tréninku..." class="w-full text-xs bg-white border border-[#7b9198] rounded px-2 py-1 text-[#1b2b33]">
-              </td>
-            </tr>
-          `;
-        }).join('');
-      },
-
-      // Přepnutí stavu docházky v řádku
-      setAttendanceStatus(childId, status) {
-        ['present', 'absent_excused', 'absent_unexcused'].forEach(s => {
-          const btn = document.getElementById(`btnAtt_${childId}_${s}`);
-          if (!btn) return;
-          btn.classList.remove('bg-[#2e7d4f]', 'bg-[#b86e00]', 'bg-[#b3261e]', 'text-white');
-          btn.classList.add('bg-white', 'text-[#46585f]');
-        });
-
-        const activeBtn = document.getElementById(`btnAtt_${childId}_${status}`);
-        if (activeBtn) {
-          activeBtn.classList.remove('bg-white', 'text-[#46585f]');
-          activeBtn.classList.add('text-white');
-          if (status === 'present') activeBtn.classList.add('bg-[#2e7d4f]');
-          if (status === 'absent_excused') activeBtn.classList.add('bg-[#b86e00]');
-          if (status === 'absent_unexcused') activeBtn.classList.add('bg-[#b3261e]');
-        }
-      },
-
-      // Uložení docházky do Supabase (supabase.from('attendance').upsert(...))
-      async saveAttendance() {
-        const courseSelect = document.getElementById('attendanceCourseSelect');
-        const dateInput = document.getElementById('attendanceDateInput');
-        if (!courseSelect || !dateInput) return;
-
-        const course_id = courseSelect.value;
-        const date = dateInput.value;
-        const rows = document.querySelectorAll('#attendanceTableBody tr[data-child-id]');
-
-        const upsertData = [];
-        rows.forEach(tr => {
-          const child_id = tr.getAttribute('data-child-id');
-          let status = 'present';
-          if (document.getElementById(`btnAtt_${child_id}_absent_excused`)?.classList.contains('text-white')) {
-            status = 'absent_excused';
-          } else if (document.getElementById(`btnAtt_${child_id}_absent_unexcused`)?.classList.contains('text-white')) {
-            status = 'absent_unexcused';
-          }
-
-          const note = document.getElementById(`attNote_${child_id}`)?.value.trim() || '';
-          upsertData.push({
-            course_id,
-            child_id,
-            date,
-            status,
-            note,
-            marked_by: app.currentUser?.id || 'usr_coach'
-          });
-        });
-
-        if (upsertData.length === 0) {
-          this.showToast('Žádná data k uložení.', 'warning');
-          return;
-        }
-
-        const { data, error } = await supabase.from('attendance').upsert(upsertData);
-        if (error) {
-          this.showToast('Chyba při ukládání docházky: ' + error.message, 'warning');
-        } else {
-          this.showToast(`Docházka pro datum ${date} byla úspěšně uložena do Supabase!`, 'success');
-        }
-      },
-
-      // Administrátorský panel: Schvalování uživatelů, kurzů a přihlášek
-      async renderAdminPanel() {
-        const pendingCountEl = document.getElementById('pendingUsersCount');
-        const pendingList = document.getElementById('pendingUsersList');
-        const approvedList = document.getElementById('approvedUsersList');
-        const adminEnrollmentsList = document.getElementById('adminEnrollmentsList');
-
-        // 1. Schvalování uživatelů (profiles where is_approved = false)
-        const { data: profiles } = await supabase.from('profiles').select('*').order('created_at', { ascending: false });
-
-        if (profiles) {
-          const pending = profiles.filter(p => !p.is_approved);
-          const approved = profiles.filter(p => p.is_approved);
-
-          if (pendingCountEl) pendingCountEl.textContent = pending.length;
-
-          if (pendingList) {
-            if (pending.length === 0) {
-              pendingList.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-[#2e7d4f] font-medium">Všichni uživatelé jsou schváleni. Žádné nevyřízené žádosti.</td></tr>`;
-            } else {
-              pendingList.innerHTML = pending.map(p => `
-                <tr class="bg-[#fff9f0]">
-                  <td class="py-3 px-4 font-semibold text-[#1b2b33]">${p.full_name}</td>
-                  <td class="py-3 px-4 text-xs text-[#46585f]">${p.email}</td>
-                  <td class="py-3 px-4 text-xs text-[#46585f]">${p.phone || '—'}</td>
-                  <td class="py-3 px-4">
-                    <span class="text-xs px-2 py-0.5 rounded-full font-bold ${p.role === 'coach' ? 'bg-[#e3f1f3] text-[#1d5e3a]' : 'bg-[#e3f1f3] text-[#0a5560]'}">
-                      ${p.role === 'coach' ? 'Trenér' : 'Rodič'}
-                    </span>
-                  </td>
-                  <td class="py-3 px-4 text-xs text-[#46585f]">${new Date(p.created_at).toLocaleDateString('cs-CZ')}</td>
-                  <td class="py-3 px-4 text-right space-x-2">
-                    <button onclick="app.approveUser('${p.id}', true)" class="px-3 py-1 rounded bg-[#2e7d4f] hover:bg-[#256841] text-white text-xs font-semibold shadow-sm transition">
-                      Schválit účet
-                    </button>
-                    <button onclick="app.approveUser('${p.id}', false)" class="px-2.5 py-1 rounded bg-[#f1f7f8] hover:bg-[#fce8e6] text-[#b3261e] text-xs font-medium border border-[#d5e3e5] transition">
-                      Odmítnout
-                    </button>
-                  </td>
-                </tr>
-              `).join('');
-            }
-          }
-
-          if (approvedList) {
-            approvedList.innerHTML = approved.map(p => `
-              <tr>
-                <td class="py-2.5 px-4 font-semibold text-[#1b2b33]">${p.full_name}</td>
-                <td class="py-2.5 px-4 text-xs text-[#46585f]">${p.email}</td>
-                <td class="py-2.5 px-4 text-xs font-semibold ${p.role === 'admin' ? 'text-[#0f7c8a]' : (p.role === 'coach' ? 'text-[#1d5e3a]' : 'text-[#46585f]')}">
-                  ${p.role === 'admin' ? 'Správce (Admin)' : (p.role === 'coach' ? 'Trenér' : 'Rodič')}
-                </td>
-                <td class="py-2.5 px-4 text-xs text-[#46585f]">${p.phone || '—'}</td>
-                <td class="py-2.5 px-4">
-                  <span class="text-xs text-[#2e7d4f] bg-[#e3f1f3] px-2 py-0.5 rounded-full font-semibold">Aktivní</span>
-                </td>
-              </tr>
-            `).join('');
-          }
-        }
-
-        // 2. Schvalování přihlášek dětí
-        const { data: enrollments } = await supabase.from('enrollments').select('*');
-        const { data: courses } = await supabase.from('courses').select('*');
-        const { data: children } = await supabase.from('children').select('*');
-        const childMap = {};
-        if (children) children.forEach(c => childMap[c.id] = c);
-        const courseMap = {};
-        if (courses) courses.forEach(c => courseMap[c.id] = c);
-        const profileMap = {};
-        if (profiles) profiles.forEach(p => profileMap[p.id] = p);
-
-        if (adminEnrollmentsList && enrollments) {
-          if (enrollments.length === 0) {
-            adminEnrollmentsList.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-[#46585f]">Žádné přihlášky k vyřízení.</td></tr>`;
-          } else {
-            adminEnrollmentsList.innerHTML = enrollments.map(enr => {
-              const child = childMap[enr.child_id] || { first_name: 'Dítě', last_name: enr.child_id };
-              const course = courseMap[enr.course_id] || { name: 'Kurz' };
-              const parent = profileMap[enr.parent_id] || { full_name: 'Rodič', email: '' };
-
-              return `
-                <tr>
-                  <td class="py-2.5 px-4 font-semibold text-[#1b2b33]">${child.first_name} ${child.last_name}</td>
-                  <td class="py-2.5 px-4 text-xs text-[#46585f]">${parent.full_name} (${parent.email})</td>
-                  <td class="py-2.5 px-4 text-xs text-[#1b2b33]">${course.name}</td>
-                  <td class="py-2.5 px-4 text-xs text-[#46585f]">${new Date(enr.enrolled_at || Date.now()).toLocaleDateString('cs-CZ')}</td>
-                  <td class="py-2.5 px-4">
-                    <span class="text-xs font-semibold px-2 py-0.5 rounded-full ${enr.status === 'confirmed' ? 'bg-[#e3f1f3] text-[#2e7d4f]' : 'bg-[#fff9f0] text-[#b86e00]'}">
-                      ${enr.status === 'confirmed' ? 'Schváleno' : 'Čeká'}
-                    </span>
-                  </td>
-                  <td class="py-2.5 px-4 text-right space-x-2">
-                    ${enr.status !== 'confirmed' ? `
-                      <button onclick="app.setEnrollmentStatus('${enr.id}', 'confirmed')" class="px-2.5 py-0.5 rounded bg-[#2e7d4f] hover:bg-[#256841] text-white text-xs font-semibold">
-                        Potvrdit
-                      </button>
-                    ` : ''}
-                    <button onclick="app.cancelEnrollment('${enr.id}')" class="px-2 py-0.5 rounded bg-[#f1f7f8] text-[#b3261e] text-xs hover:underline">
-                      Odebrat
-                    </button>
-                  </td>
-                </tr>
-              `;
-            }).join('');
-          }
-        }
-      },
-
-      // Schválení nebo odmítnutí uživatele administrátorem (Supabase update profiles)
-      async approveUser(profileId, isApproved) {
-        if (isApproved) {
-          const { error } = await supabase.from('profiles').update({ is_approved: true }).eq('id', profileId);
-          if (!error) {
-            this.showToast('Uživatel byl úspěšně schválen do systému!', 'success');
-          }
-        } else {
-          const { error } = await supabase.from('profiles').delete().eq('id', profileId);
-          if (!error) {
-            this.showToast('Žádost uživatele byla odmítnuta a odstraněna.', 'info');
-          }
-        }
         this.renderAdminPanel();
+        this.showToast(`Kurz "${name}" byl úspěšně vytvořen.`, 'success');
       },
 
-      // Potvrzení přihlášky dětí do kurzu administrátorem
-      async setEnrollmentStatus(enrollmentId, status) {
-        const { error } = await supabase.from('enrollments').update({ status }).eq('id', enrollmentId);
-        if (!error) {
-          this.showToast(`Přihláška byla nastavena na: ${status === 'confirmed' ? 'Schváleno' : status}`, 'success');
-          this.renderAdminPanel();
-          this.renderEnrollments();
-          this.renderCourses();
-        }
-      },
-
-      // Zobrazení kompletního SQL skriptu pro Supabase
-      renderSqlScript() {
-        const pre = document.getElementById('sqlCodeBlock');
-        if (!pre) return;
-
-        pre.textContent = `-- ============================================================================
--- SQL SCHÉMA PRO VOLEJBALOVOU ŠKOLU ZÁBĚHLICE (HAMR SPORT)
--- Vložte do Supabase Dashboard -> SQL Editor a klikněte na "Run"
--- ============================================================================
-
--- 1. Povolení UUID rozšíření
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
--- 2. Tabulka uživatelských profilů (napojeno na Supabase auth.users)
-CREATE TABLE IF NOT EXISTS public.profiles (
-  id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
-  email TEXT NOT NULL,
-  full_name TEXT NOT NULL,
-  phone TEXT,
-  role TEXT NOT NULL DEFAULT 'parent' CHECK (role IN ('admin', 'coach', 'parent')),
-  is_approved BOOLEAN NOT NULL DEFAULT false, -- Schvalování adminem!
-  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
-);
-
--- 3. Tabulka dětí (hráčů školy)
-CREATE TABLE IF NOT EXISTS public.children (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  parent_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
-  first_name TEXT NOT NULL,
-  last_name TEXT NOT NULL,
-  birth_date DATE NOT NULL,
-  category TEXT NOT NULL,
-  health_notes TEXT DEFAULT 'Bez omezení',
-  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
-);
-
--- 4. Tabulka kurzů (tréninků HAMR Záběhlice)
-CREATE TABLE IF NOT EXISTS public.courses (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name TEXT NOT NULL,
-  category TEXT NOT NULL CHECK (category IN ('minivolejbal', 'zactvo', 'beach')),
-  coach_name TEXT NOT NULL,
-  day_of_week TEXT NOT NULL,
-  time TEXT NOT NULL,
-  location TEXT NOT NULL DEFAULT 'HAMR Záběhlice',
-  capacity INTEGER NOT NULL DEFAULT 16,
-  enrolled_count INTEGER NOT NULL DEFAULT 0,
-  price_semester TEXT NOT NULL DEFAULT '4 800 Kč',
-  description TEXT,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
-);
-
--- 5. Tabulka přihlášek (zápisů dětí do kurzů)
-CREATE TABLE IF NOT EXISTS public.enrollments (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  child_id UUID REFERENCES public.children(id) ON DELETE CASCADE NOT NULL,
-  course_id UUID REFERENCES public.courses(id) ON DELETE CASCADE NOT NULL,
-  parent_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
-  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'rejected', 'cancelled')),
-  payment_status TEXT NOT NULL DEFAULT 'pending' CHECK (payment_status IN ('pending', 'paid')),
-  enrolled_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
-  UNIQUE(child_id, course_id)
-);
-
--- 6. Tabulka docházky na tréninky
-CREATE TABLE IF NOT EXISTS public.attendance (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  course_id UUID REFERENCES public.courses(id) ON DELETE CASCADE NOT NULL,
-  child_id UUID REFERENCES public.children(id) ON DELETE CASCADE NOT NULL,
-  date DATE NOT NULL,
-  status TEXT NOT NULL DEFAULT 'present' CHECK (status IN ('present', 'absent_excused', 'absent_unexcused')),
-  note TEXT DEFAULT '',
-  marked_by UUID REFERENCES public.profiles(id),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
-  UNIQUE(course_id, child_id, date)
-);
-
--- 7. Bezpečnostní pravidla (Row Level Security - RLS)
-ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.children ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.courses ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.enrollments ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.attendance ENABLE ROW LEVEL SECURITY;
-
--- Veřejné čtení kurzů
-CREATE POLICY "Veřejné čtení kurzů" ON public.courses FOR SELECT USING (true);
-
--- Uživatel může číst svůj profil a admin všechny
-CREATE POLICY "Čtení profilů" ON public.profiles FOR SELECT USING (auth.uid() = id OR EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'admin'));
-
--- Rodič spravuje své děti
-CREATE POLICY "Správa dětí rodičem" ON public.children FOR ALL USING (auth.uid() = parent_id OR EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'coach')));
-
--- Přihlášky
-CREATE POLICY "Správa přihlášek" ON public.enrollments FOR ALL USING (auth.uid() = parent_id OR EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'coach')));
-
--- Trenér a admin docházka
-CREATE POLICY "Správa docházky" ON public.attendance FOR ALL USING (EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'coach')));
-`;
-      },
-
-      // Zkopírování SQL do schránky
-      copySqlToClipboard() {
-        const text = document.getElementById('sqlCodeBlock')?.textContent || '';
-        navigator.clipboard.writeText(text).then(() => {
-          this.showToast('SQL kód byl zkopírován do schránky!', 'success');
-        }).catch(() => {
-          this.showToast('Označte kód v rámečku a zkopírujte pomocí Ctrl+C', 'info');
-        });
-      },
-
-      // Toast zprávy pro uživatele
-      showToast(message, type = 'info') {
+      showToast(msg, type = 'info') {
         const container = document.getElementById('toastContainer');
         if (!container) return;
 
         const toast = document.createElement('div');
-        toast.className = `p-3 rounded-lg shadow-lg text-xs font-semibold flex items-center gap-2 pointer-events-auto transition transform translate-y-2 opacity-0 text-white`;
+        toast.className = `p-3.5 rounded-xl shadow-lg text-xs font-bold flex items-center gap-2 pointer-events-auto transition transform translate-y-2 opacity-0 text-white`;
 
         if (type === 'success') toast.classList.add('bg-[#2e7d4f]');
         else if (type === 'warning') toast.classList.add('bg-[#b86e00]');
         else toast.classList.add('bg-[#0f7c8a]');
 
-        toast.innerHTML = `<span>${message}</span>`;
+        toast.innerHTML = `<span>${msg}</span>`;
         container.appendChild(toast);
 
-        setTimeout(() => {
-          toast.classList.remove('translate-y-2', 'opacity-0');
-        }, 10);
-
+        setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
         setTimeout(() => {
           toast.classList.add('opacity-0', 'translate-y-2');
           setTimeout(() => toast.remove(), 250);
         }, 3500);
       },
 
-      // Otevření a zavření modálů
       openModal(id) {
         const modal = document.getElementById(id);
         if (modal) modal.classList.remove('hidden');
@@ -2676,11 +1703,11 @@ CREATE POLICY "Správa docházky" ON public.attendance FOR ALL USING (EXISTS (SE
       }
     };
 
-    // Inicializace aplikace po načtení DOMu
-    document.addEventListener('DOMContentLoaded', () => {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => app.init());
+    } else {
       app.init();
-    });
+    }
   </script>
 </body>
 </html>
-
