@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Volejbalová Škola Záběhlice - Přihlašovací systém</title>
+  
+  <!-- Tailwind CSS CDN pro rychlý a moderní UI design -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Připojení Supabase SDK (v2) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    // Inicializace Supabase s vašimi údaji
+    const SUPABASE_URL = 'https://dhonznouzfujmhpbwori.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_KnGVAcZ_Nd2PNXuBMTSkhw_NUsGZmKV';
+    
+    // Vytvoření Supabase klienta
+    const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    // Funkce pro přihlášení uživatele přes Supabase Auth
+    async function loginUser(email, password) {
+      if (!supabase) {
+        alert("Supabase klient není načten.");
+        return;
+      }
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+      
+      if (error) {
+        alert("Chyba přihlášení: " + error.message);
+      } else {
+        alert("Přihlášení úspěšné!");
+        window.location.reload();
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800 min-h-screen flex flex-col">
+
+  <!-- Navigační lišta -->
+  <header class="bg-blue-900 text-white shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <span class="text-3xl">🏐</span>
+        <div>
+          <h1 class="text-xl font-bold leading-tight">Volejbalová Škola Záběhlice</h1>
+          <p class="text-xs text-blue-200">Rezervační a přihlašovací systém</p>
+        </div>
+      </div>
+      
+      <!-- Uživatelské menu -->
+      <div id="userNav" class="flex items-center space-x-4">
+        <span id="userInfo" class="text-sm font-medium"></span>
+        <button id="logoutBtn" onclick="app.logout()" class="hidden bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-sm transition">Odhlásit se</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hlavní obsah -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6">
+    <div id="appContainer">
+      <!-- Dynamicky generovaný obsah podle přihlášení / role -->
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-gray-400 py-4 text-center text-xs">
+    <p>&copy; Volejbalová Škola Záběhlice. Všechna práva vyhrazena.</p>
+  </footer>
+
+  <!-- Hlavní aplikační logika (Front-end Demo + Supabase konektivita) -->
+  <script>
+    // Inicializace simulovaného datového obchodu pro rychlý náhled
+    const db = {
+      users: JSON.parse(localStorage.getItem('vsz_users')) || [
+        { id: '1', email: 'admin@vsz.cz', pass: 'admin123', name: 'Hlavní Admin', role: 'admin', status: 'approved' },
+        { id: '2', email: 'trener@vsz.cz', pass: 'trener123', name: 'Jan Novák (Trenér)', role: 'coach', status: 'approved' },
+        { id: '3', email: 'rodic@vsz.cz', pass: 'rodic123', name: 'Petr Svoboda (Rodič)', role: 'parent', status: 'approved' }
+      ],
+      children: JSON.parse(localStorage.getItem('vsz_children')) || [
+        { id: 'c1', parentId: '3', name: 'Lukáš Svoboda', birthDate: '2014-05-12', address: 'Záběhlická 12, Praha 10' }
+      ],
+      courses: JSON.parse(localStorage.getItem('vsz_courses')) || [
+        { id: 'k1', name: 'Přípravka U12', day: 'Pondělí', timeFrom: '15:30', timeTo: '17:00', minAge: 8, maxAge: 12, capacity: 14, coach: 'Jan Novák', location: 'Kurt A' },
+        { id: 'k2', name: 'Junioři U16', day: 'Středa', timeFrom: '17:00', timeTo: '18:30', minAge: 13, maxAge: 16, capacity: 12, coach: 'Jan Novák', location: 'Kurt B' }
+      ],
+      enrollments: JSON.parse(localStorage.getItem('vsz_enrollments')) || [
+        { id: 'e1', childId: 'c1', courseId: 'k1', status: 'approved' }
+      ]
+    };
+
+    function saveData() {
+      localStorage.setItem('vsz_users', JSON.stringify(db.users));
+      localStorage.setItem('vsz_children', JSON.stringify(db.children));
+      localStorage.setItem('vsz_courses', JSON.stringify(db.courses));
+      localStorage.setItem('vsz_enrollments', JSON.stringify(db.enrollments));
+    }
+
+    const app = {
+      currentUser: JSON.parse(sessionStorage.getItem('vsz_session')) || null,
+
+      init() {
+        this.renderNav();
+        if (!this.currentUser) {
+          this.renderAuth();
+        } else if (this.currentUser.role === 'admin') {
+          this.renderAdminDashboard();
+        } else if (this.currentUser.role === 'coach') {
+          this.renderCoachDashboard();
+        } else {
+          this.renderParentDashboard();
+        }
+      },
+
+      renderNav() {
+        const userInfo = document.getElementById('userInfo');
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (this.currentUser) {
+          userInfo.textContent = `${this.currentUser.name} (${this.currentUser.role})`;
+          logoutBtn.classList.remove('hidden');
+        } else {
+          userInfo.textContent = 'Nepřihlášen';
+          logoutBtn.classList.add('hidden');
+        }
+      },
+
+      // --- AUTENTIZACE & REGISTRACE ---
+      renderAuth(tab = 'login') {
+        const container = document.getElementById('appContainer');
+        container.innerHTML = `
+          <div class="max-w-md mx-auto bg-white rounded-xl shadow-md p-6">
+            <div class="flex border-b border-gray-200 mb-6">
+              <button onclick="app.renderAuth('login')" class="w-1/2 py-2 text-center font-semibold ${tab === 'login' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}">Přihlášení</button>
+              <button onclick="app.renderAuth('register')" class="w-1/2 py-2 text-center font-semibold ${tab === 'register' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}">Registrace</button>
+            </div>
+
+            ${tab === 'login' ? `
+              <form onsubmit="app.handleLogin(event)" class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">E-mail</label>
+                  <input type="email" id="loginEmail" required class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Heslo</label>
+                  <input type="password" id="loginPass" required class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-medium">Přihlásit se</button>
+              </form>
+
+              <!-- DEMO RYCHLÉ PŘIHLÁŠENÍ -->
+              <div class="mt-6 pt-4 border-t text-xs text-gray-500 space-y-2">
+                <p class="font-bold text-gray-700">Rychlé testovací přihlášení (Demo):</p>
+                <div class="flex flex-wrap gap-2">
+                  <button onclick="app.quickLogin('admin@vsz.cz')" class="bg-purple-100 text-purple-700 px-2 py-1 rounded">Admin</button>
+                  <button onclick="app.quickLogin('trener@vsz.cz')" class="bg-green-100 text-green-700 px-2 py-1 rounded">Trenér</button>
+                  <button onclick="app.quickLogin('rodic@vsz.cz')" class="bg-blue-100 text-blue-700 px-2 py-1 rounded">Rodič</button>
+                </div>
+              </div>
+            ` : `
+              <form onsubmit="app.handleRegister(event)" class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Jméno a Příjmení</label>
+                  <input type="text" id="regName" required class="w-full mt-1 p-2 border rounded-lg">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">E-mail</label>
+                  <input type="email" id="regEmail" required class="w-full mt-1 p-2 border rounded-lg">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Heslo</label>
+                  <input type="password" id="regPass" required class="w-full mt-1 p-2 border rounded-lg">
+                </div>
+                <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 font-medium">Zaregistrovat se</button>
+              </form>
+            `}
+          </div>
+        `;
+      },
+
+      handleLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const pass = document.getElementById('loginPass').value;
+        
+        // Zkouška přihlášení přes Supabase Auth SDK
+        loginUser(email, pass);
+
+        // Fallback pro lokální simulaci
+        const user = db.users.find(u => u.email === email && u.pass === pass);
+        if (!user) {
+          alert('Nespravné přihlašovací údaje.');
+          return;
+        }
+        if (user.status !== 'approved') {
+          alert('Váš účet stále čeká na schválení administrátorem.');
+          return;
+        }
+        this.currentUser = user;
+        sessionStorage.setItem('vsz_session', JSON.stringify(user));
+        this.init();
+      },
+
+      quickLogin(email) {
+        const user = db.users.find(u => u.email === email);
+        if (user) {
+          this.currentUser = user;
+          sessionStorage.setItem('vsz_session', JSON.stringify(user));
+          this.init();
+        }
+      },
+
+      handleRegister(e) {
+        e.preventDefault();
+        const name = document.getElementById('regName').value;
+        const email = document.getElementById('regEmail').value;
+        const pass = document.getElementById('regPass').value;
+
+        if (db.users.some(u => u.email === email)) {
+          alert('Uživatel s tímto e-mailem již existuje.');
+          return;
+        }
+
+        const newUser = {
+          id: Date.now().toString(),
+          name,
+          email,
+          pass,
+          role: 'parent',
+          status: 'pending'
+        };
+
+        db.users.push(newUser);
+        saveData();
+        alert('Registrace proběhla úspěšně! Váš účet nyní čeká na schválení administrátorem.');
+        this.renderAuth('login');
+      },
+
+      logout() {
+        this.currentUser = null;
+        sessionStorage.removeItem('vsz_session');
+        this.init();
+      },
+
+      // --- RODIČOVSKÁ ZÓNA ---
+      renderParentDashboard() {
+        const container = document.getElementById('appContainer');
+        const myChildren = db.children.filter(c => c.parentId === this.currentUser.id);
+
+        container.innerHTML = `
+          <div class="space-y-6">
+            <!-- Děti -->
+            <div class="bg-white p-6 rounded-xl shadow-md">
+              <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">Moje Děti</h2>
+                <button onclick="app.showAddChildModal()" class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm hover:bg-blue-700">+ Přidat dítě</button>
+              </div>
+
+              ${myChildren.length === 0 ? '<p class="text-gray-500 text-sm">Zatím nemáte zaregistrované žádné dítě.</p>' : `
+                <div class="grid md:grid-cols-2 gap-4">
+                  ${myChildren.map(c => {
+                    const age = this.calculateAge(c.birthDate);
+                    return `
+                      <div class="border rounded-lg p-4 bg-gray-50">
+                        <div class="flex justify-between">
+                          <h3 class="font-bold text-lg">${c.name}</h3>
+                          <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-semibold">${age} let</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Datum narození: ${c.birthDate}</p>
+                        <button onclick="app.showCoursesForChild('${c.id}')" class="mt-3 w-full bg-green-600 text-white text-sm py-1.5 rounded hover:bg-green-700">Zobrazit dostupné kurzy</button>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+      },
+
+      calculateAge(birthDateStr) {
+        const birthDate = new Date(birthDateStr);
+        const diff = Date.now() - birthDate.getTime();
+        const ageDate = new Date(diff);
+        return Math.abs(ageDate.getUTCFullYear() - 1970);
+      },
+
+      showAddChildModal() {
+        const name = prompt("Jméno a příjmení dítěte:");
+        const birthDate = prompt("Datum narození (YYYY-MM-DD):");
+        if (name && birthDate) {
+          db.children.push({
+            id: 'c' + Date.now(),
+            parentId: this.currentUser.id,
+            name,
+            birthDate
+          });
+          saveData();
+          this.renderParentDashboard();
+        }
+      },
+
+      showCoursesForChild(childId) {
+        const child = db.children.find(c => c.id === childId);
+        const age = this.calculateAge(child.birthDate);
+        const eligibleCourses = db.courses.filter(k => age >= k.minAge && age <= k.maxAge);
+
+        let html = `Dostupné kurzy pro ${child.name} (${age} let):\n\n`;
+        eligibleCourses.forEach(k => {
+          html += `- ${k.name} (${k.day} ${k.timeFrom}-${k.timeTo}) - Trenér: ${k.coach}\n`;
+        });
+
+        alert(html || "Pro tento věk nejsou momentálně vypsané žádné volné kurzy.");
+      },
+
+      // --- ADMIN ZÓNA ---
+      renderAdminDashboard() {
+        const container = document.getElementById('appContainer');
+        const pendingUsers = db.users.filter(u => u.status === 'pending');
+
+        container.innerHTML = `
+          <div class="space-y-6">
+            <h2 class="text-2xl font-bold text-gray-800">Administrátorský Panel</h2>
+
+            <!-- Žádosti o registraci -->
+            <div class="bg-white p-6 rounded-xl shadow-md">
+              <h3 class="text-lg font-bold text-gray-700 mb-3">Nové žádosti o registraci (${pendingUsers.length})</h3>
+              ${pendingUsers.length === 0 ? '<p class="text-sm text-gray-500">Žádné čekající žádosti.</p>' : `
+                <div class="divide-y">
+                  ${pendingUsers.map(u => `
+                    <div class="py-3 flex justify-between items-center">
+                      <div>
+                        <p class="font-semibold text-sm">${u.name}</p>
+                        <p class="text-xs text-gray-500">${u.email}</p>
+                      </div>
+                      <div class="space-x-2">
+                        <button onclick="app.approveUser('${u.id}')" class="bg-green-600 text-white px-3 py-1 rounded text-xs">Schválit</button>
+                        <button onclick="app.rejectUser('${u.id}')" class="bg-red-600 text-white px-3 py-1 rounded text-xs">Zamítnout</button>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              `}
+            </div>
+
+            <!-- Správa kurzů -->
+            <div class="bg-white p-6 rounded-xl shadow-md">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-gray-700">Seznam Aktivních Kurzů</h3>
+                <button onclick="app.addCourse()" class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm">+ Nový kurz</button>
+              </div>
+              <div class="divide-y">
+                ${db.courses.map(k => `
+                  <div class="py-3 flex justify-between items-center">
+                    <div>
+                      <p class="font-bold text-sm">${k.name}</p>
+                      <p class="text-xs text-gray-500">${k.day} ${k.timeFrom}-${k.timeTo} | Věk: ${k.minAge}-${k.maxAge} let | Trenér: ${k.coach}</p>
+                    </div>
+                    <span class="text-xs bg-gray-100 px-2 py-1 rounded">Kapacita: ${k.capacity}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      },
+
+      approveUser(userId) {
+        const u = db.users.find(x => x.id === userId);
+        if (u) {
+          u.status = 'approved';
+          saveData();
+          this.renderAdminDashboard();
+        }
+      },
+
+      rejectUser(userId) {
+        db.users = db.users.filter(x => x.id !== userId);
+        saveData();
+        this.renderAdminDashboard();
+      },
+
+      addCourse() {
+        const name = prompt("Název kurzu:");
+        if (name) {
+          db.courses.push({
+            id: 'k' + Date.now(),
+            name,
+            day: 'Pondělí',
+            timeFrom: '16:00',
+            timeTo: '17:30',
+            minAge: 10,
+            maxAge: 14,
+            capacity: 15,
+            coach: 'Jan Novák'
+          });
+          saveData();
+          this.renderAdminDashboard();
+        }
+      },
+
+      // --- TRENÉRSKÁ ZÓNA ---
+      renderCoachDashboard() {
+        const container = document.getElementById('appContainer');
+        container.innerHTML = `
+          <div class="bg-white p-6 rounded-xl shadow-md">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Trenérská zóna</h2>
+            <p class="text-sm text-gray-600">Přehled tréninků a správa docházky pro trenéra.</p>
+          </div>
+        `;
+      }
+    };
+
+    // Spuštění aplikace při načtení stránky
+    window.addEventListener('DOMContentLoaded', () => app.init());
+  </script>
+</body>
+</html>
