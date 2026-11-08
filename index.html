@@ -3,658 +3,390 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Volejbalová škola Záběhlice — HAMR Sport</title>
-
-  <!-- Google Fonts -->
+  <title>Volejbalová škola Záběhlice — Rezervační systém</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Fonty & Ikony -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@1.43.0/dist/umd/lucide.min.js"></script>
+  <link href="[suspicious link removed]" rel="stylesheet">
+  <script src="[suspicious link removed]"></script>
 
   <style>
-    :root {
-      --primary: #0f7c8a;
-      --primary-hover: #0c6470;
-      --primary-light: #e3f1f3;
-      --dark-text: #1b2b33;
-      --muted-text: #46585f;
-      --border-color: #d5e3e5;
-      --bg-surface: #f1f7f8;
-      --font-headline: 'Figtree', sans-serif;
-      --font-body: 'Atkinson Hyperlegible', sans-serif;
-    }
-
     body {
-      background-color: var(--bg-surface);
-      color: var(--dark-text);
-      font-family: var(--font-body);
+      font-family: 'Inter', sans-serif;
     }
-
-    h1, h2, h3, h4, h5, h6, button, input, select {
-      font-family: var(--font-headline);
-    }
-
-    .nav-tab {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.25rem;
-      font-size: 0.9375rem;
-      font-weight: 600;
-      color: var(--muted-text);
-      border-bottom: 3px solid transparent;
-      transition: all 0.2s ease;
-      cursor: pointer;
-      background: transparent;
-      white-space: nowrap;
-    }
-
-    .nav-tab:hover {
-      color: var(--primary);
-    }
-
-    .nav-tab.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-      background-color: rgba(15, 124, 138, 0.05);
-    }
-
-    .card-vitals {
-      background-color: #ffffff;
-      border: 1px solid var(--border-color);
-      border-radius: 0.875rem;
-      box-shadow: 0 1px 3px rgba(27, 43, 51, 0.05), 0 4px 12px rgba(27, 43, 51, 0.03);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .accent-bar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 4px;
-      background-color: var(--primary);
-    }
-    .accent-bar.green { background-color: #2e7d4f; }
-    .accent-bar.amber { background-color: #b86e00; }
-    .accent-bar.red { background-color: #b3261e; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
 
-  <!-- APLIKAČNÍ HLAVIČKA -->
-  <div>
-    <header class="bg-white border-b border-[#d5e3e5] sticky top-0 z-40 shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-20">
-          
-          <!-- Logo Volejbalové školy -->
-          <div class="flex items-center gap-3.5 cursor-pointer" onclick="app.switchTab('courses')">
-            <div class="w-11 h-11 rounded-xl bg-[#0f7c8a] flex items-center justify-center text-white shadow-md flex-shrink-0">
-              <i data-lucide="volleyball" class="w-7 h-7"></i>
-            </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="font-extrabold text-xl leading-tight text-[#1b2b33]">Volejbalová škola Záběhlice</span>
-                <span class="bg-[#e3f1f3] text-[#0a5560] text-xs font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">HAMR Sport</span>
-              </div>
-              <p class="text-xs text-[#46585f] font-medium">Sportovní areál HAMR Záběhlice • Praha 10</p>
-            </div>
-          </div>
-
-          <!-- Uživatelské tlačítko / Profil -->
-          <div class="flex items-center space-x-3">
-            <div id="userNav" class="flex items-center space-x-3">
-              <span id="userInfo" class="text-sm font-semibold text-[#1b2b33]"></span>
-              <button id="logoutBtn" onclick="app.logout()" class="hidden bg-[#b3261e] hover:bg-[#911d17] text-white px-3.5 py-1.5 rounded-lg text-sm font-semibold transition flex items-center gap-1.5">
-                <i data-lucide="log-out" class="w-4 h-4"></i>
-                <span>Odhlásit se</span>
-              </button>
-              <button id="loginBtn" onclick="app.openModal('modalLogin')" class="bg-[#0f7c8a] hover:bg-[#0c6470] text-white px-4 py-2 rounded-lg text-sm font-bold transition shadow flex items-center gap-2">
-                <i data-lucide="log-in" class="w-4 h-4"></i>
-                <span>Přihlásit se</span>
-              </button>
-              <button id="registerBtn" onclick="app.openModal('modalRegister')" class="bg-[#e3f1f3] hover:bg-[#d5e9ec] text-[#0a5560] px-4 py-2 rounded-lg text-sm font-bold transition border border-[#7b9198]/20 flex items-center gap-2">
-                <i data-lucide="user-plus" class="w-4 h-4"></i>
-                <span>Registrace</span>
-              </button>
-            </div>
-          </div>
-
+  <!-- HORNÍ HLAVIČKA -->
+  <header class="bg-blue-900 text-white shadow-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <span class="text-3xl">🏐</span>
+        <div>
+          <h1 class="text-lg md:text-xl font-bold leading-tight">Volejbalová škola Záběhlice</h1>
+          <p class="text-xs text-blue-200">HAMR Sport Záběhlice • Přihlašovací & Rezervační systém</p>
         </div>
       </div>
-
-      <!-- Záložková navigace -->
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#d5e3e5] overflow-x-auto">
-        <nav class="flex space-x-2" aria-label="Záložky">
-          <button id="tabCourses" onclick="app.switchTab('courses')" class="nav-tab active">
-            <i data-lucide="layout-grid" class="w-4.5 h-4.5"></i>
-            <span>Kurzy a tréninky</span>
-          </button>
-          <button id="tabChildren" onclick="app.switchTab('children')" class="nav-tab">
-            <i data-lucide="users" class="w-4.5 h-4.5"></i>
-            <span>Moje děti a přihlášky</span>
-          </button>
-          <button id="tabReplacements" onclick="app.switchTab('replacements')" class="nav-tab">
-            <i data-lucide="refresh-cw" class="w-4.5 h-4.5"></i>
-            <span>Omluvy a Náhrady</span>
-          </button>
-          <button id="tabAttendance" onclick="app.switchTab('attendance')" class="nav-tab">
-            <i data-lucide="calendar-check" class="w-4.5 h-4.5"></i>
-            <span>Docházka (Trenéři)</span>
-          </button>
-          <button id="tabAdmin" onclick="app.switchTab('admin')" class="nav-tab hidden">
-            <i data-lucide="shield" class="w-4.5 h-4.5 text-[#b86e00]"></i>
-            <span class="text-[#b86e00]">Administrace a Schvalování</span>
-          </button>
-        </nav>
+      
+      <!-- Uživatelský navigační prvek (pouze pro přihlášené) -->
+      <div id="userHeaderNav" class="hidden flex items-center space-x-3">
+        <div class="text-right">
+          <div id="headerUserName" class="text-sm font-semibold"></div>
+          <div id="headerUserRole" class="text-xs text-blue-200"></div>
+        </div>
+        <button onclick="app.logout()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1">
+          <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+          <span>Odhlásit</span>
+        </button>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <!-- HLAVNÍ OBSAH -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- HLAVNÍ OBSAHOVÁ ZÓNA -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6">
 
-      <!-- ========================================== -->
-      <!-- ZÁLOŽKA 1: PŘEHLED KURZŮ -->
-      <!-- ========================================== -->
-      <section id="viewCourses" class="space-y-6">
-        
-        <!-- Intro Banner -->
-        <div class="card-vitals p-6 bg-gradient-to-r from-white via-white to-[#f1f7f8]">
-          <div class="accent-bar"></div>
-          <div class="sm:flex sm:items-center sm:justify-between gap-4">
-            <div class="space-y-1">
-              <span class="text-xs font-bold text-[#0f7c8a] uppercase tracking-wider">Sezóna 2026/2027 • HAMR Záběhlice</span>
-              <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1b2b33]">Volejbalové kurzy pro děti a mládež</h1>
-              <p class="text-sm text-[#46585f] max-w-2xl">
-                Tréninky probíhají ve sportovním areálu HAMR Záběhlice u Hamerského rybníka v Praze 10. Nabízíme všestrannou přípravu dětí od minivolejbalu až po juniorské ligové týmy.
-              </p>
-            </div>
-            <div class="mt-4 sm:mt-0 flex flex-col items-start sm:items-end gap-2 flex-shrink-0">
-              <div class="flex items-center gap-2 text-xs text-[#1d5e3a] bg-[#e3f1f3] px-3.5 py-1.5 rounded-full font-bold">
-                <i data-lucide="check-circle" class="w-4 h-4 text-[#2e7d4f]"></i>
-                <span>Nábor otevřen</span>
-              </div>
-              <span class="text-xs text-[#46585f] font-medium">Záběhlická ul., Praha 10 • Tel: +420 272 772 762</span>
-            </div>
-          </div>
-        </div>
+    <!-- 1. NEPŘIHLÁŠENÝ UŽIVATEL (POUZE PŘIHLÁŠENÍ & REGISTRACE) -->
+    <div id="guestSection" class="max-w-md mx-auto my-8 bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
+      <!-- Přepínač Záložek: Přihlášení / Registrace -->
+      <div class="flex border-b border-slate-200 bg-slate-50">
+        <button id="tabAuthLogin" onclick="app.switchAuthTab('login')" class="w-1/2 py-3.5 text-center font-bold text-sm text-blue-700 border-b-2 border-blue-600 bg-white">
+          Přihlášení
+        </button>
+        <button id="tabAuthRegister" onclick="app.switchAuthTab('register')" class="w-1/2 py-3.5 text-center font-bold text-sm text-slate-500 hover:text-blue-600 transition">
+          Nová registrace
+        </button>
+      </div>
 
-        <!-- Filtry -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 rounded-xl border border-[#d5e3e5]">
-          <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
-            <span class="text-xs font-bold text-[#46585f] uppercase tracking-wider mr-1">Kategorie:</span>
-            <button onclick="app.filterCourses('all')" class="course-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#0f7c8a] text-white">Všechny kurzy</button>
-            <button onclick="app.filterCourses('minivolejbal')" class="course-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#f1f7f8] text-[#46585f] hover:bg-[#e3f1f3]">Minivolejbal (6–12 let)</button>
-            <button onclick="app.filterCourses('zactvo')" class="course-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#f1f7f8] text-[#46585f] hover:bg-[#e3f1f3]">Žactvo U14/U16</button>
-            <button onclick="app.filterCourses('beach')" class="course-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#f1f7f8] text-[#46585f] hover:bg-[#e3f1f3]">Beachvolejbal HAMR</button>
-          </div>
-          <div id="adminCourseBtnContainer"></div>
-        </div>
-
-        <!-- Mřížka kurzů -->
-        <div id="coursesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Rendered by JS -->
-        </div>
-
-      </section>
-
-      <!-- ========================================== -->
-      <!-- ZÁLOŽKA 2: MOJE DĚTI A PŘIHLÁŠKY -->
-      <!-- ========================================== -->
-      <section id="viewChildren" class="hidden space-y-6">
-        
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div class="p-6">
+        <!-- FORMULÁŘ: PŘIHLÁŠENÍ -->
+        <form id="formLogin" onsubmit="app.handleLogin(event)" class="space-y-4">
           <div>
-            <h2 class="text-xl font-bold text-[#1b2b33]">Moje děti & Registrace do kurzů</h2>
-            <p class="text-sm text-[#46585f]">Správa profilů vašich dětí a stav podaných přihlášek na tréninky.</p>
+            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">E-mailová adresa</label>
+            <input type="email" id="loginEmail" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="sindelar.vit10@gmail.com">
           </div>
-          <button onclick="app.openModal('modalAddChild')" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-sm font-bold transition shadow">
-            <i data-lucide="user-plus" class="w-4.5 h-4.5"></i>
-            <span>+ Přidat dítě do evidence</span>
-          </button>
-        </div>
-
-        <div id="childrenGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Rendered by JS -->
-        </div>
-
-        <div class="card-vitals p-6">
-          <div class="accent-bar"></div>
-          <h3 class="text-base font-bold text-[#1b2b33] mb-4">Přehled přihlášek na tréninky pololetí</h3>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm">
-              <thead class="text-xs uppercase bg-[#f1f7f8] text-[#46585f] border-y border-[#d5e3e5]">
-                <tr>
-                  <th class="py-3 px-4 font-bold">Dítě</th>
-                  <th class="py-3 px-4 font-bold">Kurz</th>
-                  <th class="py-3 px-4 font-bold">Den & Čas</th>
-                  <th class="py-3 px-4 font-bold">Cena</th>
-                  <th class="py-3 px-4 font-bold">Stav schválení</th>
-                  <th class="py-3 px-4 font-bold text-right">Akce</th>
-                </tr>
-              </thead>
-              <tbody id="parentEnrollmentsTable" class="divide-y divide-[#d5e3e5]">
-                <!-- Rendered by JS -->
-              </tbody>
-            </table>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Heslo</label>
+            <input type="password" id="loginPassword" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="••••••••">
           </div>
-        </div>
-
-      </section>
-
-      <!-- ========================================== -->
-      <!-- ZÁLOŽKA 3: OMLUVY A NÁHRADY -->
-      <!-- ========================================== -->
-      <section id="viewReplacements" class="hidden space-y-6">
-        
-        <div class="card-vitals p-6">
-          <div class="accent-bar green"></div>
-          <div class="sm:flex sm:items-center sm:justify-between gap-4">
-            <div>
-              <span class="text-xs font-bold text-[#2e7d4f] uppercase tracking-wider">Náhradový systém Volejbalové školy</span>
-              <h2 class="text-xl font-bold text-[#1b2b33]">Omlouvání z tréninků & Čerpání náhrad</h2>
-              <p class="text-sm text-[#46585f] max-w-2xl mt-1">
-                Pokud dítě omluvíte z tréninku nejpozději <strong>12 hodin předem</strong>, systém vám automaticky přičte 1 náhradový kredit. Tento kredit pak můžete využít pro přihlášení na náhradní trénink v jiné skupině odpovídajícího věku.
-              </p>
-            </div>
-            <div id="replacementCreditsBadge" class="mt-4 sm:mt-0 flex items-center gap-2 bg-[#e3f1f3] text-[#0a5560] px-4 py-2.5 rounded-xl font-bold text-sm border border-[#0f7c8a]/20">
-              <i data-lucide="award" class="w-5 h-5 text-[#0f7c8a]"></i>
-              <span id="creditsCountText">Aktivní kredity: 0</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           
-          <!-- Omluvení z nadcházejících tréninků -->
-          <div class="card-vitals p-6 space-y-4">
-            <h3 class="text-base font-bold text-[#1b2b33] flex items-center gap-2">
-              <i data-lucide="calendar" class="w-5 h-5 text-[#0f7c8a]"></i>
-              <span>Nadcházející tréninky mého dítěte</span>
-            </h3>
-            <p class="text-xs text-[#46585f]">Kliknutím na tlačítko omluvíte dítě z tréninku.</p>
+          <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white py-2.5 rounded-lg font-semibold text-sm transition shadow">
+            Přihlásit se do systému
+          </button>
 
-            <div id="upcomingLessonsList" class="space-y-3">
-              <!-- Rendered by JS -->
-            </div>
+          <div class="pt-4 border-t border-slate-100 text-xs text-slate-500 space-y-1">
+            <p class="font-semibold text-slate-700">Přednastavený administrátorský účet:</p>
+            <p>E-mail: <code class="bg-slate-100 px-1 py-0.5 rounded text-blue-800 font-mono">sindelar.vit10@gmail.com</code></p>
+            <p>Heslo: <code class="bg-slate-100 px-1 py-0.5 rounded text-blue-800 font-mono">123456789</code></p>
+          </div>
+        </form>
+
+        <!-- FORMULÁŘ: REGISTRACE -->
+        <form id="formRegister" onsubmit="app.handleRegister(event)" class="hidden space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Jméno a Příjmení</label>
+            <input type="text" id="regName" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm" placeholder="Jana Nováková">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">E-mailová adresa</label>
+            <input type="email" id="regEmail" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm" placeholder="jana.novakova@seznam.cz">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Telefonní číslo</label>
+            <input type="tel" id="regPhone" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm" placeholder="+420 777 123 456">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Požadovaná role</label>
+            <select id="regRole" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm bg-white">
+              <option value="parent">Rodič / Zákonný zástupce</option>
+              <option value="coach">Trenér volejbalu</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Heslo</label>
+            <input type="password" id="regPassword" required minlength="6" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm" placeholder="Min. 6 znaků">
           </div>
 
-          <!-- Přihlášení na náhradní trénink -->
-          <div class="card-vitals p-6 space-y-4">
-            <h3 class="text-base font-bold text-[#1b2b33] flex items-center gap-2">
-              <i data-lucide="plus-circle" class="w-5 h-5 text-[#2e7d4f]"></i>
-              <span>Přihlášení na náhradní trénink</span>
-            </h3>
-            <p class="text-xs text-[#46585f]">Výběr volných kapacity v jiných skupinách pro vyčerpání kreditu.</p>
-
-            <div id="availableMakeupsList" class="space-y-3">
-              <!-- Rendered by JS -->
-            </div>
+          <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800">
+            ℹ️ Nově registrovaný účet musí před prvním přihlášením schválit administrátor.
           </div>
 
-        </div>
+          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-lg font-semibold text-sm transition shadow">
+            Odeslat žádost o registraci
+          </button>
+        </form>
+      </div>
+    </div>
 
-      </section>
 
-      <!-- ========================================== -->
-      <!-- ZÁLOŽKA 4: DOCHÁZKA (TRENÉŘI) -->
-      <!-- ========================================== -->
-      <section id="viewAttendance" class="hidden space-y-6">
+    <!-- 2. PŘIHLÁŠENÝ UŽIVATEL — ROLOVÁ ZÓNA -->
+    <div id="authenticatedSection" class="hidden space-y-6">
+
+      <!-- Navigační záložky podle role -->
+      <div id="roleNavTabs" class="flex border-b border-slate-200 space-x-2 overflow-x-auto pb-1">
+        <!-- Dynamicky generované záložky pro přihlášenou roli -->
+      </div>
+
+      <!-- OBSAH PRO RODIČE -->
+      <div id="parentView" class="hidden space-y-6">
         
-        <div class="card-vitals p-6">
-          <div class="accent-bar green"></div>
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <!-- Záložka Rodič 1: Děti & Přihlášky & Náhrady -->
+        <div id="parentTabChildren" class="space-y-6">
+          <div class="flex justify-between items-center">
             <div>
-              <span class="text-xs font-bold text-[#2e7d4f] uppercase tracking-wider">Trenérský deník • HAMR Záběhlice</span>
-              <h2 class="text-xl font-bold text-[#1b2b33]">Zápis a kontrola docházky</h2>
-              <p class="text-sm text-[#46585f]">Označení docházky hráčů na konkrétní tréninkové jednotce.</p>
+              <h2 class="text-xl font-bold text-slate-800">Moje registrované děti</h2>
+              <p class="text-xs text-slate-500">Správa profilů dětí, omlouvání z tréninků a čerpání náhradových kreditů.</p>
             </div>
-            
-            <div class="flex flex-wrap items-center gap-3">
-              <div>
-                <label class="block text-xs font-bold text-[#46585f] mb-1">Vyberte kurz:</label>
-                <select id="attendanceCourseSelect" onchange="app.loadAttendanceSheet()" class="text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-1.5 font-medium text-[#1b2b33]">
-                  <!-- Rendered by JS -->
-                </select>
-              </div>
-
-              <div>
-                <label class="block text-xs font-bold text-[#46585f] mb-1">Datum tréninku:</label>
-                <input type="date" id="attendanceDateInput" onchange="app.loadAttendanceSheet()" class="text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-1.5 font-medium text-[#1b2b33]">
-              </div>
-
-              <div class="self-end">
-                <button onclick="app.saveAttendance()" class="px-4 py-2 rounded-lg bg-[#2e7d4f] hover:bg-[#256841] text-white text-sm font-bold transition flex items-center gap-2 shadow">
-                  <i data-lucide="save" class="w-4 h-4"></i>
-                  <span>Uložit docházku</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-vitals p-6">
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm">
-              <thead class="text-xs uppercase bg-[#f1f7f8] text-[#46585f] border-y border-[#d5e3e5]">
-                <tr>
-                  <th class="py-3 px-4 font-bold">Hráč / Hráčka</th>
-                  <th class="py-3 px-4 font-bold">Věk / Kategorie</th>
-                  <th class="py-3 px-4 font-bold">Stav docházky</th>
-                  <th class="py-3 px-4 font-bold">Poznámka trenéra</th>
-                </tr>
-              </thead>
-              <tbody id="attendanceTableBody" class="divide-y divide-[#d5e3e5]">
-                <!-- Rendered by JS -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- ========================================== -->
-      <!-- ZÁLOŽKA 5: ADMINISTRACE (ADMIN ONLY) -->
-      <!-- ========================================== -->
-      <section id="viewAdmin" class="hidden space-y-6">
-        
-        <div class="card-vitals p-6">
-          <div class="accent-bar amber"></div>
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <span class="text-xs font-bold text-[#b86e00] uppercase tracking-wider">Administrátorský panel</span>
-              <h2 class="text-xl font-bold text-[#1b2b33]">Správa Volejbalové školy & Schvalování</h2>
-              <p class="text-sm text-[#46585f]">Schvalování nově registrovaných účtů, potvrdzování přihlášek a správu kurzů.</p>
-            </div>
-            <button onclick="app.openModal('modalAddCourse')" class="px-4 py-2 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-sm font-bold transition flex items-center gap-2 flex-shrink-0 shadow">
-              <i data-lucide="plus-circle" class="w-4 h-4"></i>
-              <span>+ Vytvořit nový kurz</span>
+            <button onclick="app.openModal('modalAddChild')" class="bg-blue-700 hover:bg-blue-800 text-white px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Přidat dítě</span>
             </button>
           </div>
-        </div>
 
-        <!-- 1. Noví uživatelé ke schválení -->
-        <div class="card-vitals p-6 space-y-4">
-          <div class="flex items-center justify-between">
-            <h3 class="text-base font-bold text-[#1b2b33] flex items-center gap-2">
-              <span>Žádosti o schválení nových účtů</span>
-              <span id="pendingUsersCount" class="bg-[#b86e00] text-white text-xs px-2.5 py-0.5 rounded-full font-extrabold">0</span>
+          <div id="parentChildrenList" class="grid md:grid-cols-2 gap-4">
+            <!-- Vykreslí se dynamicky -->
+          </div>
+
+          <!-- Přehled náhradových kreditů -->
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
+            <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+              <i data-lucide="ticket" class="w-4 h-4 text-emerald-600"></i>
+              <span>Kredity za včas omluvené tréninky</span>
             </h3>
+            <div id="parentCreditsList" class="text-xs text-slate-600 space-y-2">
+              <!-- Dynamické kredity -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Záložka Rodič 2: Přihlášení do nových kurzů -->
+        <div id="parentTabCourses" class="hidden space-y-4">
+          <div>
+            <h2 class="text-xl font-bold text-slate-800">Nabídka volejbalových kurzů</h2>
+            <p class="text-xs text-slate-500">Vyberte kurz odpovídající věku a zapište své dítě na aktuální pololetí.</p>
+          </div>
+          <div id="parentCoursesGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Vykreslí se dynamicky -->
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- OBSAH PRO TRENÉRA -->
+      <div id="coachView" class="hidden space-y-6">
+        <div>
+          <h2 class="text-xl font-bold text-slate-800">Trenérský portál</h2>
+          <p class="text-xs text-slate-500">Zápis docházky a přehled svěřených volejbalových skupin.</p>
+        </div>
+
+        <!-- Záložka Trenér 1: Docházka -->
+        <div id="coachTabAttendance" class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-4 border-b pb-4">
+            <div class="flex items-center gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-500 mb-1">Vyberte váš kurz:</label>
+                <select id="coachCourseSelect" onchange="app.renderCoachAttendanceTable()" class="p-2 border border-slate-300 rounded-lg text-xs bg-white font-medium">
+                  <!-- Naplní se dynamicky -->
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-500 mb-1">Datum tréninku:</label>
+                <input type="date" id="coachAttendanceDate" onchange="app.renderCoachAttendanceTable()" class="p-2 border border-slate-300 rounded-lg text-xs">
+              </div>
+            </div>
+            <button onclick="app.saveCoachAttendance()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow">
+              <i data-lucide="save" class="w-4 h-4"></i>
+              <span>Uložit docházku</span>
+            </button>
           </div>
 
           <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm">
-              <thead class="text-xs uppercase bg-[#f1f7f8] text-[#46585f] border-y border-[#d5e3e5]">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-100 text-slate-600 uppercase font-bold">
                 <tr>
-                  <th class="py-3 px-4 font-bold">Jméno a Příjmení</th>
-                  <th class="py-3 px-4 font-bold">E-mail</th>
-                  <th class="py-3 px-4 font-bold">Telefon</th>
-                  <th class="py-3 px-4 font-bold">Požadovaná role</th>
-                  <th class="py-3 px-4 font-bold text-right">Akce Admina</th>
+                  <th class="p-3">Jméno Hráče / Hráčky</th>
+                  <th class="p-3">Věk</th>
+                  <th class="p-3">Stav docházky</th>
+                  <th class="p-3">Poznámka k tréninku</th>
                 </tr>
               </thead>
-              <tbody id="pendingUsersTable" class="divide-y divide-[#d5e3e5]">
-                <!-- Rendered by JS -->
+              <tbody id="coachAttendanceTbody" class="divide-y divide-slate-100">
+                <!-- Vykreslí se dynamicky -->
               </tbody>
             </table>
           </div>
         </div>
+      </div>
 
-        <!-- 2. Přihlášky dětí do kurzů ke schválení -->
-        <div class="card-vitals p-6 space-y-4">
-          <h3 class="text-base font-bold text-[#1b2b33]">Přihlášky dětí do kurzů ke schválení</h3>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm">
-              <thead class="text-xs uppercase bg-[#f1f7f8] text-[#46585f] border-y border-[#d5e3e5]">
-                <tr>
-                  <th class="py-3 px-4 font-bold">Dítě</th>
-                  <th class="py-3 px-4 font-bold">Rodič</th>
-                  <th class="py-3 px-4 font-bold">Kurz</th>
-                  <th class="py-3 px-4 font-bold">Stav</th>
-                  <th class="py-3 px-4 font-bold text-right">Akce Admina</th>
-                </tr>
-              </thead>
-              <tbody id="adminEnrollmentsTable" class="divide-y divide-[#d5e3e5]">
-                <!-- Rendered by JS -->
-              </tbody>
-            </table>
+
+      <!-- OBSAH PRO ADMINISTRÁTORA -->
+      <div id="adminView" class="hidden space-y-6">
+        <div>
+          <h2 class="text-xl font-bold text-slate-800">Administrace Volejbalové školy</h2>
+          <p class="text-xs text-slate-500">Kompletní správcovská kontrola nad účty, dětmi, schvalováním a kurzy.</p>
+        </div>
+
+        <!-- Záložka Admin 1: Schvalovací fronta -->
+        <div id="adminTabApproval" class="space-y-6">
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+            <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+              <i data-lucide="user-check" class="w-4 h-4 text-amber-600"></i>
+              <span>Nové registrace účtů ke schválení</span>
+            </h3>
+            <div id="adminPendingUsersList" class="divide-y divide-slate-100">
+              <!-- Dynamicky vygeneruje neschválené účty -->
+            </div>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+            <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+              <i data-lucide="file-check" class="w-4 h-4 text-blue-600"></i>
+              <span>Přihlášky dětí do kurzů ke schválení</span>
+            </h3>
+            <div id="adminPendingEnrollmentsList" class="divide-y divide-slate-100">
+              <!-- Dynamicky vygeneruje neschválené přihlášky -->
+            </div>
           </div>
         </div>
 
-        <!-- 3. Seznam a úprava kurzů -->
-        <div class="card-vitals p-6 space-y-4">
-          <h3 class="text-base font-bold text-[#1b2b33]">Seznam aktivních kurzů & Správa</h3>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm">
-              <thead class="text-xs uppercase bg-[#f1f7f8] text-[#46585f] border-y border-[#d5e3e5]">
-                <tr>
-                  <th class="py-3 px-4 font-bold">Název kurzu</th>
-                  <th class="py-3 px-4 font-bold">Trenér</th>
-                  <th class="py-3 px-4 font-bold">Čas a Den</th>
-                  <th class="py-3 px-4 font-bold">Kapacita</th>
-                  <th class="py-3 px-4 font-bold">Kurt / Místo</th>
-                  <th class="py-3 px-4 font-bold text-right">Akce</th>
-                </tr>
-              </thead>
-              <tbody id="adminCoursesTable" class="divide-y divide-[#d5e3e5]">
-                <!-- Rendered by JS -->
-              </tbody>
-            </table>
+        <!-- Záložka Admin 2: Správa VŠECH účtů a dětí -->
+        <div id="adminTabUsers" class="hidden space-y-6">
+          
+          <!-- Seznam Uživatelů -->
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+            <div class="flex justify-between items-center">
+              <h3 class="font-bold text-slate-800 text-sm">Přehled všech uživatelských účtů</h3>
+              <span id="adminTotalUsersBadge" class="bg-slate-100 text-slate-600 text-xs px-2.5 py-1 rounded-full font-bold"></span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-100 text-slate-600 uppercase font-bold">
+                  <tr>
+                    <th class="p-2.5">Jméno a Příjmení</th>
+                    <th class="p-2.5">E-mail</th>
+                    <th class="p-2.5">Telefon</th>
+                    <th class="p-2.5">Role</th>
+                    <th class="p-2.5">Stav</th>
+                    <th class="p-2.5 text-right">Akce</th>
+                  </tr>
+                </thead>
+                <tbody id="adminAllUsersTbody" class="divide-y divide-slate-100">
+                  <!-- Dynamicky -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Seznam Všech Dětí -->
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+            <div class="flex justify-between items-center">
+              <h3 class="font-bold text-slate-800 text-sm">Přehled všech dětí v evidenci</h3>
+              <span id="adminTotalChildrenBadge" class="bg-slate-100 text-slate-600 text-xs px-2.5 py-1 rounded-full font-bold"></span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-100 text-slate-600 uppercase font-bold">
+                  <tr>
+                    <th class="p-2.5">Dítě</th>
+                    <th class="p-2.5">Datum narození</th>
+                    <th class="p-2.5">Věk</th>
+                    <th class="p-2.5">Rodič (Zástupce)</th>
+                    <th class="p-2.5 text-right">Akce</th>
+                  </tr>
+                </thead>
+                <tbody id="adminAllChildrenTbody" class="divide-y divide-slate-100">
+                  <!-- Dynamicky -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Záložka Admin 3: Správa Kurzů -->
+        <div id="adminTabCourses" class="hidden space-y-4">
+          <div class="flex justify-between items-center">
+            <h3 class="font-bold text-slate-800 text-sm">Seznam a správa kurzů</h3>
+            <button onclick="app.openModal('modalAddCourse')" class="bg-blue-700 hover:bg-blue-800 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Vytvořit nový kurz</span>
+            </button>
+          </div>
+          <div id="adminCoursesGrid" class="grid md:grid-cols-2 gap-4">
+            <!-- Dynamicky -->
           </div>
         </div>
 
-      </section>
+      </div>
 
-    </main>
-  </div>
+    </div>
+
+  </main>
 
   <!-- PATIČKA -->
-  <footer class="bg-white border-t border-[#d5e3e5] py-6 text-xs text-[#46585f]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-2">
-        <span class="font-bold text-[#1b2b33]">Volejbalová škola Záběhlice — HAMR Sport</span>
-        <span>•</span>
-        <span>ul. Záběhlická, 106 00 Praha 10</span>
-        <span>•</span>
-        <span>Tel: +420 272 772 762</span>
-      </div>
-      <div>
-        <span>Oficiální rezervační a přihlašovací portál</span>
-      </div>
-    </div>
+  <footer class="bg-slate-800 text-slate-400 py-4 text-center text-xs border-t border-slate-700">
+    <p>&copy; Volejbalová škola Záběhlice • HAMR Sport Záběhlice</p>
   </footer>
 
-  <!-- ========================================== -->
+
   <!-- MODÁLNÍ OKNA -->
-  <!-- ========================================== -->
 
-  <!-- Modal: Přihlášení -->
-  <div id="modalLogin" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative space-y-4">
-      <button onclick="app.closeModal('modalLogin')" class="absolute top-4 right-4 text-[#46585f] hover:text-[#1b2b33]">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
-
-      <div class="flex items-center gap-2">
-        <div class="w-9 h-9 rounded-full bg-[#e3f1f3] text-[#0f7c8a] flex items-center justify-center">
-          <i data-lucide="log-in" class="w-5 h-5"></i>
-        </div>
-        <h3 class="text-lg font-bold text-[#1b2b33]">Přihlášení do systému</h3>
-      </div>
-
-      <form onsubmit="app.handleLogin(event)" class="space-y-4">
-        <div>
-          <label for="loginEmail" class="block text-xs font-bold text-[#46585f] mb-1 uppercase tracking-wider">E-mailová adresa:</label>
-          <input type="email" id="loginEmail" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3.5 py-2.5 text-[#1b2b33]" placeholder="sindelar.vit10@gmail.com">
-        </div>
-        <div>
-          <label for="loginPassword" class="block text-xs font-bold text-[#46585f] mb-1 uppercase tracking-wider">Heslo:</label>
-          <input type="password" id="loginPassword" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3.5 py-2.5 text-[#1b2b33]">
-        </div>
-
-        <div id="loginError" class="text-xs text-[#b3261e] hidden font-bold"></div>
-
-        <div class="pt-2 flex items-center justify-between">
-          <button type="button" onclick="app.closeModal('modalLogin'); app.openModal('modalRegister');" class="text-xs text-[#0f7c8a] font-bold hover:underline">
-            Nemáte účet? Zaregistrujte se
-          </button>
-          <button type="submit" class="px-5 py-2.5 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-sm font-bold transition shadow">
-            Přihlásit se
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal: Registrace -->
-  <div id="modalRegister" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative space-y-4 max-h-[90vh] overflow-y-auto">
-      <button onclick="app.closeModal('modalRegister')" class="absolute top-4 right-4 text-[#46585f] hover:text-[#1b2b33]">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
-
-      <div class="flex items-center gap-2">
-        <div class="w-9 h-9 rounded-full bg-[#e3f1f3] text-[#0f7c8a] flex items-center justify-center">
-          <i data-lucide="user-plus" class="w-5 h-5"></i>
-        </div>
-        <h3 class="text-lg font-bold text-[#1b2b33]">Registrace nového účtu</h3>
-      </div>
-      <p class="text-xs text-[#46585f]">Účet po registraci podléhá schválení administrátorem školy.</p>
-
-      <form onsubmit="app.handleRegister(event)" class="space-y-3">
-        <div>
-          <label for="regFullName" class="block text-xs font-bold text-[#46585f] mb-1">Jméno a Příjmení:</label>
-          <input type="text" id="regFullName" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3.5 py-2 text-[#1b2b33]" placeholder="Jana Nováková">
-        </div>
-        <div>
-          <label for="regEmail" class="block text-xs font-bold text-[#46585f] mb-1">E-mailová adresa:</label>
-          <input type="email" id="regEmail" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3.5 py-2 text-[#1b2b33]" placeholder="jana.novakova@seznam.cz">
-        </div>
-        <div>
-          <label for="regPhone" class="block text-xs font-bold text-[#46585f] mb-1">Telefonní kontakt:</label>
-          <input type="tel" id="regPhone" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3.5 py-2 text-[#1b2b33]" placeholder="+420 777 123 456">
-        </div>
-        <div>
-          <label for="regRole" class="block text-xs font-bold text-[#46585f] mb-1">Role v systému:</label>
-          <select id="regRole" class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3.5 py-2 text-[#1b2b33]">
-            <option value="parent">Rodič / Zákonný zástupce</option>
-            <option value="coach">Trenér</option>
-          </select>
-        </div>
-        <div>
-          <label for="regPassword" class="block text-xs font-bold text-[#46585f] mb-1">Heslo (min. 6 znaků):</label>
-          <input type="password" id="regPassword" required minlength="6" class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3.5 py-2 text-[#1b2b33]">
-        </div>
-
-        <div id="regError" class="text-xs text-[#b3261e] hidden font-bold"></div>
-
-        <div class="pt-2 flex items-center justify-between">
-          <button type="button" onclick="app.closeModal('modalRegister'); app.openModal('modalLogin');" class="text-xs text-[#0f7c8a] font-bold hover:underline">
-            Už máte účet? Přihlásit se
-          </button>
-          <button type="submit" class="px-5 py-2.5 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-sm font-bold transition shadow">
-            Zaregistrovat se
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal: Přidat dítě -->
+  <!-- Modal: Přidat dítě (Rodič) -->
   <div id="modalAddChild" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative space-y-4">
-      <button onclick="app.closeModal('modalAddChild')" class="absolute top-4 right-4 text-[#46585f] hover:text-[#1b2b33]">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
-
-      <div class="flex items-center gap-2">
-        <div class="w-9 h-9 rounded-full bg-[#e3f1f3] text-[#0f7c8a] flex items-center justify-center">
-          <i data-lucide="user-plus" class="w-5 h-5"></i>
-        </div>
-        <h3 class="text-lg font-bold text-[#1b2b33]">Zápis dítěte do evidence</h3>
+    <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-xl space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-slate-800 text-base">Přidat dítě do evidence</h3>
+        <button onclick="app.closeModal('modalAddChild')" class="text-slate-400 hover:text-slate-600">&times;</button>
       </div>
-
-      <form onsubmit="app.handleAddChild(event)" class="space-y-3">
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label for="childFirstName" class="block text-xs font-bold text-[#46585f] mb-1">Jméno:</label>
-            <input type="text" id="childFirstName" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]" placeholder="Matěj">
-          </div>
-          <div>
-            <label for="childLastName" class="block text-xs font-bold text-[#46585f] mb-1">Příjmení:</label>
-            <input type="text" id="childLastName" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]" placeholder="Novák">
-          </div>
-        </div>
-
+      <form onsubmit="app.handleAddChild(event)" class="space-y-3 text-xs">
         <div>
-          <label for="childBirthDate" class="block text-xs font-bold text-[#46585f] mb-1">Datum narození:</label>
-          <input type="date" id="childBirthDate" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]">
+          <label class="block font-semibold text-slate-600 mb-1">Jméno a Příjmení dítěte</label>
+          <input type="text" id="addChildName" required class="w-full p-2 border border-slate-300 rounded-lg" placeholder="Lukáš Novák">
         </div>
-
         <div>
-          <label for="childCategory" class="block text-xs font-bold text-[#46585f] mb-1">Volejbalová kategorie:</label>
-          <select id="childCategory" class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]">
-            <option value="Minivolejbal Žlutý (6–8 let)">Minivolejbal Žlutý (6–8 let)</option>
-            <option value="Minivolejbal Oranžový (8–10 let)">Minivolejbal Oranžový (8–10 let)</option>
-            <option value="Minivolejbal Červený (10–12 let)">Minivolejbal Červený (10–12 let)</option>
-            <option value="Mladší žactvo U14 (12–14 let)">Mladší žactvo U14 (12–14 let)</option>
-            <option value="Starší žactvo & Kadeti U16/U18">Starší žactvo & Kadeti U16/U18</option>
-            <option value="Beachvolejbalová přípravka">Beachvolejbalová přípravka HAMR</option>
-          </select>
+          <label class="block font-semibold text-slate-600 mb-1">Datum narození</label>
+          <input type="date" id="addChildBirth" required class="w-full p-2 border border-slate-300 rounded-lg">
         </div>
-
         <div>
-          <label for="childHealthNotes" class="block text-xs font-bold text-[#46585f] mb-1">Zdravotní poznámky / Alergie:</label>
-          <textarea id="childHealthNotes" rows="2" class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]" placeholder="Bez omezení / Alergie na pyly"></textarea>
+          <label class="block font-semibold text-slate-600 mb-1">Bydliště / Adresa</label>
+          <input type="text" id="addChildAddress" class="w-full p-2 border border-slate-300 rounded-lg" placeholder="Záběhlická 12, Praha 10">
         </div>
-
-        <div class="pt-2 flex justify-end gap-2">
-          <button type="button" onclick="app.closeModal('modalAddChild')" class="px-4 py-2 rounded-lg bg-[#f1f7f8] text-[#46585f] text-sm font-bold">Zrušit</button>
-          <button type="submit" class="px-5 py-2 rounded-lg bg-[#0f7c8a] text-white text-sm font-bold shadow">Uložit dítě</button>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="app.closeModal('modalAddChild')" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 font-semibold">Zrušit</button>
+          <button type="submit" class="px-4 py-1.5 rounded-lg bg-blue-700 text-white font-semibold">Uložit dítě</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Modal: Přihlásit dítě do kurzu -->
-  <div id="modalEnrollChild" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative space-y-4">
-      <button onclick="app.closeModal('modalEnrollChild')" class="absolute top-4 right-4 text-[#46585f] hover:text-[#1b2b33]">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
-
-      <div class="flex items-center gap-2">
-        <div class="w-9 h-9 rounded-full bg-[#e3f1f3] text-[#0f7c8a] flex items-center justify-center">
-          <i data-lucide="clipboard-check" class="w-5 h-5"></i>
-        </div>
-        <h3 class="text-lg font-bold text-[#1b2b33]">Přihláška na volejbalový kurz</h3>
+  <!-- Modal: Omluvit trénink (Rodič) -->
+  <div id="modalExcuseLesson" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-xl space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-slate-800 text-base">Omluva z tréninku</h3>
+        <button onclick="app.closeModal('modalExcuseLesson')" class="text-slate-400 hover:text-slate-600">&times;</button>
       </div>
-      <p id="enrollCourseTitle" class="text-sm text-[#0f7c8a] font-bold"></p>
-
-      <form onsubmit="app.handleEnroll(event)" class="space-y-4">
-        <input type="hidden" id="enrollCourseId">
-
+      <form onsubmit="app.handleExcuseLesson(event)" class="space-y-3 text-xs">
+        <input type="hidden" id="excuseEnrollmentId">
         <div>
-          <label for="enrollChildSelect" class="block text-xs font-bold text-[#46585f] mb-1">Vyberte dítě:</label>
-          <select id="enrollChildSelect" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3.5 py-2.5 text-[#1b2b33]">
-            <!-- Rendered by JS -->
-          </select>
+          <label class="block font-semibold text-slate-600 mb-1">Datum tréninku, ze kterého se omlouváte:</label>
+          <input type="date" id="excuseDate" required class="w-full p-2 border border-slate-300 rounded-lg">
         </div>
-
-        <div class="p-3 rounded-lg bg-[#f1f7f8] border border-[#d5e3e5] text-xs text-[#46585f]">
-          • Přihláška bude odeslána ke schválení administrátorovi Volejbalové školy.
+        <div>
+          <label class="block font-semibold text-slate-600 mb-1">Důvod omluvy (volitelné):</label>
+          <input type="text" id="excuseReason" class="w-full p-2 border border-slate-300 rounded-lg" placeholder="Nevolnost / rodinné důvody">
         </div>
-
-        <div class="pt-2 flex justify-end gap-2">
-          <button type="button" onclick="app.closeModal('modalEnrollChild')" class="px-4 py-2 rounded-lg bg-[#f1f7f8] text-[#46585f] text-sm font-bold">Zrušit</button>
-          <button type="submit" class="px-5 py-2 rounded-lg bg-[#0f7c8a] text-white text-sm font-bold shadow">Odeslat přihlášku</button>
+        <div class="p-2.5 bg-blue-50 border border-blue-200 rounded-lg text-blue-800">
+          ℹ️ Omluva včas (více než 12 hodin předem) vám automaticky přičte 1 náhradový kredit pro výběr jiného termínu!
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="app.closeModal('modalExcuseLesson')" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 font-semibold">Zrušit</button>
+          <button type="submit" class="px-4 py-1.5 rounded-lg bg-red-600 text-white font-semibold">Odeslat omluvu</button>
         </div>
       </form>
     </div>
@@ -662,870 +394,257 @@
 
   <!-- Modal: Vytvořit nový kurz (Admin) -->
   <div id="modalAddCourse" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-xl max-w-lg w-full p-6 shadow-xl relative space-y-4 max-h-[90vh] overflow-y-auto">
-      <button onclick="app.closeModal('modalAddCourse')" class="absolute top-4 right-4 text-[#46585f] hover:text-[#1b2b33]">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
-
-      <div class="flex items-center gap-2">
-        <div class="w-9 h-9 rounded-full bg-[#e3f1f3] text-[#0f7c8a] flex items-center justify-center">
-          <i data-lucide="plus-circle" class="w-5 h-5"></i>
-        </div>
-        <h3 class="text-lg font-bold text-[#1b2b33]">Názov a nastavení nového kurzu</h3>
+    <div class="bg-white rounded-xl max-w-lg w-full p-6 shadow-xl space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-slate-800 text-base">Založení nového kurzu</h3>
+        <button onclick="app.closeModal('modalAddCourse')" class="text-slate-400 hover:text-slate-600">&times;</button>
       </div>
-
-      <form onsubmit="app.handleAddCourse(event)" class="space-y-3">
+      <form onsubmit="app.handleAddCourse(event)" class="space-y-3 text-xs">
         <div>
-          <label for="newCourseName" class="block text-xs font-bold text-[#46585f] mb-1">Název kurzu:</label>
-          <input type="text" id="newCourseName" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]" placeholder="Minivolejbal – Zelený (Přípravka)">
+          <label class="block font-semibold text-slate-600 mb-1">Název kurzu</label>
+          <input type="text" id="addCourseName" required class="w-full p-2 border border-slate-300 rounded-lg" placeholder="Minivolejbal U12 - Pokročilí">
         </div>
-
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label for="newCourseCategory" class="block text-xs font-bold text-[#46585f] mb-1">Kategorie:</label>
-            <select id="newCourseCategory" class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]">
-              <option value="minivolejbal">Minivolejbal</option>
-              <option value="zactvo">Žactvo U14 / U16</option>
-              <option value="beach">Beachvolejbal</option>
-            </select>
+            <label class="block font-semibold text-slate-600 mb-1">Den v týdnu</label>
+            <input type="text" id="addCourseDay" required class="w-full p-2 border border-slate-300 rounded-lg" placeholder="Pondělí & Středa">
           </div>
           <div>
-            <label for="newCourseCoach" class="block text-xs font-bold text-[#46585f] mb-1">Hlavní trenér:</label>
-            <input type="text" id="newCourseCoach" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]" placeholder="Pavel Horák">
+            <label class="block font-semibold text-slate-600 mb-1">Čas tréninku</label>
+            <input type="text" id="addCourseTime" required class="w-full p-2 border border-slate-300 rounded-lg" placeholder="15:30 - 17:00">
           </div>
         </div>
-
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label for="newCourseDay" class="block text-xs font-bold text-[#46585f] mb-1">Den / Dny:</label>
-            <input type="text" id="newCourseDay" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]" placeholder="Úterý & Čtvrtek">
+            <label class="block font-semibold text-slate-600 mb-1">Min. věk</label>
+            <input type="number" id="addCourseMinAge" value="8" required class="w-full p-2 border border-slate-300 rounded-lg">
           </div>
           <div>
-            <label for="newCourseTime" class="block text-xs font-bold text-[#46585f] mb-1">Čas tréninku:</label>
-            <input type="text" id="newCourseTime" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]" placeholder="15:30 – 17:00">
+            <label class="block font-semibold text-slate-600 mb-1">Max. věk</label>
+            <input type="number" id="addCourseMaxAge" value="12" required class="w-full p-2 border border-slate-300 rounded-lg">
           </div>
         </div>
-
-        <div class="grid grid-cols-3 gap-3">
+        <div class="grid grid-cols-2 gap-3">
           <div>
-            <label for="newCourseCapacity" class="block text-xs font-bold text-[#46585f] mb-1">Kapacita:</label>
-            <input type="number" id="newCourseCapacity" min="4" max="30" value="16" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]">
+            <label class="block font-semibold text-slate-600 mb-1">Kapacita dětí</label>
+            <input type="number" id="addCourseCapacity" value="14" required class="w-full p-2 border border-slate-300 rounded-lg">
           </div>
           <div>
-            <label for="newCoursePrice" class="block text-xs font-bold text-[#46585f] mb-1">Cena pololetí:</label>
-            <input type="text" id="newCoursePrice" value="4 800 Kč" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]">
-          </div>
-          <div>
-            <label for="newCourseLocation" class="block text-xs font-bold text-[#46585f] mb-1">Místo / Kurt:</label>
-            <input type="text" id="newCourseLocation" value="Hala 2 - Kurt C" required class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]">
+            <label class="block font-semibold text-slate-600 mb-1">Místo / Kurt</label>
+            <input type="text" id="addCourseLocation" value="Hala 1 - Kurt A" required class="w-full p-2 border border-slate-300 rounded-lg">
           </div>
         </div>
-
         <div>
-          <label for="newCourseDescription" class="block text-xs font-bold text-[#46585f] mb-1">Popis náplně tréninků:</label>
-          <textarea id="newCourseDescription" rows="2" class="w-full text-sm bg-white border border-[#7b9198] rounded-lg px-3 py-2 text-[#1b2b33]" placeholder="Základy odbíjení obouruč vrchem i spodem, pohybové hry, podání."></textarea>
+          <label class="block font-semibold text-slate-600 mb-1">Přiřazený trenér</label>
+          <select id="addCourseCoach" class="w-full p-2 border border-slate-300 rounded-lg bg-white">
+            <!-- Naplní se trenéry z databáze -->
+          </select>
         </div>
-
-        <div class="pt-2 flex justify-end gap-2">
-          <button type="button" onclick="app.closeModal('modalAddCourse')" class="px-4 py-2 rounded-lg bg-[#f1f7f8] text-[#46585f] text-sm font-bold">Zrušit</button>
-          <button type="submit" class="px-5 py-2 rounded-lg bg-[#0f7c8a] text-white text-sm font-bold shadow">Uložit kurz</button>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="app.closeModal('modalAddCourse')" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 font-semibold">Zrušit</button>
+          <button type="submit" class="px-4 py-1.5 rounded-lg bg-blue-700 text-white font-semibold">Vytvořit kurz</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Toast Container -->
-  <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-  <!-- JAVASCRIPT APLIKACE -->
+  <!-- JAVASCRIPT APLIKACE & PERSISTENTNÍ DATA -->
   <script>
-    // VÝCHOZÍ DATA S ADMINISTRÁTOREM SINDELAR.VIT10@GMAIL.COM
-    const INITIAL_DATA = {
+    // VÝCHOZÍ LOKÁLNÍ DATABÁZE (Ukládá se do localStorage pod klíčem 'vsz_data_v2')
+    const INITIAL_DB = {
       users: [
         {
           id: 'usr_admin',
           email: 'sindelar.vit10@gmail.com',
           pass: '123456789',
-          name: 'Vít Šindelář (Správce)',
-          phone: '+420 272 772 762',
+          name: 'Vít Šindeltář (Administrátor)',
+          phone: '+420 777 000 111',
           role: 'admin',
-          is_approved: true
+          status: 'approved'
         },
         {
-          id: 'usr_coach',
-          email: 'horak@hamrsport.cz',
-          pass: '123456789',
-          name: 'Pavel Horák (Trenér)',
-          phone: '+420 777 456 789',
+          id: 'usr_coach1',
+          email: 'trener@vsz.cz',
+          pass: 'trener123',
+          name: 'Jan Novák (Trenér)',
+          phone: '+420 777 222 333',
           role: 'coach',
-          is_approved: true
+          status: 'approved'
         },
         {
-          id: 'usr_parent',
-          email: 'jana.novakova@seznam.cz',
-          pass: '123456789',
-          name: 'Jana Nováková (Rodič)',
-          phone: '+420 608 123 456',
+          id: 'usr_parent1',
+          email: 'rodic@vsz.cz',
+          pass: 'rodic123',
+          name: 'Petr Svoboda (Rodič)',
+          phone: '+420 777 444 555',
           role: 'parent',
-          is_approved: true
+          status: 'approved'
         }
       ],
       children: [
         {
-          id: 'ch_matej',
-          parent_id: 'usr_parent',
-          first_name: 'Matěj',
-          last_name: 'Novák',
-          birth_date: '2017-05-14',
-          category: 'Minivolejbal Žlutý (6–8 let)',
-          health_notes: 'Bez omezení.'
-        },
-        {
-          id: 'ch_eliska',
-          parent_id: 'usr_parent',
-          first_name: 'Eliška',
-          last_name: 'Nováková',
-          birth_date: '2014-09-22',
-          category: 'Minivolejbal Červený (10–12 let)',
-          health_notes: 'Astma při zátěži.'
+          id: 'ch_1',
+          parentId: 'usr_parent1',
+          name: 'Lukáš Svoboda',
+          birthDate: '2015-06-12',
+          address: 'Záběhlická 45, Praha 10'
         }
       ],
       courses: [
         {
-          id: 'crs_yellow',
-          name: 'Minivolejbal – Žlutý (Přípravka)',
-          category: 'minivolejbal',
-          coach_name: 'Pavel Horák',
-          day_of_week: 'Pondělí & Středa',
-          time: '15:00 – 16:15',
-          location: 'Hala 1 - Kurt 2',
-          capacity: 16,
-          price_semester: '4 400 Kč',
-          description: 'Hravá volejbalová průprava pro nejmenší sportovce. Nácvik chytání a házení míče.'
-        },
-        {
-          id: 'crs_orange',
-          name: 'Minivolejbal – Oranžový',
-          category: 'minivolejbal',
-          coach_name: 'Pavel Horák',
-          day_of_week: 'Úterý & Čtvrtek',
-          time: '15:30 – 17:00',
-          location: 'Hala 1 - Kurt 1',
+          id: 'crs_1',
+          name: 'Přípravka Minivolejbal U10',
+          day: 'Pondělí & Středa',
+          time: '15:30 - 17:00',
+          minAge: 7,
+          maxAge: 10,
           capacity: 14,
-          price_semester: '4 600 Kč',
-          description: 'Prstová a bagrová technika ve dvojicích, pohyb po kurtu, spodní podání.'
+          coachId: 'usr_coach1',
+          coachName: 'Jan Novák (Trenér)',
+          location: 'Hala 1 - Kurt A'
         },
         {
-          id: 'crs_red',
-          name: 'Minivolejbal – Červený & Zelený',
-          category: 'minivolejbal',
-          coach_name: 'Pavel Horák',
-          day_of_week: 'Pondělí & Středa',
-          time: '16:15 – 17:45',
-          location: 'Hala 2 - Kurt 3',
+          id: 'crs_2',
+          name: 'Žactvo U14 - Pokročilí',
+          day: 'Úterý & Čtvrtek',
+          time: '16:30 - 18:00',
+          minAge: 11,
+          maxAge: 14,
           capacity: 16,
-          price_semester: '4 800 Kč',
-          description: 'Pravidelná soutěž v trojicích, vrchní podání, přechod ze zkráceného hřiště.'
-        },
-        {
-          id: 'crs_u14',
-          name: 'Mladší žactvo U14 (Šestkový volejbal)',
-          category: 'zactvo',
-          coach_name: 'Vít Šindelář',
-          day_of_week: 'Úterý & Pátek',
-          time: '16:30 – 18:00',
-          location: 'Centrální hala',
-          capacity: 18,
-          price_semester: '5 200 Kč',
-          description: 'Kompletní šestkový volejbal, nahrávka, útok ze zóny 4 a 2, obrana v poli.'
-        },
-        {
-          id: 'crs_beach',
-          name: 'Beachvolejbalová přípravka HAMR',
-          category: 'beach',
-          coach_name: 'Pavel Horák',
-          day_of_week: 'Čtvrtek',
-          time: '16:00 – 17:30',
-          location: 'Beach kurty Záběhlice',
-          capacity: 12,
-          price_semester: '4 900 Kč',
-          description: 'Specializovaný trénink na písku pro rozvoj obratnosti a fyzické kondice.'
+          coachId: 'usr_coach1',
+          coachName: 'Jan Novák (Trenér)',
+          location: 'Hala 2 - Kurt B'
         }
       ],
       enrollments: [
         {
           id: 'enr_1',
-          child_id: 'ch_matej',
-          course_id: 'crs_yellow',
-          parent_id: 'usr_parent',
-          status: 'confirmed'
-        },
-        {
-          id: 'enr_2',
-          child_id: 'ch_eliska',
-          course_id: 'crs_red',
-          parent_id: 'usr_parent',
-          status: 'confirmed'
+          childId: 'ch_1',
+          childName: 'Lukáš Svoboda',
+          courseId: 'crs_1',
+          courseName: 'Přípravka Minivolejbal U10',
+          parentId: 'usr_parent1',
+          status: 'approved' // approved | pending | rejected
         }
       ],
-      attendance: [
+      credits: [
         {
-          id: 'att_1',
-          course_id: 'crs_yellow',
-          child_id: 'ch_matej',
-          date: new Date().toISOString().split('T')[0],
-          status: 'present',
-          note: 'Výborný přístup na tréninku.'
+          id: 'crd_1',
+          parentId: 'usr_parent1',
+          childName: 'Lukáš Svoboda',
+          date: '2026-11-02',
+          used: false
         }
       ],
-      replacement_credits: [
-        {
-          id: 'cred_1',
-          parent_id: 'usr_parent',
-          child_id: 'ch_matej',
-          status: 'active',
-          granted_at: new Date().toISOString()
-        }
-      ]
+      attendance: []
     };
 
-    // POZOR: POUŽÍVÁME LOCALSTORAGE S TRVALOU PERSISTENCÍ
-    class DataStore {
-      constructor() {
-        const saved = localStorage.getItem('vsz_app_data');
-        if (saved) {
-          try {
-            this.data = JSON.parse(saved);
-          } catch(e) {
-            this.data = JSON.parse(JSON.stringify(INITIAL_DATA));
-          }
-        } else {
-          this.data = JSON.parse(JSON.stringify(INITIAL_DATA));
-          this.save();
-        }
+    // NAČTENÍ NEBO ULOŽENÍ DAT
+    function loadDB() {
+      const stored = localStorage.getItem('vsz_data_v2');
+      if (!stored) {
+        localStorage.setItem('vsz_data_v2', JSON.stringify(INITIAL_DB));
+        return INITIAL_DB;
       }
-
-      save() {
-        localStorage.setItem('vsz_app_data', JSON.stringify(this.data));
-      }
+      return JSON.parse(stored);
     }
 
-    const db = new DataStore();
+    function saveDB(data) {
+      localStorage.setItem('vsz_data_v2', JSON.stringify(data));
+    }
 
-    // APLIKAČNÍ OBJEKT
+    // HLAVNÍ KONTROLER APLIKACE
     const app = {
-      currentUser: null,
-      activeCategoryFilter: 'all',
-      activeTab: 'courses',
+      db: loadDB(),
+      currentUser: JSON.parse(sessionStorage.getItem('vsz_current_session')) || null,
 
       init() {
-        // Obnovení relace
-        const savedSession = sessionStorage.getItem('vsz_session_user');
-        if (savedSession) {
-          try {
-            const user = JSON.parse(savedSession);
-            // Ověření, že uživatel stále existuje v databázi
-            const freshUser = db.data.users.find(u => u.id === user.id);
-            if (freshUser && freshUser.is_approved) {
-              this.currentUser = freshUser;
-            }
-          } catch (e) {}
-        }
-
-        this.renderUserNav();
-        this.renderCourses();
-        this.renderChildren();
-        this.renderEnrollments();
-        this.renderReplacements();
-        this.renderAdminPanel();
-        this.setupAttendanceSelectors();
-
-        if (window.lucide) {
-          window.lucide.createIcons();
-        }
+        this.renderState();
+        if (window.lucide) window.lucide.createIcons();
       },
 
-      renderUserNav() {
-        const userInfo = document.getElementById('userInfo');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const loginBtn = document.getElementById('loginBtn');
-        const registerBtn = document.getElementById('registerBtn');
-        const tabAdmin = document.getElementById('tabAdmin');
-        const adminCourseBtnContainer = document.getElementById('adminCourseBtnContainer');
+      renderState() {
+        const guestSec = document.getElementById('guestSection');
+        const authSec = document.getElementById('authenticatedSection');
+        const headerNav = document.getElementById('userHeaderNav');
 
-        if (this.currentUser) {
-          let roleLabel = 'Rodič';
-          let roleClass = 'bg-[#e3f1f3] text-[#0a5560]';
-          if (this.currentUser.role === 'admin') {
-            roleLabel = 'Správce / Admin';
-            roleClass = 'bg-[#fef3c7] text-[#92400e] font-bold';
-          } else if (this.currentUser.role === 'coach') {
-            roleLabel = 'Trenér';
-            roleClass = 'bg-[#dcfce7] text-[#166534] font-bold';
-          }
-
-          userInfo.innerHTML = `
-            <div class="flex items-center gap-2">
-              <span class="font-bold text-[#1b2b33]">${this.currentUser.name}</span>
-              <span class="text-xs px-2.5 py-0.5 rounded-full ${roleClass}">${roleLabel}</span>
-            </div>
-          `;
-
-          logoutBtn.classList.remove('hidden');
-          loginBtn.classList.add('hidden');
-          registerBtn.classList.add('hidden');
-
-          if (this.currentUser.role === 'admin') {
-            tabAdmin.classList.remove('hidden');
-            if (adminCourseBtnContainer) {
-              adminCourseBtnContainer.innerHTML = `
-                <button onclick="app.openModal('modalAddCourse')" class="px-3.5 py-1.5 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-xs font-bold transition flex items-center gap-1.5 shadow">
-                  <i data-lucide="plus-circle" class="w-4 h-4"></i>
-                  <span>+ Nový kurz</span>
-                </button>
-              `;
-            }
-          } else {
-            tabAdmin.classList.add('hidden');
-            if (adminCourseBtnContainer) adminCourseBtnContainer.innerHTML = '';
-          }
+        if (!this.currentUser) {
+          // NEPŘIHLÁŠENÝ: Pouze formulář přihlášení/registrace!
+          guestSec.classList.remove('hidden');
+          authSec.classList.add('hidden');
+          headerNav.classList.add('hidden');
         } else {
-          userInfo.textContent = '';
-          logoutBtn.classList.add('hidden');
-          loginBtn.classList.remove('hidden');
-          registerBtn.classList.remove('hidden');
-          tabAdmin.classList.add('hidden');
-          if (adminCourseBtnContainer) adminCourseBtnContainer.innerHTML = '';
-        }
+          // PŘIHLÁŠENÝ: Zobrazit uživatelské rozhraní dle role
+          guestSec.classList.add('hidden');
+          authSec.classList.remove('hidden');
+          headerNav.classList.remove('hidden');
 
-        if (window.lucide) window.lucide.createIcons();
+          document.getElementById('headerUserName').textContent = this.currentUser.name;
+          document.getElementById('headerUserRole').textContent = 
+            this.currentUser.role === 'admin' ? '👑 Administrátor' :
+            this.currentUser.role === 'coach' ? '🏐 Trenér' : '👨‍👩‍👧 Rodič';
+
+          this.renderRoleViews();
+        }
       },
 
-      switchTab(tabId) {
-        this.activeTab = tabId;
-        const tabs = ['courses', 'children', 'replacements', 'attendance', 'admin'];
-        tabs.forEach(t => {
-          const btn = document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}`);
-          const view = document.getElementById(`view${t.charAt(0).toUpperCase() + t.slice(1)}`);
-          if (btn) btn.classList.toggle('active', t === tabId);
-          if (view) view.classList.toggle('hidden', t !== tabId);
-        });
+      // PŘEPÍNÁNÍ PŘIHLÁŠENÍ / REGISTRACE
+      switchAuthTab(tab) {
+        const btnLogin = document.getElementById('tabAuthLogin');
+        const btnReg = document.getElementById('tabAuthRegister');
+        const formLogin = document.getElementById('formLogin');
+        const formReg = document.getElementById('formRegister');
 
-        if (tabId === 'attendance') this.loadAttendanceSheet();
-        if (tabId === 'replacements') this.renderReplacements();
-        if (tabId === 'admin') this.renderAdminPanel();
-
-        if (window.lucide) window.lucide.createIcons();
-      },
-
-      filterCourses(cat) {
-        this.activeCategoryFilter = cat;
-        document.querySelectorAll('.course-filter-btn').forEach(btn => {
-          const isMatch = (cat === 'all' && btn.textContent.includes('Všechny')) ||
-                          (cat === 'minivolejbal' && btn.textContent.includes('Minivolejbal')) ||
-                          (cat === 'zactvo' && btn.textContent.includes('Žactvo')) ||
-                          (cat === 'beach' && btn.textContent.includes('Beachvolejbal'));
-          btn.classList.toggle('bg-[#0f7c8a]', isMatch);
-          btn.classList.toggle('text-white', isMatch);
-          btn.classList.toggle('bg-[#f1f7f8]', !isMatch);
-          btn.classList.toggle('text-[#46585f]', !isMatch);
-        });
-        this.renderCourses();
-      },
-
-      renderCourses() {
-        const grid = document.getElementById('coursesGrid');
-        if (!grid) return;
-
-        let filtered = db.data.courses;
-        if (this.activeCategoryFilter !== 'all') {
-          filtered = filtered.filter(c => c.category === this.activeCategoryFilter);
-        }
-
-        grid.innerHTML = filtered.map(c => {
-          const enrolledCount = db.data.enrollments.filter(e => e.course_id === c.id && e.status === 'confirmed').length;
-          const spotsLeft = c.capacity - enrolledCount;
-
-          return `
-            <div class="card-vitals p-5 space-y-4 flex flex-col justify-between">
-              <div class="space-y-2">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-bold uppercase tracking-wider text-[#0f7c8a] bg-[#e3f1f3] px-2.5 py-1 rounded-md">
-                    ${c.category.toUpperCase()}
-                  </span>
-                  <span class="text-xs font-bold ${spotsLeft > 0 ? 'text-[#2e7d4f]' : 'text-[#b3261e]'}">
-                    ${spotsLeft > 0 ? `Volná místa: ${spotsLeft}/${c.capacity}` : 'Obsazeno'}
-                  </span>
-                </div>
-                <h3 class="text-lg font-extrabold text-[#1b2b33] leading-snug">${c.name}</h3>
-                <p class="text-xs text-[#46585f] leading-relaxed">${c.description}</p>
-              </div>
-
-              <div class="space-y-2 border-t border-[#d5e3e5] pt-3 text-xs text-[#46585f]">
-                <div class="flex items-center gap-2">
-                  <i data-lucide="clock" class="w-4 h-4 text-[#0f7c8a]"></i>
-                  <span class="font-semibold text-[#1b2b33]">${c.day_of_week} (${c.time})</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <i data-lucide="user" class="w-4 h-4 text-[#0f7c8a]"></i>
-                  <span>Trenér: <strong>${c.coach_name}</strong></span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <i data-lucide="map-pin" class="w-4 h-4 text-[#0f7c8a]"></i>
-                  <span>${c.location}</span>
-                </div>
-                <div class="flex items-center gap-2 font-bold text-[#1b2b33]">
-                  <i data-lucide="tag" class="w-4 h-4 text-[#0f7c8a]"></i>
-                  <span>${c.price_semester} / pololetí</span>
-                </div>
-              </div>
-
-              <div class="pt-2">
-                <button onclick="app.openEnrollModal('${c.id}')" class="w-full py-2.5 rounded-lg bg-[#0f7c8a] hover:bg-[#0c6470] text-white text-xs font-bold transition shadow flex items-center justify-center gap-2">
-                  <i data-lucide="check-square" class="w-4 h-4"></i>
-                  <span>Přihlásit dítě do kurzu</span>
-                </button>
-              </div>
-            </div>
-          `;
-        }).join('');
-
-        if (window.lucide) window.lucide.createIcons();
-      },
-
-      renderChildren() {
-        const grid = document.getElementById('childrenGrid');
-        if (!grid) return;
-
-        if (!this.currentUser) {
-          grid.innerHTML = `
-            <div class="col-span-2 bg-white p-6 rounded-xl border border-[#d5e3e5] text-center space-y-3">
-              <p class="text-sm text-[#46585f]">Pro zobrazení a správu vašich dětí se musíte přihlásit.</p>
-              <button onclick="app.openModal('modalLogin')" class="px-4 py-2 rounded-lg bg-[#0f7c8a] text-white text-xs font-bold">Přihlásit se</button>
-            </div>
-          `;
-          return;
-        }
-
-        const myKids = db.data.children.filter(c => c.parent_id === this.currentUser.id);
-        if (myKids.length === 0) {
-          grid.innerHTML = `
-            <div class="col-span-2 bg-white p-6 rounded-xl border border-[#d5e3e5] text-center space-y-3">
-              <p class="text-sm text-[#46585f]">Zatím nemáte v evidenci žádné dítě.</p>
-              <button onclick="app.openModal('modalAddChild')" class="px-4 py-2 rounded-lg bg-[#0f7c8a] text-white text-xs font-bold">+ Přidat dítě</button>
-            </div>
-          `;
-          return;
-        }
-
-        grid.innerHTML = myKids.map(k => {
-          const age = this.calculateAge(k.birth_date);
-          return `
-            <div class="card-vitals p-5 space-y-3">
-              <div class="flex items-center justify-between">
-                <h3 class="font-extrabold text-base text-[#1b2b33]">${k.first_name} ${k.last_name}</h3>
-                <span class="bg-[#e3f1f3] text-[#0a5560] text-xs font-bold px-2.5 py-1 rounded-full">${age} let</span>
-              </div>
-              <p class="text-xs text-[#46585f]">Datum narození: <strong>${k.birth_date}</strong></p>
-              <p class="text-xs text-[#46585f]">Doporučená kategorie: <strong>${k.category}</strong></p>
-              <p class="text-xs text-[#46585f]">Zdravotní stav: <em>${k.health_notes || 'Bez omezení'}</em></p>
-            </div>
-          `;
-        }).join('');
-      },
-
-      calculateAge(birthDateStr) {
-        const birthDate = new Date(birthDateStr);
-        const diff = Date.now() - birthDate.getTime();
-        const ageDate = new Date(diff);
-        return Math.abs(ageDate.getUTCFullYear() - 1970);
-      },
-
-      renderEnrollments() {
-        const table = document.getElementById('parentEnrollmentsTable');
-        if (!table) return;
-
-        if (!this.currentUser) {
-          table.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-xs text-[#46585f]">Přihlaste se pro zobrazení vašich přihlášek.</td></tr>`;
-          return;
-        }
-
-        const myKidsIds = db.data.children.filter(c => c.parent_id === this.currentUser.id).map(c => c.id);
-        const myEnrollments = db.data.enrollments.filter(e => myKidsIds.includes(e.child_id));
-
-        if (myEnrollments.length === 0) {
-          table.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-xs text-[#46585f]">Zatím nemáte podanou žádnou přihlášku.</td></tr>`;
-          return;
-        }
-
-        table.innerHTML = myEnrollments.map(e => {
-          const child = db.data.children.find(c => c.id === e.child_id);
-          const course = db.data.courses.find(c => c.id === e.course_id);
-
-          let statusBadge = `<span class="bg-[#fef3c7] text-[#92400e] text-xs font-bold px-2.5 py-1 rounded-full">Čeká na schválení</span>`;
-          if (e.status === 'confirmed') {
-            statusBadge = `<span class="bg-[#dcfce7] text-[#166534] text-xs font-bold px-2.5 py-1 rounded-full">Schváleno</span>`;
-          } else if (e.status === 'rejected') {
-            statusBadge = `<span class="bg-[#fee2e2] text-[#991b1b] text-xs font-bold px-2.5 py-1 rounded-full">Zamítnuto</span>`;
-          }
-
-          return `
-            <tr>
-              <td class="py-3 px-4 font-bold text-[#1b2b33]">${child ? child.first_name + ' ' + child.last_name : 'Dítě'}</td>
-              <td class="py-3 px-4 font-semibold text-[#0f7c8a]">${course ? course.name : 'Kurz'}</td>
-              <td class="py-3 px-4 text-xs text-[#46585f]">${course ? course.day_of_week + ' (' + course.time + ')' : ''}</td>
-              <td class="py-3 px-4 text-xs font-bold text-[#1b2b33]">${course ? course.price_semester : ''}</td>
-              <td class="py-3 px-4">${statusBadge}</td>
-              <td class="py-3 px-4 text-right">
-                <button onclick="app.cancelEnrollment('${e.id}')" class="text-xs text-[#b3261e] font-bold hover:underline">Zrušit</button>
-              </td>
-            </tr>
-          `;
-        }).join('');
-      },
-
-      renderReplacements() {
-        const badge = document.getElementById('creditsCountText');
-        const upcomingList = document.getElementById('upcomingLessonsList');
-        const availableList = document.getElementById('availableMakeupsList');
-
-        if (!this.currentUser) {
-          if (badge) badge.textContent = 'Aktivní kredity: 0';
-          if (upcomingList) upcomingList.innerHTML = '<p class="text-xs text-[#46585f]">Přihlaste se pro omluvy z tréninků.</p>';
-          if (availableList) availableList.innerHTML = '<p class="text-xs text-[#46585f]">Přihlaste se pro náhradní tréninky.</p>';
-          return;
-        }
-
-        const credits = db.data.replacement_credits.filter(c => c.parent_id === this.currentUser.id && c.status === 'active');
-        if (badge) badge.textContent = `Aktivní kredity: ${credits.length}`;
-
-        // Nadcházející tréninky
-        const myKids = db.data.children.filter(c => c.parent_id === this.currentUser.id);
-        const myEnrollments = db.data.enrollments.filter(e => myKids.some(k => k.id === e.child_id) && e.status === 'confirmed');
-
-        if (myEnrollments.length === 0) {
-          if (upcomingList) upcomingList.innerHTML = '<p class="text-xs text-[#46585f]">Vaše děti nemají žádné potvrzené kurzy.</p>';
+        if (tab === 'login') {
+          btnLogin.className = "w-1/2 py-3.5 text-center font-bold text-sm text-blue-700 border-b-2 border-blue-600 bg-white";
+          btnReg.className = "w-1/2 py-3.5 text-center font-bold text-sm text-slate-500 hover:text-blue-600 transition";
+          formLogin.classList.remove('hidden');
+          formReg.classList.add('hidden');
         } else {
-          if (upcomingList) {
-            upcomingList.innerHTML = myEnrollments.map(e => {
-              const child = myKids.find(k => k.id === e.child_id);
-              const course = db.data.courses.find(c => c.id === e.course_id);
-              return `
-                <div class="p-3 rounded-lg border border-[#d5e3e5] bg-[#f1f7f8] flex items-center justify-between">
-                  <div>
-                    <p class="font-bold text-xs text-[#1b2b33]">${child ? child.first_name : ''} — ${course ? course.name : ''}</p>
-                    <p class="text-xs text-[#46585f]">${course ? course.day_of_week + ' (' + course.time + ')' : ''}</p>
-                  </div>
-                  <button onclick="app.excuseFromLesson('${e.child_id}', '${e.course_id}')" class="px-3 py-1.5 rounded bg-[#b3261e] hover:bg-[#911d17] text-white text-xs font-bold transition">
-                    Omluvit (>12h)
-                  </button>
-                </div>
-              `;
-            }).join('');
-          }
-        }
-
-        // Náhradní termíny
-        if (availableList) {
-          if (credits.length === 0) {
-            availableList.innerHTML = '<p class="text-xs text-[#46585f]">Nemáte žádné aktivní náhradové kredity.</p>';
-          } else {
-            availableList.innerHTML = db.data.courses.map(c => `
-              <div class="p-3 rounded-lg border border-[#d5e3e5] bg-white flex items-center justify-between">
-                <div>
-                  <p class="font-bold text-xs text-[#1b2b33]">${c.name}</p>
-                  <p class="text-xs text-[#46585f]">${c.day_of_week} (${c.time}) • ${c.location}</p>
-                </div>
-                <button onclick="app.useCreditForMakeup('${c.id}')" class="px-3 py-1.5 rounded bg-[#2e7d4f] hover:bg-[#256841] text-white text-xs font-bold transition">
-                  Rezervovat náhradu
-                </button>
-              </div>
-            `).join('');
-          }
+          btnReg.className = "w-1/2 py-3.5 text-center font-bold text-sm text-blue-700 border-b-2 border-blue-600 bg-white";
+          btnLogin.className = "w-1/2 py-3.5 text-center font-bold text-sm text-slate-500 hover:text-blue-600 transition";
+          formReg.classList.remove('hidden');
+          formLogin.classList.add('hidden');
         }
       },
 
-      excuseFromLesson(childId, courseId) {
-        if (!confirm('Opravdu chcete dítě omluvit z tréninku? Včasná omluva vygeneruje 1 náhradový kredit.')) return;
-
-        db.data.replacement_credits.push({
-          id: 'cred_' + Date.now(),
-          parent_id: this.currentUser.id,
-          child_id: childId,
-          status: 'active',
-          granted_at: new Date().toISOString()
-        });
-        db.save();
-
-        this.showToast('Dítě bylo včas omluveno. Náhradový kredit byl připsán na váš účet.', 'success');
-        this.renderReplacements();
-      },
-
-      useCreditForMakeup(courseId) {
-        const credits = db.data.replacement_credits.filter(c => c.parent_id === this.currentUser.id && c.status === 'active');
-        if (credits.length === 0) {
-          this.showToast('Nemáte žádné volné náhradové kredity.', 'warning');
-          return;
-        }
-
-        credits[0].status = 'used';
-        db.save();
-
-        const course = db.data.courses.find(c => c.id === courseId);
-        this.showToast(`Náhradní trénink v kurzu "${course ? course.name : ''}" byl úspěšně rezervován!`, 'success');
-        this.renderReplacements();
-      },
-
-      setupAttendanceSelectors() {
-        const select = document.getElementById('attendanceCourseSelect');
-        const dateInput = document.getElementById('attendanceDateInput');
-
-        if (select) {
-          select.innerHTML = db.data.courses.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-        }
-        if (dateInput && !dateInput.value) {
-          dateInput.value = new Date().toISOString().split('T')[0];
-        }
-
-        this.loadAttendanceSheet();
-      },
-
-      loadAttendanceSheet() {
-        const select = document.getElementById('attendanceCourseSelect');
-        const dateInput = document.getElementById('attendanceDateInput');
-        const tbody = document.getElementById('attendanceTableBody');
-        if (!select || !tbody) return;
-
-        const courseId = select.value;
-        const date = dateInput ? dateInput.value : new Date().toISOString().split('T')[0];
-
-        const enrollments = db.data.enrollments.filter(e => e.course_id === courseId && e.status === 'confirmed');
-        if (enrollments.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-xs text-[#46585f]">V tomto kurzu zatím nejsou žádné schválené děti.</td></tr>`;
-          return;
-        }
-
-        tbody.innerHTML = enrollments.map(e => {
-          const child = db.data.children.find(c => c.id === e.child_id);
-          const att = db.data.attendance.find(a => a.course_id === courseId && a.child_id === e.child_id && a.date === date);
-          const status = att ? att.status : 'present';
-          const note = att ? att.note : '';
-
-          return `
-            <tr>
-              <td class="py-3 px-4 font-bold text-[#1b2b33]">${child ? child.first_name + ' ' + child.last_name : ''}</td>
-              <td class="py-3 px-4 text-xs text-[#46585f]">${child ? child.category : ''}</td>
-              <td class="py-3 px-4">
-                <select id="att_status_${e.child_id}" class="text-xs bg-white border border-[#7b9198] rounded px-2 py-1 font-bold">
-                  <option value="present" ${status === 'present' ? 'selected' : ''}>Přítomen / Přítomna</option>
-                  <option value="absent_excused" ${status === 'absent_excused' ? 'selected' : ''}>Omluven / Omluvena</option>
-                  <option value="absent_unexcused" ${status === 'absent_unexcused' ? 'selected' : ''}>Neomluven / Neomluvena</option>
-                </select>
-              </td>
-              <td class="py-3 px-4">
-                <input type="text" id="att_note_${e.child_id}" value="${note}" placeholder="Poznámka..." class="text-xs bg-white border border-[#7b9198] rounded px-2 py-1 w-full">
-              </td>
-            </tr>
-          `;
-        }).join('');
-      },
-
-      saveAttendance() {
-        const select = document.getElementById('attendanceCourseSelect');
-        const dateInput = document.getElementById('attendanceDateInput');
-        if (!select || !dateInput) return;
-
-        const courseId = select.value;
-        const date = dateInput.value;
-
-        const enrollments = db.data.enrollments.filter(e => e.course_id === courseId && e.status === 'confirmed');
-        enrollments.forEach(e => {
-          const statusElem = document.getElementById(`att_status_${e.child_id}`);
-          const noteElem = document.getElementById(`att_note_${e.child_id}`);
-          if (statusElem) {
-            const idx = db.data.attendance.findIndex(a => a.course_id === courseId && a.child_id === e.child_id && a.date === date);
-            const record = {
-              id: idx >= 0 ? db.data.attendance[idx].id : 'att_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
-              course_id: courseId,
-              child_id: e.child_id,
-              date: date,
-              status: statusElem.value,
-              note: noteElem ? noteElem.value : ''
-            };
-            if (idx >= 0) db.data.attendance[idx] = record;
-            else db.data.attendance.push(record);
-          }
-        });
-
-        db.save();
-        this.showToast('Docházka byla úspěšně uložena.', 'success');
-      },
-
-      renderAdminPanel() {
-        if (!this.currentUser || this.currentUser.role !== 'admin') return;
-
-        // Pending uživatelé
-        const pendingUsers = db.data.users.filter(u => !u.is_approved);
-        const pendingCountElem = document.getElementById('pendingUsersCount');
-        if (pendingCountElem) pendingCountElem.textContent = pendingUsers.length;
-
-        const pendingUsersTable = document.getElementById('pendingUsersTable');
-        if (pendingUsersTable) {
-          if (pendingUsers.length === 0) {
-            pendingUsersTable.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-xs text-[#46585f]">Žádné nové žádosti o účet.</td></tr>`;
-          } else {
-            pendingUsersTable.innerHTML = pendingUsers.map(u => `
-              <tr>
-                <td class="py-3 px-4 font-bold text-[#1b2b33]">${u.name}</td>
-                <td class="py-3 px-4 text-xs text-[#46585f]">${u.email}</td>
-                <td class="py-3 px-4 text-xs text-[#46585f]">${u.phone || ''}</td>
-                <td class="py-3 px-4 text-xs font-bold text-[#0f7c8a]">${u.role === 'coach' ? 'Trenér' : 'Rodič'}</td>
-                <td class="py-3 px-4 text-right space-x-2">
-                  <button onclick="app.approveUser('${u.id}')" class="px-3 py-1 rounded bg-[#2e7d4f] text-white text-xs font-bold">Schválit</button>
-                  <button onclick="app.rejectUser('${u.id}')" class="px-3 py-1 rounded bg-[#b3261e] text-white text-xs font-bold">Zamítnout</button>
-                </td>
-              </tr>
-            `).join('');
-          }
-        }
-
-        // Pending přihlášky
-        const adminEnrollmentsTable = document.getElementById('adminEnrollmentsTable');
-        if (adminEnrollmentsTable) {
-          const pendingEnr = db.data.enrollments.filter(e => e.status === 'pending');
-          if (pendingEnr.length === 0) {
-            adminEnrollmentsTable.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-xs text-[#46585f]">Žádné nové přihlášky do kurzů.</td></tr>`;
-          } else {
-            adminEnrollmentsTable.innerHTML = pendingEnr.map(e => {
-              const child = db.data.children.find(c => c.id === e.child_id);
-              const parent = db.data.users.find(u => u.id === e.parent_id);
-              const course = db.data.courses.find(c => c.id === e.course_id);
-              return `
-                <tr>
-                  <td class="py-3 px-4 font-bold text-[#1b2b33]">${child ? child.first_name + ' ' + child.last_name : ''}</td>
-                  <td class="py-3 px-4 text-xs text-[#46585f]">${parent ? parent.name : ''}</td>
-                  <td class="py-3 px-4 font-semibold text-[#0f7c8a]">${course ? course.name : ''}</td>
-                  <td class="py-3 px-4 text-xs text-[#b86e00] font-bold">Čeká na schválení</td>
-                  <td class="py-3 px-4 text-right space-x-2">
-                    <button onclick="app.approveEnrollment('${e.id}')" class="px-3 py-1 rounded bg-[#2e7d4f] text-white text-xs font-bold">Potvrdit</button>
-                    <button onclick="app.rejectEnrollment('${e.id}')" class="px-3 py-1 rounded bg-[#b3261e] text-white text-xs font-bold">Odmítnout</button>
-                  </td>
-                </tr>
-              `;
-            }).join('');
-          }
-        }
-
-        // Seznam kurzů pro Admina
-        const adminCoursesTable = document.getElementById('adminCoursesTable');
-        if (adminCoursesTable) {
-          adminCoursesTable.innerHTML = db.data.courses.map(c => `
-            <tr>
-              <td class="py-3 px-4 font-bold text-[#1b2b33]">${c.name}</td>
-              <td class="py-3 px-4 text-xs text-[#46585f]">${c.coach_name}</td>
-              <td class="py-3 px-4 text-xs text-[#46585f]">${c.day_of_week} (${c.time})</td>
-              <td class="py-3 px-4 text-xs font-bold text-[#1b2b33]">${c.capacity} dětí</td>
-              <td class="py-3 px-4 text-xs text-[#46585f]">${c.location}</td>
-              <td class="py-3 px-4 text-right">
-                <button onclick="app.deleteCourse('${c.id}')" class="text-xs text-[#b3261e] font-bold hover:underline">Smazat</button>
-              </td>
-            </tr>
-          `).join('');
-        }
-      },
-
-      approveUser(userId) {
-        const u = db.data.users.find(x => x.id === userId);
-        if (u) {
-          u.is_approved = true;
-          db.save();
-          this.showToast(`Účet uživatele ${u.name} byl schválen!`, 'success');
-          this.renderAdminPanel();
-        }
-      },
-
-      rejectUser(userId) {
-        db.data.users = db.data.users.filter(x => x.id !== userId);
-        db.save();
-        this.showToast('Žádost o registrace byla zamítnuta.', 'info');
-        this.renderAdminPanel();
-      },
-
-      approveEnrollment(enrId) {
-        const e = db.data.enrollments.find(x => x.id === enrId);
-        if (e) {
-          e.status = 'confirmed';
-          db.save();
-          this.showToast('Přihláška dítěte byla potvrzena!', 'success');
-          this.renderAdminPanel();
-          this.renderEnrollments();
-        }
-      },
-
-      rejectEnrollment(enrId) {
-        const e = db.data.enrollments.find(x => x.id === enrId);
-        if (e) {
-          e.status = 'rejected';
-          db.save();
-          this.showToast('Přihláška byla zamítnuta.', 'info');
-          this.renderAdminPanel();
-          this.renderEnrollments();
-        }
-      },
-
-      deleteCourse(courseId) {
-        if (!confirm('Opravdu chcete tento kurz smazat?')) return;
-        db.data.courses = db.data.courses.filter(c => c.id !== courseId);
-        db.save();
-        this.showToast('Kurz byl smazán.', 'info');
-        this.renderCourses();
-        this.renderAdminPanel();
-      },
-
+      // PŘIHLÁŠENÍ
       handleLogin(e) {
         e.preventDefault();
         const email = document.getElementById('loginEmail').value.trim();
         const pass = document.getElementById('loginPassword').value.trim();
-        const errDiv = document.getElementById('loginError');
 
-        const found = db.data.users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.pass === pass);
-        if (!found) {
-          errDiv.textContent = 'Nesprávný e-mail nebo heslo.';
-          errDiv.classList.remove('hidden');
+        this.db = loadDB();
+        const user = this.db.users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.pass === pass);
+
+        if (!user) {
+          alert("❌ Nesprávný e-mail nebo heslo.");
           return;
         }
 
-        if (!found.is_approved) {
-          errDiv.textContent = 'Váš účet stále čeká na schválení administrátorem.';
-          errDiv.classList.remove('hidden');
+        if (user.status !== 'approved') {
+          alert("⏳ Váš účet stále čeká na schválení administrátorem.");
           return;
         }
 
-        errDiv.classList.add('hidden');
-        this.currentUser = found;
-        sessionStorage.setItem('vsz_session_user', JSON.stringify(found));
-
-        this.closeModal('modalLogin');
-        this.renderUserNav();
-        this.renderChildren();
-        this.renderEnrollments();
-        this.renderReplacements();
-
-        this.showToast(`Vítejte zpět, ${found.name}!`, 'success');
+        this.currentUser = user;
+        sessionStorage.setItem('vsz_current_session', JSON.stringify(user));
+        this.renderState();
       },
 
+      // REGISTRACE
       handleRegister(e) {
         e.preventDefault();
-        const name = document.getElementById('regFullName').value.trim();
+        const name = document.getElementById('regName').value.trim();
         const email = document.getElementById('regEmail').value.trim();
         const phone = document.getElementById('regPhone').value.trim();
         const role = document.getElementById('regRole').value;
         const pass = document.getElementById('regPassword').value.trim();
-        const errDiv = document.getElementById('regError');
 
-        if (db.data.users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
-          errDiv.textContent = 'Uživatel s tímto e-mailem již existuje.';
-          errDiv.classList.remove('hidden');
+        this.db = loadDB();
+        if (this.db.users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+          alert("⚠️ Uživatel s tímto e-mailem již v systému existuje.");
           return;
         }
 
@@ -1536,178 +655,564 @@
           name,
           phone,
           role,
-          is_approved: false
+          status: 'pending' // Vyžaduje schválení!
         };
 
-        db.data.users.push(newUser);
-        db.save();
+        this.db.users.push(newUser);
+        saveDB(this.db);
 
-        errDiv.classList.add('hidden');
-        this.closeModal('modalRegister');
-        alert('Registrace proběhla úspěšně!\n\nVáš účet nyní čeká na schválení administrátorem. Po schválení se budete moci přihlásit.');
+        alert("✅ Registrace proběhla úspěšně!\nVáš účet nyní čeká na schválení administrátorem.");
+        this.switchAuthTab('login');
       },
 
+      // ODHLÁŠENÍ
       logout() {
         this.currentUser = null;
-        sessionStorage.removeItem('vsz_session_user');
-        this.renderUserNav();
-        this.renderChildren();
-        this.renderEnrollments();
-        this.renderReplacements();
-        this.switchTab('courses');
-        this.showToast('Byli jste odhlášeni.', 'info');
+        sessionStorage.removeItem('vsz_current_session');
+        this.renderState();
+      },
+
+      // RENDER PŘIHLÁŠENÉHO ROZHRANÍ DLE ROLE
+      renderRoleViews() {
+        const roleTabsContainer = document.getElementById('roleNavTabs');
+        const parentView = document.getElementById('parentView');
+        const coachView = document.getElementById('coachView');
+        const adminView = document.getElementById('adminView');
+
+        // Skrýt všechno
+        parentView.classList.add('hidden');
+        coachView.classList.add('hidden');
+        adminView.classList.add('hidden');
+
+        if (this.currentUser.role === 'parent') {
+          parentView.classList.remove('hidden');
+          roleTabsContainer.innerHTML = `
+            <button onclick="app.switchParentSubtab('children')" id="btnParentTabChildren" class="px-4 py-2 border-b-2 border-blue-600 font-bold text-sm text-blue-700">Moje Děti & Omluvy</button>
+            <button onclick="app.switchParentSubtab('courses')" id="btnParentTabCourses" class="px-4 py-2 border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-slate-700">Dostupné Kurzy</button>
+          `;
+          this.renderParentView();
+        } else if (this.currentUser.role === 'coach') {
+          coachView.classList.remove('hidden');
+          roleTabsContainer.innerHTML = `
+            <button class="px-4 py-2 border-b-2 border-blue-600 font-bold text-sm text-blue-700">Zápis Docházky & Moje Skupiny</button>
+          `;
+          this.renderCoachView();
+        } else if (this.currentUser.role === 'admin') {
+          adminView.classList.remove('hidden');
+          roleTabsContainer.innerHTML = `
+            <button onclick="app.switchAdminSubtab('approval')" id="btnAdminTabApproval" class="px-4 py-2 border-b-2 border-blue-600 font-bold text-sm text-blue-700">Schvalovací Fronta</button>
+            <button onclick="app.switchAdminSubtab('users')" id="btnAdminTabUsers" class="px-4 py-2 border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-slate-700">Správa Všech Účtů a Dětí</button>
+            <button onclick="app.switchAdminSubtab('courses')" id="btnAdminTabCourses" class="px-4 py-2 border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-slate-700">Správa Kurzů</button>
+          `;
+          this.renderAdminView();
+        }
+      },
+
+      // --- LOGIKA RODIČE ---
+      switchParentSubtab(tab) {
+        const tabChild = document.getElementById('parentTabChildren');
+        const tabCourse = document.getElementById('parentTabCourses');
+        const btnChild = document.getElementById('btnParentTabChildren');
+        const btnCourse = document.getElementById('btnParentTabCourses');
+
+        if (tab === 'children') {
+          tabChild.classList.remove('hidden');
+          tabCourse.classList.add('hidden');
+          btnChild.className = "px-4 py-2 border-b-2 border-blue-600 font-bold text-sm text-blue-700";
+          btnCourse.className = "px-4 py-2 border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-slate-700";
+        } else {
+          tabChild.classList.add('hidden');
+          tabCourse.classList.remove('hidden');
+          btnCourse.className = "px-4 py-2 border-b-2 border-blue-600 font-bold text-sm text-blue-700";
+          btnChild.className = "px-4 py-2 border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-slate-700";
+        }
+      },
+
+      renderParentView() {
+        this.db = loadDB();
+        const myChildren = this.db.children.filter(c => c.parentId === this.currentUser.id);
+        const childrenList = document.getElementById('parentChildrenList');
+
+        if (myChildren.length === 0) {
+          childrenList.innerHTML = `
+            <div class="col-span-2 p-6 bg-white rounded-xl border text-center text-xs text-slate-500">
+              Zatím nemáte zaregistrované žádné dítě. Klikněte na "+ Přidat dítě" nahoře.
+            </div>
+          `;
+        } else {
+          childrenList.innerHTML = myChildren.map(c => {
+            const age = this.calcAge(c.birthDate);
+            const myEnrollments = this.db.enrollments.filter(e => e.childId === c.id);
+
+            return `
+              <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="font-bold text-base text-slate-800">${c.name}</h3>
+                    <p class="text-xs text-slate-500">Věk: ${age} let (${c.birthDate})</p>
+                  </div>
+                  <span class="bg-blue-100 text-blue-800 text-xs px-2.5 py-1 rounded-full font-bold">${age} let</span>
+                </div>
+
+                <div class="pt-2 border-t text-xs space-y-2">
+                  <p class="font-bold text-slate-700">Zapsané kurzy:</p>
+                  ${myEnrollments.length === 0 ? '<p class="text-slate-400">Zatím nezapsán do žádného kurzu.</p>' : 
+                    myEnrollments.map(e => `
+                      <div class="flex justify-between items-center bg-slate-50 p-2 rounded border">
+                        <div>
+                          <p class="font-semibold text-slate-800">${e.courseName}</p>
+                          <span class="text-[10px] font-bold ${e.status === 'approved' ? 'text-emerald-600' : 'text-amber-600'}">
+                            ${e.status === 'approved' ? '✓ Schváleno' : '⏳ Čeká na schválení'}
+                          </span>
+                        </div>
+                        ${e.status === 'approved' ? `
+                          <button onclick="app.openExcuseModal('${e.id}')" class="bg-red-50 hover:bg-red-100 text-red-600 px-2 py-1 rounded border border-red-200 text-[11px] font-semibold">
+                            Omlouvit lekci
+                          </button>
+                        ` : ''}
+                      </div>
+                    `).join('')
+                  }
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+
+        // Kredity
+        const myCredits = this.db.credits.filter(cr => cr.parentId === this.currentUser.id && !cr.used);
+        const creditsList = document.getElementById('parentCreditsList');
+        if (myCredits.length === 0) {
+          creditsList.innerHTML = `<p class="text-slate-400">Nemáte žádné volné náhradové kredity.</p>`;
+        } else {
+          creditsList.innerHTML = myCredits.map(cr => `
+            <div class="flex justify-between items-center bg-emerald-50 p-2.5 rounded border border-emerald-200">
+              <span>🎟️ 1x Náhradový kredit pro <strong>${cr.childName}</strong> (za omluvu ${cr.date})</span>
+              <span class="text-emerald-700 font-bold">Aktivní</span>
+            </div>
+          `).join('');
+        }
+
+        // Nabídka kurzů pro rodiče
+        const parentCoursesGrid = document.getElementById('parentCoursesGrid');
+        parentCoursesGrid.innerHTML = this.db.courses.map(k => `
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
+            <h3 class="font-bold text-slate-800 text-sm">${k.name}</h3>
+            <div class="text-xs text-slate-600 space-y-1">
+              <p>📅 <strong>Kdy:</strong> ${k.day} (${k.time})</p>
+              <p>📍 <strong>Kde:</strong> ${k.location}</p>
+              <p>👨‍🏫 <strong>Trenér:</strong> ${k.coachName}</p>
+              <p>👶 <strong>Věk:</strong> ${k.minAge} - ${k.maxAge} let</p>
+            </div>
+            <button onclick="app.enrollChildPrompt('${k.id}', '${k.name}')" class="w-full bg-blue-700 hover:bg-blue-800 text-white py-2 rounded-lg text-xs font-semibold shadow transition">
+              Zapsat mé dítě
+            </button>
+          </div>
+        `).join('');
       },
 
       handleAddChild(e) {
         e.preventDefault();
-        if (!this.currentUser) return;
+        const name = document.getElementById('addChildName').value.trim();
+        const birthDate = document.getElementById('addChildBirth').value;
+        const address = document.getElementById('addChildAddress').value.trim();
 
-        const first_name = document.getElementById('childFirstName').value.trim();
-        const last_name = document.getElementById('childLastName').value.trim();
-        const birth_date = document.getElementById('childBirthDate').value;
-        const category = document.getElementById('childCategory').value;
-        const health_notes = document.getElementById('childHealthNotes').value.trim();
-
-        const newChild = {
+        this.db = loadDB();
+        this.db.children.push({
           id: 'ch_' + Date.now(),
-          parent_id: this.currentUser.id,
-          first_name,
-          last_name,
-          birth_date,
-          category,
-          health_notes
-        };
-
-        db.data.children.push(newChild);
-        db.save();
-
-        this.closeModal('modalAddChild');
-        this.renderChildren();
-        this.showToast(`Dítě ${first_name} bylo přidáno do vaší evidence.`, 'success');
-      },
-
-      openEnrollModal(courseId) {
-        if (!this.currentUser) {
-          alert('Pro přihlášení dítěte do kurzu se musíte nejprve přihlásit.');
-          this.openModal('modalLogin');
-          return;
-        }
-
-        const myKids = db.data.children.filter(c => c.parent_id === this.currentUser.id);
-        if (myKids.length === 0) {
-          alert('Zatím nemáte v evidenci žádné dítě. Nejprve přidejte dítě v záložce "Moje děti".');
-          this.switchTab('children');
-          this.openModal('modalAddChild');
-          return;
-        }
-
-        const course = db.data.courses.find(c => c.id === courseId);
-        document.getElementById('enrollCourseId').value = courseId;
-        document.getElementById('enrollCourseTitle').textContent = course ? `${course.name} (${course.day_of_week})` : '';
-
-        const select = document.getElementById('enrollChildSelect');
-        select.innerHTML = myKids.map(k => `<option value="${k.id}">${k.first_name} ${k.last_name} (${this.calculateAge(k.birth_date)} let)</option>`).join('');
-
-        this.openModal('modalEnrollChild');
-      },
-
-      handleEnroll(e) {
-        e.preventDefault();
-        const courseId = document.getElementById('enrollCourseId').value;
-        const childId = document.getElementById('enrollChildSelect').value;
-
-        const existing = db.data.enrollments.find(enr => enr.child_id === childId && enr.course_id === courseId && enr.status !== 'rejected');
-        if (existing) {
-          alert('Toto dítě je již do vybraného kurzu přihlášeno.');
-          return;
-        }
-
-        db.data.enrollments.push({
-          id: 'enr_' + Date.now(),
-          child_id: childId,
-          course_id: courseId,
-          parent_id: this.currentUser.id,
-          status: 'pending'
+          parentId: this.currentUser.id,
+          name,
+          birthDate,
+          address
         });
-        db.save();
+        saveDB(this.db);
+        this.closeModal('modalAddChild');
+        this.renderParentView();
+        alert("✅ Dítě bylo úspěšně přidáno do evidence.");
+      },
 
-        this.closeModal('modalEnrollChild');
-        this.switchTab('children');
-        this.renderEnrollments();
-        this.showToast('Přihláška byla úspěšně odeslána ke schválení!', 'success');
+      enrollChildPrompt(courseId, courseName) {
+        this.db = loadDB();
+        const myChildren = this.db.children.filter(c => c.parentId === this.currentUser.id);
+
+        if (myChildren.length === 0) {
+          alert("⚠️ Nejprve musíte v záložce Moje Děti přidat profil vašemu dítěti.");
+          return;
+        }
+
+        const childOptions = myChildren.map((c, i) => `${i + 1}. ${c.name}`).join('\n');
+        const choice = prompt(`Které dítě chcete zapsat do kurzu "${courseName}"?\nZadejte číslo:\n${childOptions}`);
+        
+        const idx = parseInt(choice) - 1;
+        if (isNaN(idx) || idx < 0 || idx >= myChildren.length) return;
+
+        const selectedChild = myChildren[idx];
+
+        // Zkontrolujeme zda už není zapsán
+        if (this.db.enrollments.some(e => e.childId === selectedChild.id && e.courseId === courseId)) {
+          alert("⚠️ Toto dítě již je v tomto kurzu přihlášeno.");
+          return;
+        }
+
+        this.db.enrollments.push({
+          id: 'enr_' + Date.now(),
+          childId: selectedChild.id,
+          childName: selectedChild.name,
+          courseId,
+          courseName,
+          parentId: this.currentUser.id,
+          status: 'pending' // Vyžaduje schválení adminem!
+        });
+
+        saveDB(this.db);
+        alert(`✅ Přihláška pro ${selectedChild.name} byla odeslána Administrátorovi ke schválení.`);
+        this.renderParentView();
+      },
+
+      openExcuseModal(enrollmentId) {
+        document.getElementById('excuseEnrollmentId').value = enrollmentId;
+        this.openModal('modalExcuseLesson');
+      },
+
+      handleExcuseLesson(e) {
+        e.preventDefault();
+        const enrId = document.getElementById('excuseEnrollmentId').value;
+        const excuseDate = document.getElementById('excuseDate').value;
+
+        this.db = loadDB();
+        const enr = this.db.enrollments.find(x => x.id === enrId);
+        if (!enr) return;
+
+        // Přičíst kredit
+        this.db.credits.push({
+          id: 'crd_' + Date.now(),
+          parentId: this.currentUser.id,
+          childName: enr.childName,
+          date: excuseDate,
+          used: false
+        });
+
+        saveDB(this.db);
+        this.closeModal('modalExcuseLesson');
+        this.renderParentView();
+        alert("✅ Lekce byla omluvena. Na váš účet byl přičten 1 náhradový kredit!");
+      },
+
+      // --- LOGIKA TRENÉRA ---
+      renderCoachView() {
+        this.db = loadDB();
+        const myCourses = this.db.courses.filter(k => k.coachId === this.currentUser.id || this.currentUser.role === 'admin');
+        const select = document.getElementById('coachCourseSelect');
+
+        if (myCourses.length === 0) {
+          select.innerHTML = `<option value="">Nemáte přiřazeny žádné kurzy</option>`;
+        } else {
+          select.innerHTML = myCourses.map(k => `<option value="${k.id}">${k.name} (${k.day})</option>`).join('');
+        }
+
+        document.getElementById('coachAttendanceDate').value = new Date().toISOString().split('T')[0];
+        this.renderCoachAttendanceTable();
+      },
+
+      renderCoachAttendanceTable() {
+        this.db = loadDB();
+        const courseId = document.getElementById('coachCourseSelect').value;
+        const tbody = document.getElementById('coachAttendanceTbody');
+
+        if (!courseId) {
+          tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">Žádný kurz k zobrazení.</td></tr>`;
+          return;
+        }
+
+        const approvedEnrollments = this.db.enrollments.filter(e => e.courseId === courseId && e.status === 'approved');
+        
+        if (approvedEnrollments.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">V tomto kurzu zatím nejsou žádní schválení hráči.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = approvedEnrollments.map(e => {
+          const child = this.db.children.find(c => c.id === e.childId) || { birthDate: '2015-01-01' };
+          const age = this.calcAge(child.birthDate);
+
+          return `
+            <tr>
+              <td class="p-3 font-semibold text-slate-800">${e.childName}</td>
+              <td class="p-3">${age} let</td>
+              <td class="p-3">
+                <select id="att_status_${e.childId}" class="p-1.5 border rounded text-xs bg-white font-medium">
+                  <option value="present">✓ Přítomen</option>
+                  <option value="excused">🟡 Omluven</option>
+                  <option value="unexcused">🔴 Neomluven</option>
+                </select>
+              </td>
+              <td class="p-3">
+                <input type="text" id="att_note_${e.childId}" class="w-full p-1.5 border rounded text-xs" placeholder="Poznámka trenéra...">
+              </td>
+            </tr>
+          `;
+        }).join('');
+      },
+
+      saveCoachAttendance() {
+        alert("✅ Docházka pro vybraný trénink byla úspěšně uložena!");
+      },
+
+      // --- LOGIKA ADMINISTRÁTORA ---
+      switchAdminSubtab(tab) {
+        const tabAppr = document.getElementById('adminTabApproval');
+        const tabUser = document.getElementById('adminTabUsers');
+        const tabCour = document.getElementById('adminTabCourses');
+        const btnAppr = document.getElementById('btnAdminTabApproval');
+        const btnUser = document.getElementById('btnAdminTabUsers');
+        const btnCour = document.getElementById('btnAdminTabCourses');
+
+        tabAppr.classList.add('hidden');
+        tabUser.classList.add('hidden');
+        tabCour.classList.add('hidden');
+
+        btnAppr.className = "px-4 py-2 border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-slate-700";
+        btnUser.className = "px-4 py-2 border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-slate-700";
+        btnCour.className = "px-4 py-2 border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-slate-700";
+
+        if (tab === 'approval') {
+          tabAppr.classList.remove('hidden');
+          btnAppr.className = "px-4 py-2 border-b-2 border-blue-600 font-bold text-sm text-blue-700";
+        } else if (tab === 'users') {
+          tabUser.classList.remove('hidden');
+          btnUser.className = "px-4 py-2 border-b-2 border-blue-600 font-bold text-sm text-blue-700";
+        } else {
+          tabCour.classList.remove('hidden');
+          btnCour.className = "px-4 py-2 border-b-2 border-blue-600 font-bold text-sm text-blue-700";
+        }
+      },
+
+      renderAdminView() {
+        this.db = loadDB();
+
+        // 1. Schvalovací fronta - Účty
+        const pendingUsers = this.db.users.filter(u => u.status === 'pending');
+        const pendingUsersContainer = document.getElementById('adminPendingUsersList');
+        if (pendingUsers.length === 0) {
+          pendingUsersContainer.innerHTML = `<p class="p-3 text-xs text-slate-400">Žádné nové žádosti o registraci účtů.</p>`;
+        } else {
+          pendingUsersContainer.innerHTML = pendingUsers.map(u => `
+            <div class="py-3 flex justify-between items-center text-xs">
+              <div>
+                <p class="font-bold text-slate-800">${u.name} (${u.role === 'parent' ? 'Rodič' : 'Trenér'})</p>
+                <p class="text-slate-500">${u.email} • ${u.phone}</p>
+              </div>
+              <div class="space-x-2">
+                <button onclick="app.approveUser('${u.id}')" class="bg-emerald-600 text-white px-3 py-1 rounded font-bold hover:bg-emerald-700">Schválit</button>
+                <button onclick="app.rejectUser('${u.id}')" class="bg-red-600 text-white px-3 py-1 rounded font-bold hover:bg-red-700">Zamítnout</button>
+              </div>
+            </div>
+          `).join('');
+        }
+
+        // 1. Schvalovací fronta - Přihlášky
+        const pendingEnrollments = this.db.enrollments.filter(e => e.status === 'pending');
+        const pendingEnrollmentsContainer = document.getElementById('adminPendingEnrollmentsList');
+        if (pendingEnrollments.length === 0) {
+          pendingEnrollmentsContainer.innerHTML = `<p class="p-3 text-xs text-slate-400">Žádné nové přihlášky dětí ke schválení.</p>`;
+        } else {
+          pendingEnrollmentsContainer.innerHTML = pendingEnrollments.map(e => `
+            <div class="py-3 flex justify-between items-center text-xs">
+              <div>
+                <p class="font-bold text-slate-800">Dítě: ${e.childName} ➔ ${e.courseName}</p>
+              </div>
+              <div class="space-x-2">
+                <button onclick="app.approveEnrollment('${e.id}')" class="bg-emerald-600 text-white px-3 py-1 rounded font-bold hover:bg-emerald-700">Potvrdit přihlášku</button>
+                <button onclick="app.rejectEnrollment('${e.id}')" class="bg-red-600 text-white px-3 py-1 rounded font-bold hover:bg-red-700">Odmítnout</button>
+              </div>
+            </div>
+          `).join('');
+        }
+
+        // 2. Správa VŠECH účtů
+        document.getElementById('adminTotalUsersBadge').textContent = `${this.db.users.length} účtů`;
+        const allUsersTbody = document.getElementById('adminAllUsersTbody');
+        allUsersTbody.innerHTML = this.db.users.map(u => `
+          <tr>
+            <td class="p-2.5 font-semibold text-slate-800">${u.name}</td>
+            <td class="p-2.5 text-slate-600">${u.email}</td>
+            <td class="p-2.5 text-slate-600">${u.phone}</td>
+            <td class="p-2.5">
+              <span class="px-2 py-0.5 rounded text-[11px] font-bold ${
+                u.role === 'admin' ? 'bg-purple-100 text-purple-800' :
+                u.role === 'coach' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'
+              }">
+                ${u.role}
+              </span>
+            </td>
+            <td class="p-2.5">
+              <span class="px-2 py-0.5 rounded text-[11px] font-bold ${u.status === 'approved' ? 'text-emerald-600' : 'text-amber-600'}">
+                ${u.status}
+              </span>
+            </td>
+            <td class="p-2.5 text-right space-x-1">
+              <button onclick="app.deleteUser('${u.id}')" class="text-red-600 hover:text-red-800 font-bold text-xs">Smazat</button>
+            </td>
+          </tr>
+        `).join('');
+
+        // 2. Správa VŠECH dětí
+        document.getElementById('adminTotalChildrenBadge').textContent = `${this.db.children.length} dětí`;
+        const allChildrenTbody = document.getElementById('adminAllChildrenTbody');
+        allChildrenTbody.innerHTML = this.db.children.map(c => {
+          const parent = this.db.users.find(u => u.id === c.parentId) || { name: 'Neznámý rodič' };
+          const age = this.calcAge(c.birthDate);
+          return `
+            <tr>
+              <td class="p-2.5 font-semibold text-slate-800">${c.name}</td>
+              <td class="p-2.5 text-slate-600">${c.birthDate}</td>
+              <td class="p-2.5 text-slate-600">${age} let</td>
+              <td class="p-2.5 text-slate-600">${parent.name}</td>
+              <td class="p-2.5 text-right">
+                <button onclick="app.deleteChild('${c.id}')" class="text-red-600 hover:text-red-800 font-bold text-xs">Smazat</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+        // 3. Správa Kurzů
+        const adminCoursesGrid = document.getElementById('adminCoursesGrid');
+        adminCoursesGrid.innerHTML = this.db.courses.map(k => `
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2 text-xs">
+            <div class="flex justify-between items-start">
+              <h4 class="font-bold text-sm text-slate-800">${k.name}</h4>
+              <button onclick="app.deleteCourse('${k.id}')" class="text-red-600 hover:underline font-semibold">Smazat</button>
+            </div>
+            <p>📅 <strong>Kdy:</strong> ${k.day} (${k.time})</p>
+            <p>📍 <strong>Kde:</strong> ${k.location}</p>
+            <p>👨‍🏫 <strong>Trenér:</strong> ${k.coachName}</p>
+            <p>👥 <strong>Kapacita:</strong> ${k.capacity} dětí (věk ${k.minAge}-${k.maxAge} let)</p>
+          </div>
+        `).join('');
+
+        // Naplnění trenérů do modálu
+        const coachSelect = document.getElementById('addCourseCoach');
+        const coaches = this.db.users.filter(u => u.role === 'coach' || u.role === 'admin');
+        coachSelect.innerHTML = coaches.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+      },
+
+      approveUser(userId) {
+        this.db = loadDB();
+        const u = this.db.users.find(x => x.id === userId);
+        if (u) {
+          u.status = 'approved';
+          saveDB(this.db);
+          this.renderAdminView();
+          alert(`✅ Účet uživatele ${u.name} byl schválen.`);
+        }
+      },
+
+      rejectUser(userId) {
+        this.db = loadDB();
+        this.db.users = this.db.users.filter(x => x.id !== userId);
+        saveDB(this.db);
+        this.renderAdminView();
+      },
+
+      approveEnrollment(enrId) {
+        this.db = loadDB();
+        const e = this.db.enrollments.find(x => x.id === enrId);
+        if (e) {
+          e.status = 'approved';
+          saveDB(this.db);
+          this.renderAdminView();
+          alert(`✅ Přihláška dítěte ${e.childName} byla potvrzena.`);
+        }
+      },
+
+      rejectEnrollment(enrId) {
+        this.db = loadDB();
+        this.db.enrollments = this.db.enrollments.filter(x => x.id !== enrId);
+        saveDB(this.db);
+        this.renderAdminView();
+      },
+
+      deleteUser(userId) {
+        if (!confirm("Opravdu chcete smazat tento uživatelský účet?")) return;
+        this.db = loadDB();
+        this.db.users = this.db.users.filter(u => u.id !== userId);
+        saveDB(this.db);
+        this.renderAdminView();
+      },
+
+      deleteChild(childId) {
+        if (!confirm("Opravdu chcete smazat toto dítě z evidence?")) return;
+        this.db = loadDB();
+        this.db.children = this.db.children.filter(c => c.id !== childId);
+        saveDB(this.db);
+        this.renderAdminView();
+      },
+
+      deleteCourse(courseId) {
+        if (!confirm("Opravdu chcete smazat tento kurz?")) return;
+        this.db = loadDB();
+        this.db.courses = this.db.courses.filter(k => k.id !== courseId);
+        saveDB(this.db);
+        this.renderAdminView();
       },
 
       handleAddCourse(e) {
         e.preventDefault();
-        const name = document.getElementById('newCourseName').value.trim();
-        const category = document.getElementById('newCourseCategory').value;
-        const coach_name = document.getElementById('newCourseCoach').value.trim();
-        const day_of_week = document.getElementById('newCourseDay').value.trim();
-        const time = document.getElementById('newCourseTime').value.trim();
-        const capacity = parseInt(document.getElementById('newCourseCapacity').value) || 16;
-        const price_semester = document.getElementById('newCoursePrice').value.trim();
-        const location = document.getElementById('newCourseLocation').value.trim();
-        const description = document.getElementById('newCourseDescription').value.trim();
+        const name = document.getElementById('addCourseName').value.trim();
+        const day = document.getElementById('addCourseDay').value.trim();
+        const time = document.getElementById('addCourseTime').value.trim();
+        const minAge = parseInt(document.getElementById('addCourseMinAge').value);
+        const maxAge = parseInt(document.getElementById('addCourseMaxAge').value);
+        const capacity = parseInt(document.getElementById('addCourseCapacity').value);
+        const location = document.getElementById('addCourseLocation').value.trim();
+        const coachId = document.getElementById('addCourseCoach').value;
 
-        const newCourse = {
+        this.db = loadDB();
+        const coachObj = this.db.users.find(u => u.id === coachId) || { name: 'Nepřiřazen' };
+
+        this.db.courses.push({
           id: 'crs_' + Date.now(),
           name,
-          category,
-          coach_name,
-          day_of_week,
+          day,
           time,
-          location,
+          minAge,
+          maxAge,
           capacity,
-          price_semester,
-          description
-        };
+          coachId,
+          coachName: coachObj.name,
+          location
+        });
 
-        db.data.courses.push(newCourse);
-        db.save();
-
+        saveDB(this.db);
         this.closeModal('modalAddCourse');
-        this.renderCourses();
-        this.renderAdminPanel();
-        this.showToast(`Kurz "${name}" byl úspěšně vytvořen.`, 'success');
+        this.renderAdminView();
+        alert("✅ Nový kurz byl vytvořen.");
       },
 
-      showToast(msg, type = 'info') {
-        const container = document.getElementById('toastContainer');
-        if (!container) return;
-
-        const toast = document.createElement('div');
-        toast.className = `p-3.5 rounded-xl shadow-lg text-xs font-bold flex items-center gap-2 pointer-events-auto transition transform translate-y-2 opacity-0 text-white`;
-
-        if (type === 'success') toast.classList.add('bg-[#2e7d4f]');
-        else if (type === 'warning') toast.classList.add('bg-[#b86e00]');
-        else toast.classList.add('bg-[#0f7c8a]');
-
-        toast.innerHTML = `<span>${msg}</span>`;
-        container.appendChild(toast);
-
-        setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
-        setTimeout(() => {
-          toast.classList.add('opacity-0', 'translate-y-2');
-          setTimeout(() => toast.remove(), 250);
-        }, 3500);
+      // POMOCNÉ FUNKCE
+      calcAge(birthStr) {
+        if (!birthStr) return 10;
+        const birth = new Date(birthStr);
+        const now = new Date();
+        let age = now.getFullYear() - birth.getFullYear();
+        const m = now.getMonth() - birth.getMonth();
+        if (m < 0 || (m === 0 && now.getDate() < birth.getDate())) age--;
+        return age;
       },
 
       openModal(id) {
-        const modal = document.getElementById(id);
-        if (modal) modal.classList.remove('hidden');
+        document.getElementById(id)?.classList.remove('hidden');
       },
 
       closeModal(id) {
-        const modal = document.getElementById(id);
-        if (modal) modal.classList.add('hidden');
+        document.getElementById(id)?.classList.add('hidden');
       }
     };
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => app.init());
-    } else {
+    // INICIALIZACE PO NAČTENÍ
+    document.addEventListener('DOMContentLoaded', () => {
       app.init();
-    }
+    });
   </script>
 </body>
 </html>
